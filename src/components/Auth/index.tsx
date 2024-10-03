@@ -11,11 +11,10 @@ import { Button } from "../ui/button"
   const Dropdown = () => {
     return (
 
-    <div>
 
     <DropdownMenu>
   <DropdownMenuTrigger >
-  <Button className="!cursor-pointer"    variant="destructive">Open</Button>
+  <Button    variant="destructive">Open</Button>
   </DropdownMenuTrigger>
   <DropdownMenuContent>
     <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -26,7 +25,6 @@ import { Button } from "../ui/button"
     <DropdownMenuItem>Subscription</DropdownMenuItem>
   </DropdownMenuContent>
 </DropdownMenu>
-    </div>
     )
 
   }

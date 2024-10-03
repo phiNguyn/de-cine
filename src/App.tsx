@@ -6,10 +6,9 @@ import Footer from "./components/Footer"
 export  const  App  = () => {
   return (
    <>
-   <div className="max-w-[1440px] p-5 my-0 mx-auto">
-    
+   <div className="max-w-[1440px] py-5 my-0 mx-auto bg-[rgb(16, 16, 16)]">
    <Header/>
-   <main className="w-full">
+   <main className="w-full ">
    <Routes>
     <Route path="/" element = {<Home/>}/>
    </Routes>
