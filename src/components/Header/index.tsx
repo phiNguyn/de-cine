@@ -1,4 +1,5 @@
 import {
+
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
@@ -7,6 +8,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import Dropdown from "../Auth"
+
 import { Button } from "../ui/button"
 import { Link } from "react-router-dom"
 import ticketBlack from '@/assets/ic-ticket-black.svg'
@@ -23,6 +25,8 @@ const Header : FC = () => {
             { id: 2, name: "Tranformer Một", image: "https://cdn.galaxycine.vn/media/2024/8/13/transformers-500_1723544375976.jpg" },
             { id: 3, name: "Tranformer Một", image: "https://cdn.galaxycine.vn/media/2024/8/13/transformers-500_1723544375976.jpg" },
             { id: 4, name: "Tranformer Một", image: "https://cdn.galaxycine.vn/media/2024/8/13/transformers-500_1723544375976.jpg" }
+import { Auth } from "../Auth"
+
 
           ]
         },
@@ -91,6 +95,17 @@ const Header : FC = () => {
         <Dropdown />
       </div>
     </>
+
+
+))}
+  <Link to={"/"} className="text-xl">Vé</Link>
+    </NavigationMenuList>
+  </NavigationMenu>
+    </div>
+  <Auth />
+</div>
+</>
+  
 
   )
 }
