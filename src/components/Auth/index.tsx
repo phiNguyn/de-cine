@@ -7,22 +7,22 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import { Button } from "../ui/button"
+import { useTheme } from "../theme-provider"
   
   const Dropdown = () => {
+    const { setTheme } = useTheme()
     return (
 
 
-    <DropdownMenu>
+    <DropdownMenu >
   <DropdownMenuTrigger >
   <Button    variant="destructive">Open</Button>
   </DropdownMenuTrigger>
   <DropdownMenuContent>
-    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+    <DropdownMenuLabel onClick={() => setTheme("light")}>Light</DropdownMenuLabel>
     <DropdownMenuSeparator />
-    <DropdownMenuItem>Profile</DropdownMenuItem>
-    <DropdownMenuItem>Billing</DropdownMenuItem>
-    <DropdownMenuItem>Team</DropdownMenuItem>
-    <DropdownMenuItem>Subscription</DropdownMenuItem>
+    <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+    <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
   </DropdownMenuContent>
 </DropdownMenu>
     )
