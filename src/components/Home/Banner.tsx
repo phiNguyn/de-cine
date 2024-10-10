@@ -45,7 +45,7 @@ const Banner = () => {
           ))}
 
         </CarouselContent>
-        <CarouselPrevious  variant={"primary"}/>
+        <CarouselPrevious   variant={"primary"}/>
         <CarouselNext  variant={"primary"} />
       </Carousel>
 
