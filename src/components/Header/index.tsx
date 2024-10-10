@@ -6,11 +6,11 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
   } from "@/components/ui/navigation-menu"
-import Dropdown from "../Auth"
 import { Button } from "../ui/button"
 import { Link } from "react-router-dom"
 import ticketBlack from '@/assets/ic-ticket-black.svg'
 import { FilmItem } from "../Film"
+import { Auth } from "../Auth"
 const Header = () => {
     const menu = [
          {id : 1, title : "Phim", content : [
@@ -83,7 +83,7 @@ const Header = () => {
     </NavigationMenuList>
   </NavigationMenu>
     </div>
-  <Dropdown />
+  <Auth />
 </div>
 </>
   
