@@ -1,32 +1,56 @@
+import { Button } from "@/components/ui/button";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
-import { Button } from "../ui/button"
-  
-  const Dropdown = () => {
-    return (
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Card } from "@/components/ui/card";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+import { FormLogin } from "./FormLogin";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { FormRegister } from "./FormRegister";
 
+const Auth = () => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Đăng Nhập</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle className="flex justify-center">Đăng Nhập Tài Khoản</DialogTitle>
+        </DialogHeader>
+        <TabsDemo />
+      </DialogContent>
+    </Dialog>
+  );
+};
 
-    <DropdownMenu>
-  <DropdownMenuTrigger >
-  <Button    variant="destructive">Open</Button>
-  </DropdownMenuTrigger>
-  <DropdownMenuContent>
-    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-    <DropdownMenuSeparator />
-    <DropdownMenuItem>Profile</DropdownMenuItem>
-    <DropdownMenuItem>Billing</DropdownMenuItem>
-    <DropdownMenuItem>Team</DropdownMenuItem>
-    <DropdownMenuItem>Subscription</DropdownMenuItem>
-  </DropdownMenuContent>
-</DropdownMenu>
-    )
+const TabsDemo = () => {
+  return (
+    <Tabs defaultValue="login" className="w-[400px] pr-8">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="login">Đăng Nhập</TabsTrigger>
+        <TabsTrigger value="signup">Đăng Ký</TabsTrigger>
+      </TabsList>
+      <TabsContent value="login">
+        <Card>
+          <FormLogin />
+        </Card>
+      </TabsContent>
+      <TabsContent value="signup">
+        <Card>
+          <FormRegister />
+        </Card>
+      </TabsContent>
+    </Tabs>
+  );
+}
 
-  }
-
-  export default Dropdown
+export { Auth, TabsDemo };
