@@ -1,5 +1,14 @@
 import { Button } from "@/components/ui/button";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useTheme } from "../theme-provider";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -16,6 +25,25 @@ import { FormLogin } from "./FormLogin";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { FormRegister } from "./FormRegister";
 
+// Dropdown component from nguyen-home
+const Dropdown = () => {
+  const { setTheme } = useTheme();
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Button variant="destructive">Open</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel onClick={() => setTheme("light")}>Light</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+// Auth component from main
 const Auth = () => {
   return (
     <Dialog>
@@ -32,6 +60,7 @@ const Auth = () => {
   );
 };
 
+// TabsDemo component from main
 const TabsDemo = () => {
   return (
     <Tabs defaultValue="login" className="w-[400px] pr-8">
@@ -51,6 +80,6 @@ const TabsDemo = () => {
       </TabsContent>
     </Tabs>
   );
-}
+};
 
-export { Auth, TabsDemo };
+export { Auth, TabsDemo, Dropdown };
