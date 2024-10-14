@@ -8,15 +8,11 @@ export  const  App  = () => {
   return (
    <>
    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-   <div className="max-w-[1440px]  my-0 mx-auto">
    <Header/>
-   <main className="w-full">
    <Routes>
     <Route path="/" element = {<Home/>}/>
    </Routes>
-   </main>
    <Footer/>
-   </div>
    </ThemeProvider>
    </>
   )

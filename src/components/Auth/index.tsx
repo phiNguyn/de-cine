@@ -24,14 +24,20 @@ import {
 import { FormLogin } from "./FormLogin";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { FormRegister } from "./FormRegister";
-
+import {Moon , Sun } from 'lucide-react'
 // Dropdown component from nguyen-home
-const Dropdown = () => {
+const Dropdown= () => {
   const { setTheme } = useTheme();
   return (
+    <div className="mt-5 w-full">
+
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Button variant="destructive">Open</Button>
+      <DropdownMenuTrigger asChild>
+      <Button className="w-full" variant="outline" size="icon">
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel onClick={() => setTheme("light")}>Light</DropdownMenuLabel>
@@ -40,17 +46,21 @@ const Dropdown = () => {
         <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+</div>
   );
 };
 
 // Auth component from main
 const Auth = () => {
+
+
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button>Đăng Nhập</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[450px]">
         <DialogHeader>
           <DialogTitle className="flex justify-center">Đăng Nhập Tài Khoản</DialogTitle>
         </DialogHeader>
@@ -63,7 +73,7 @@ const Auth = () => {
 // TabsDemo component from main
 const TabsDemo = () => {
   return (
-    <Tabs defaultValue="login" className="w-[400px] pr-8">
+    <Tabs defaultValue="login" className="w-[400px] ">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="login">Đăng Nhập</TabsTrigger>
         <TabsTrigger value="signup">Đăng Ký</TabsTrigger>
