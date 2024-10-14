@@ -14,6 +14,8 @@ import ticketBlack from '@/assets/ic-ticket-black.svg'
 import { FilmItem } from "../Film"
 import { FC } from "react"
 import { Auth } from "../Auth"
+import RootLayout from "../Layout/RootLayout"
+import SheetDemo from "./mobile"
 const Header: FC = () => {
 
   const menu = [
@@ -57,12 +59,13 @@ const Header: FC = () => {
 
   return (
     <>
-      <div className="flex justify-between mt-5 font-bold ">
+    <RootLayout>
+      <div className="flex justify-between mt-5 font-bold">
         <div>
           <img src="https://suno.vn/blog/wp-content/uploads/2014/12/nike-lich-su-thiet-ke-logo.jpg" alt="" className="w-10" />
         </div>
 
-        <NavigationMenu className="">
+        <NavigationMenu className="hidden lg:block">
           <NavigationMenuList>
             <Button size={"default"} variant={"primary"} className="flex gap-x-5 font-bold text-lg">
               <img src={ticketBlack}></img>
@@ -92,8 +95,11 @@ const Header: FC = () => {
           </NavigationMenuList>
         </NavigationMenu>
         {/* <Dropdown /> */}
-<Auth />
+      <Auth/>
+      <SheetDemo/>
       </div>
+
+    </RootLayout>
     </>
 
 

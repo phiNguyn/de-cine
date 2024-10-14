@@ -7,6 +7,7 @@ export  const  Home : FC  = () => {
   return (
     <div className="w-full ">
       <Banner/>
+      
       <ListFilm/>
     </div>
   )
