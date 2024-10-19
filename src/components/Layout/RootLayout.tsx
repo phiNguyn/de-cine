@@ -1,8 +1,11 @@
+import { cn } from "@/lib/utils"
 import { ReactNode } from "react"
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const RootLayout = ({ children, className }: { children: ReactNode, className? : string }) => {
   return (
-    <div className="px-5">{children}</div>
+    <div className={cn("px-5",
+      className
+    )}>{children}</div>
   )
 }
 
