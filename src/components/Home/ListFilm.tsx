@@ -38,9 +38,9 @@ const ListFilm = () => {
     <>
       <RootLayout>
         <Tabs defaultValue="sap-chieu" className="min-w-full">
-          <TabsList className="w-full gap-x-5 md:w-auto">
+          <TabsList className="w-full gap-x-5 md:w-auto ">
             {fakeTabs.map((item) => (
-              <TabsTrigger className="cursor-pointer text-lg" key={item.id} value={item.slug}>{item.title}</TabsTrigger>
+              <TabsTrigger className="cursor-pointer " key={item.id} value={item.slug}>{item.title}</TabsTrigger>
 
             ))}
           </TabsList>
