@@ -3,6 +3,8 @@ import { Home } from "./pages/Home"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import { ThemeProvider } from "./components/theme-provider"
+import UserProfile from "./pages/UserProfile"
+import { SeatSelection } from "./pages/Seat"
 
 export  const  App  = () => {
   return (
@@ -13,6 +15,10 @@ export  const  App  = () => {
    <main className="w-full">
    <Routes>
     <Route path="/" element = {<Home/>}/>
+    <Route path="/UserProfile" element = {<UserProfile/>}/>
+    <Route path="/Seat" element = {<SeatSelection/>}/>
+
+
    </Routes>
    </main>
    <Footer/>

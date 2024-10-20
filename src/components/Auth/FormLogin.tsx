@@ -37,10 +37,8 @@ const FormLogin = () => {
 
     if (user) {
       console.log("Đăng nhập thành công:", user);
-      // Thực hiện hành động sau khi đăng nhập thành công, như điều hướng đến trang chính
     } else {
       console.log("Thông tin đăng nhập không đúng");
-      // Thông báo lỗi đăng nhập không đúng
     }
   };
 
