@@ -25,8 +25,13 @@ const SeatSelection = () => {
                 </div>
               </div>
             </div>
-  
-            <div className="grid grid-cols-12 gap-2  w-fit justify-center pl-44 pt-10">
+            <img
+              src="/img/ic-screen.png"
+              alt="sceen"
+              className="w-auto mt-6"
+            />
+            <div className="grid grid-cols-12 gap-2  w-fit justify-center pl-52 pt-10">
+           
               {seats.map((seat, index) => (
                 <button
                   key={index}
@@ -35,6 +40,7 @@ const SeatSelection = () => {
                   {seat}
                 </button>
               ))}
+            
             </div>
           </div>
   
