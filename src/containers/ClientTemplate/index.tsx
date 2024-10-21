@@ -9,9 +9,9 @@ const HomeTemplate = () => {
    <>
    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
      <Header />
-    <Suspense fallback={<Loading />}>
+    {/* <Suspense fallback={<Loading />}> */}
      <Outlet />
-    </Suspense>
+    {/* </Suspense> */}
      <Footer />
    </ThemeProvider>
    </>
