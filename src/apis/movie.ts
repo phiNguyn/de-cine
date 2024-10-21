@@ -1,11 +1,13 @@
-import axios from 'axios'
+import { API_URL } from '@/constants/api';
+import axiosClient from './axiosClient';
 
 const moviesAPI = {
-  getMovieDetails: async () => {
+  getMovieDetails: async (id: number) => {
     try {
      
-      const resp = await axios.get()
-      return resp;
+      const resp = await axiosClient.get(`${API_URL.movies}/${id}`)
+
+      return resp.data;
     } catch (error) {
       console.log(error);
     }

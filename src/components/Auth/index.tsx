@@ -25,11 +25,14 @@ import { FormLogin } from "./FormLogin";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { FormRegister } from "./FormRegister";
 import {Moon , Sun } from 'lucide-react'
+import { cn } from "@/lib/utils";
 // Dropdown component from nguyen-home
-const Dropdown= () => {
+const Dropdown = ({className} :{className ?: string}) => {
   const { setTheme } = useTheme();
   return (
-    <div className="mt-5 w-full">
+    <div className={cn("mt-5 w-full",
+      className
+    )}>
 
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -39,7 +42,7 @@ const Dropdown= () => {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="cursor-pointer">
         <DropdownMenuLabel onClick={() => setTheme("light")}>Light</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
