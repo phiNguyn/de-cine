@@ -100,7 +100,7 @@ export const ShowTimeTabs: React.FC = () => {
     },
     {
       id: 8, date: "19/09", listTime: [
-        { id: 1, time: "12:45" },
+        { id: 1, time: "12:45"},
         { id: 2, time: "13:45" },
         { id: 4, time: "15:45" },
         { id: 5, time: "16:45" },
@@ -156,11 +156,16 @@ export const ShowTimeTabs: React.FC = () => {
               <CardDescription>
                 Chọn giờ xem bạn nhé
               </CardDescription>
-              <div className="grid grid-cols-4 gap-5">
+              <div className="grid grid-cols-4 gap-5 max-w-md">
                 {time.listTime.map(time => (
-                  <CardDescription className="border w-fit border-black rounded-md px-3 py-1.5">
+                  <div key={time.id} className="group w-fit cursor-pointer">
+
+                  <CardDescription className="border w-fit
+                    border-yellow-500 text-primary 
+                   rounded-md px-3 py-1.5 group-hover:border-white group-hover:bg-yellow-500">
                     {time.time}
                   </CardDescription>
+                     </div>
                 ))}
               </div>
 
