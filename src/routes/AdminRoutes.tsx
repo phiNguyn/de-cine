@@ -4,7 +4,7 @@ import { lazy } from "react";
 const AppShell = lazy(() => import("@/containers/AdminTemplate/components/app-shell"));
 const DashBoard = lazy(() => import("@/containers/AdminTemplate/pages/DashBoard"));
 const LoginPage = lazy(() => import("@/containers/AdminTemplate/pages/auth/Login"));
-
+const UsersPage = lazy (() => import('@/containers/AdminTemplate/pages/Account'))
 // Định nghĩa AdminRoutes với kiểu RouteObject
 const AdminRoutes = [
   {
@@ -23,7 +23,11 @@ const AdminRoutes = [
       {
         path: "",
         element: <DashBoard />
+      },
+      {path : 'users' ,
+        element : <UsersPage/>
       }
+      
     ]
   },
   {

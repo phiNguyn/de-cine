@@ -15,7 +15,7 @@ import { Box, ChartColumn, CircleX, FileLock, GitPullRequest, KeyRound, LayoutDa
     {
       title: 'Dashboard',
       label: '',
-      href: '/',
+      href: '/admin',
       icon: <LayoutDashboard size={18} />,
     },
     {
@@ -77,7 +77,7 @@ import { Box, ChartColumn, CircleX, FileLock, GitPullRequest, KeyRound, LayoutDa
     {
       title: 'Users',
       label: '',
-      href: '/users',
+      href: '/admin/users',
       icon: <Users size={18} />,
     },
     {
