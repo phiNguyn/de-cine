@@ -4,6 +4,7 @@ import { lazy } from "react";
 const AppShell = lazy(() => import("@/containers/AdminTemplate/components/app-shell"));
 const DashBoard = lazy(() => import("@/containers/AdminTemplate/pages/DashBoard"));
 const LoginPage = lazy(() => import("@/containers/AdminTemplate/pages/auth/Login"));
+const UsersPage = lazy (() => import('@/containers/AdminTemplate/pages/Account'))
 const ListMovies = lazy(() => import("@/containers/AdminTemplate/pages/ListMovie"));
 const ListTickets = lazy(() => import("@/containers/AdminTemplate/pages/ListTicket"));
 const ListRooms = lazy(() => import("@/containers/AdminTemplate/pages/ListRoom"));
@@ -25,6 +26,9 @@ const AdminRoutes = [
       {
         path: "",
         element: <DashBoard />
+      },
+      {path : '/admin/users' ,
+        element : <UsersPage/>
       },
       {
         path: "/admin/listMovie",
