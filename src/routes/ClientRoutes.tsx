@@ -19,6 +19,7 @@ const ClientRoutes = [
             element : <DetailMoviePage/>
         },
         {path : '/UserProfile' , element : <UserProfile/>},
+        
      {path : '/Seat', element :<SeatSelectionPage/> }
     ] 
 }
