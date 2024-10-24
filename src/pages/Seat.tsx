@@ -74,5 +74,5 @@ const SeatSelection = () => {
     );
   };
   
-  export { SeatSelection };
+  export default SeatSelection
   
