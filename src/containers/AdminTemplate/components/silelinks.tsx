@@ -15,6 +15,7 @@ import { Box, ChartColumn, CircleX, FileLock, GitPullRequest, KeyRound, LayoutDa
     {
       title: 'Dashboard',
       label: '',
+      
       href: '/',
       icon: <LayoutDashboard size={18} />,
     },
