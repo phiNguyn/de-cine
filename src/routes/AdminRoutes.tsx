@@ -13,6 +13,9 @@ const ListRooms = lazy(() => import("@/containers/AdminTemplate/pages/ListRoom")
 const GenreMoviePage = lazy(() => import("@/containers/AdminTemplate/pages/GenreMovie"))
 const AccountDetailPage = lazy(() => import("@/containers/AdminTemplate/pages/Account/Detail"))
 const DetailGenreMoviePage = lazy(() => import("@/containers/AdminTemplate/pages/GenreMovie/Detail"))
+const RoomDetail = lazy(() => import("@/containers/AdminTemplate/pages/RoomDetail"));
+const TicketDetail = lazy(() => import("@/containers/AdminTemplate/pages/TicketDetail"));
+
 // Định nghĩa AdminRoutes với kiểu RouteObject
 const AdminRoutes = [
   {
@@ -57,7 +60,16 @@ const AdminRoutes = [
         path : 'listGenreMovies/:id',
         element : <DetailGenreMoviePage/>
       }
-      
+     
+//detail 
+      {
+        path: "/admin/listRoom/detail",
+        element: <RoomDetail />
+      },
+      {
+        path: "/admin/listTicket/detail",
+        element: <TicketDetail />
+      }
     ]
   },
   {
