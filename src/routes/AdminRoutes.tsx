@@ -59,15 +59,13 @@ const AdminRoutes = [
       {
         path : 'listGenreMovies/:id',
         element : <DetailGenreMoviePage/>
-      }
-     
-//detail 
+      },
       {
-        path: "/admin/listRoom/detail",
+        path: "listRoom/detail",
         element: <RoomDetail />
       },
       {
-        path: "/admin/listTicket/detail",
+        path: "listTicket/detail",
         element: <TicketDetail />
       }
     ]
