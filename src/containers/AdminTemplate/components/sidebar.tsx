@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
-import { Layout } from '@/components/Layout/layout'
-import { Button } from '@/components/ui/button'
-import Nav from './nav'
-import { cn } from '@/lib/utils'
-import { sidelinks } from './silelinks'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useEffect, useState } from 'react';
+import { Layout } from '@/components/Layout/layout';
+import { Button } from '@/components/ui/button';
+import Nav from './nav';
+import { cn } from '@/lib/utils';
+import { sidelinks } from './silelinks';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
-  isCollapsed: boolean
-  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>
+  isCollapsed: boolean;
+  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Sidebar({
@@ -16,16 +16,24 @@ export default function Sidebar({
   isCollapsed,
   setIsCollapsed,
 }: SidebarProps) {
-  const [navOpened, setNavOpened] = useState(false)
+  const [navOpened, setNavOpened] = useState(false);
 
-  /* Make body not scrollable when navBar is opened */
   useEffect(() => {
+    const body = document.body;
     if (navOpened) {
-      document.body.classList.add('overflow-hidden')
+      body.classList.add('overflow-hidden');
     } else {
-      document.body.classList.remove('overflow-hidden')
+      body.classList.remove('overflow-hidden');
     }
-  }, [navOpened])
+    return () => {
+      body.classList.remove('overflow-hidden');
+    };
+  }, [navOpened]);
+
+  const toggleSidebar = () => {
+    setIsCollapsed(prev => !prev);
+    setNavOpened(false); // Đóng thanh điều hướng khi mở/đóng thanh bên
+  };
 
   return (
     <aside
@@ -77,9 +85,7 @@ export default function Sidebar({
               ></line>
               <span className='sr-only'>Website Name</span>
             </svg>
-            <div
-              className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}
-            >
+            <div className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}>
               <span className='font-medium'>Shadcn Admin</span>
               <span className='text-xs'>Vite + ShadcnUI</span>
             </div>
@@ -110,17 +116,14 @@ export default function Sidebar({
 
         {/* Scrollbar width toggle button */}
         <Button
-          onClick={() => setIsCollapsed((prev) => !prev)}
+          onClick={toggleSidebar}
           size='icon'
           variant='outline'
           className='absolute -right-5 top-1/2 z-50 hidden rounded-full md:inline-flex'
         >
-          <ChevronLeft
-          
-            className={`h-5 w-5 ${isCollapsed ? 'rotate-180' : ''}`}
-          />
+          <ChevronLeft className={`h-5 w-5 ${isCollapsed ? 'rotate-180' : ''}`} />
         </Button>
       </Layout>
     </aside>
-  )
+  );
 }

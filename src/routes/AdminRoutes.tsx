@@ -1,5 +1,7 @@
 // import { ROLE } from "@/constants/role"; 
 // import RequireAuth from "@/guards";
+import { ROLE } from "@/constants/role";
+import RequireAuth from "@/guards";
 import { lazy } from "react";
 const AppShell = lazy(() => import("@/containers/AdminTemplate/components/app-shell"));
 const DashBoard = lazy(() => import("@/containers/AdminTemplate/pages/DashBoard"));
@@ -7,43 +9,57 @@ const LoginPage = lazy(() => import("@/containers/AdminTemplate/pages/auth/Login
 const UsersPage = lazy (() => import('@/containers/AdminTemplate/pages/Account'))
 const ListMovies = lazy(() => import("@/containers/AdminTemplate/pages/ListMovie"));
 const ListTickets = lazy(() => import("@/containers/AdminTemplate/pages/ListTicket"));
-const ListRooms = lazy(() => import("@/containers/AdminTemplate/pages/ListRoom"));  
+const ListRooms = lazy(() => import("@/containers/AdminTemplate/pages/ListRoom"));
+const GenreMoviePage = lazy(() => import("@/containers/AdminTemplate/pages/GenreMovie"))
+const AccountDetailPage = lazy(() => import("@/containers/AdminTemplate/pages/Account/Detail"))
+const DetailGenreMoviePage = lazy(() => import("@/containers/AdminTemplate/pages/GenreMovie/Detail"))
 const RoomDetail = lazy(() => import("@/containers/AdminTemplate/pages/RoomDetail"));
 const TicketDetail = lazy(() => import("@/containers/AdminTemplate/pages/TicketDetail"));
+
 // Định nghĩa AdminRoutes với kiểu RouteObject
 const AdminRoutes = [
   {
     path: 'admin',
     element:    
-     <AppShell />
+    //  <AppShell />
 
-    // // nào làm đăng nhập thì bật cái này lên
-    // (
-    //   <RequireAuth roles={[ROLE.ADMIN]}>
-    //     <AppShell />
-    //   </RequireAuth>
-    // )
+    // nào làm đăng nhập thì bật cái này lên
+    (
+      <RequireAuth roles={[ROLE.ADMIN]}>
+        <AppShell />
+      </RequireAuth>
+    )
     ,
     children: [
       {
         path: "",
         element: <DashBoard />
       },
-      {path : '/admin/users' ,
+      {path : 'users' ,
         element : <UsersPage/>
+        
       },
+      { path : 'users/:id', element : <AccountDetailPage/>},
       {
-        path: "/admin/listMovie",
+        path: "listMovie",
         element: <ListMovies />
       },
       {
-        path: "/admin/listTicket",
+        path: "listTicket",
         element: <ListTickets />
       },
       {
-        path: "/admin/listRoom",
+        path: "listRoom",
         element: <ListRooms />
       },
+      {
+        path : 'listGenreMovies',
+        element : <GenreMoviePage/>
+      },
+      {
+        path : 'listGenreMovies/:id',
+        element : <DetailGenreMoviePage/>
+      }
      
 //detail 
       {

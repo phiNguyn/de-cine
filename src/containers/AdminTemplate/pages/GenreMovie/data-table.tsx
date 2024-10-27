@@ -31,8 +31,6 @@ import {
   } from "@/components/ui/dropdown-menu"
    
 import React from "react"
-import { DataTablePagination } from "./data-panigation"
-import { DataTableToolbar } from "./data-table-toolbar"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -69,7 +67,7 @@ export function DataTable<TData, TValue>({
   return (
     <>
     <div className="flex items-center py-4">
-    <DataTableToolbar table={table}/>
+    {/* <DataTableToolbar table={table}/> */}
 
       <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -146,7 +144,7 @@ export function DataTable<TData, TValue>({
       </Table>
     </div>
     <div className="mt-5">
-    <DataTablePagination table={table}/>
+    {/* <DataTablePagination table={table}/> */}
     </div>
     </>
   )

@@ -95,7 +95,7 @@ function NavLink({
       onClick={closeNav}
       className={cn(
         buttonVariants({
-          variant: checkActiveNav(href) ? 'secondary' : 'ghost',
+          variant: checkActiveNav(href) ? 'default' : 'ghost',
           size: 'sm',
         }),
         'h-12 justify-start text-wrap rounded-none px-6',
@@ -166,7 +166,7 @@ function NavLinkIcon({ title, icon, label, href }: NavLinkProps) {
           to={href}
           className={cn(
             buttonVariants({
-              variant: checkActiveNav(href) ? 'secondary' : 'ghost',
+              variant: checkActiveNav(href) ? 'default' : 'ghost',
               size: 'icon',
             }),
             'h-12 w-12'
@@ -199,7 +199,7 @@ function NavLinkIconDropdown({ title, icon, label, sub }: NavLinkProps) {
         <TooltipTrigger asChild>
           <DropdownMenuTrigger asChild>
             <Button
-              variant={isChildActive ? 'secondary' : 'ghost'}
+              variant={isChildActive ? 'default' : 'ghost'}
               size='icon'
               className='h-12 w-12'
             >

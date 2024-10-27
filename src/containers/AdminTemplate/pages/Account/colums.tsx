@@ -7,6 +7,7 @@ import {  MoreHorizontal } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { User } from "@/types/user"
+import { Link } from "react-router-dom"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -76,6 +77,7 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "Chức năng",
     cell: ({ row }) => {
+      
       const user = row.original
  
       return (
@@ -94,7 +96,7 @@ export const columns: ColumnDef<User>[] = [
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem><Link to={`/admin/users/${user.id}`}>Xem chi tiết khách hàng</Link></DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
