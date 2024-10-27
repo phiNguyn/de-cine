@@ -1,6 +1,34 @@
+import { StorageKeys } from '@/constants/StorageKeys';
 import { UserAuthForm } from './user-authForm'
+import { AuthAPI } from '@/apis/auth';
+import { useAuth } from '@/hooks';
+import { UserLogin } from '@/types/user';
+import toast, {Toaster} from 'react-hot-toast'
 
 export default function SignIn() {
+  const {login} = useAuth()
+  const handleLogin = async (data : UserLogin) => {
+    try {
+        const resp = await AuthAPI.login(data)
+        const {user} = resp
+        if(user.role === 'admin' ) {
+          toast.success(resp.message)
+         login({role :user.role})
+         localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(user))
+         setTimeout(() => {
+          
+           window.location.href = '/admin'
+         }, 3000);
+        }else {
+          toast.error(resp.message)
+          
+        }
+          
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
   return (
     <>
       <div className='container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
@@ -26,8 +54,8 @@ export default function SignIn() {
               <h1 className='text-2xl font-semibold tracking-tight'>Đăng Nhập</h1>
               
             </div>
-            <UserAuthForm />
-            
+            <UserAuthForm onSubmit={handleLogin} />
+            <Toaster />
           </div>
         </div>
       </div>

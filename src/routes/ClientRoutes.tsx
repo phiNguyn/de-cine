@@ -1,3 +1,5 @@
+import { ROLE } from '@/constants/role'
+import RequireAuth from '@/guards'
 import { lazy } from 'react'
 
 const HomeTempalte = lazy (() => import("@/containers/ClientTemplate"))
@@ -18,7 +20,11 @@ const ClientRoutes = [
             path: 'dat-ve/:id',
             element : <DetailMoviePage/>
         },
-        {path : '/UserProfile' , element : <UserProfile/>},
+        {path : '/UserProfile' , element :  (
+            <RequireAuth roles={[ ROLE.ADMIN]}>
+                <UserProfile/>
+            </RequireAuth>
+          )},
         
      {path : '/Seat', element :<SeatSelectionPage/> }
     ] 
