@@ -1,14 +1,14 @@
-import Banner from "@/components/Home/Banner"
-import ListFilm from "@/components/Home/ListFilm"
+import Banner from "../component/Home/Banner"
+import ListFilm from "../component/Home/ListFilm"
 import { FC } from "react"
 
 
- const  Home : FC  = () => {
+const Home: FC = () => {
   return (
     <div className="w-full ">
-      <Banner/>
-      
-      <ListFilm/>
+      <Banner />
+
+      <ListFilm />
     </div>
   )
 }

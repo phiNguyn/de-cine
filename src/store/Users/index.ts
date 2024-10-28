@@ -1,15 +1,29 @@
 import { User } from "@/types/user";
 import { create } from "zustand";
 
-    interface UserStore {
-        user : User[]
-        setUsers : (users : User[]) => void
-    }
+interface UserStore {
+  user: User[];
+  setUser: (users: User[]) => void;
+  addUser: (newUser: User) => void;
+  updateUser: (updatedUser: User) => void;
+  getUserById: (id: number) => User | undefined;
+}
 
-    export const useUserStore = create<UserStore>((set) =>(
-        {
-            user : [],
-            setUsers : (users: User[]) => set ({user :users})
-        }
-    ) 
-    )
+export const useUser = create<UserStore>((set, get) => ({
+  user: [],
+  setUser: (user) => set({ user }),
+  addUser: (newUser) =>
+    set((state) => ({
+      user: [...state.user, newUser],
+    })),
+  updateUser: (updatedUser) =>
+    set((state) => ({
+      user: state.user.map((u) =>
+        u.id_account === updatedUser.id_account ? updatedUser : u
+      ),
+    })),
+  getUserById: (id) => {
+    // Sử dụng get() để lấy trạng thái hiện tại
+    return get().user.find((u) => u.id_account === id);
+  },
+}));

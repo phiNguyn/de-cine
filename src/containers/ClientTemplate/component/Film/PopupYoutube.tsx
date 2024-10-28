@@ -3,7 +3,7 @@ import {
     DialogContent,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Button } from "../ui/button"
+import { Button } from "../../../../components/ui/button"
 import { Circle, Play } from "lucide-react"
 
 const PopupYoutube = ({ title, ytSlug }: { title: string, ytSlug: string | undefined }) => {
@@ -15,7 +15,7 @@ const PopupYoutube = ({ title, ytSlug }: { title: string, ytSlug: string | undef
                 </DialogTrigger>
                 <DialogContent className="w-[90vw] h-[50vh] sm:w-[90vw] sm:h-[50vh] md:w-[70vw] md:h-[50vh] lg:max-w-[1200px] lg:h-[70vh]">
 
-                    <iframe 
+                    <iframe
                         className="w-full h-full"
                         src={`https://www.youtube.com/embed/${ytSlug}`}
                         title="YouTube video player"
@@ -30,20 +30,20 @@ const PopupYoutube = ({ title, ytSlug }: { title: string, ytSlug: string | undef
     )
 }
 
-export const PopupYoutubeDetail = ({ytSlug }: { ytSlug: string | undefined }) => {
+export const PopupYoutubeDetail = ({ ytSlug }: { ytSlug: string | undefined }) => {
     return (
         <div className="w-full sm:max-w-[300px]">
             <Dialog>
                 <DialogTrigger>
                     <div className="relative group">
-                        <Circle className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-all duration-300" absoluteStrokeWidth size={70}/>
-                        <Play className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-all duration-300" size={30}/>
+                        <Circle className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-all duration-300" absoluteStrokeWidth size={70} />
+                        <Play className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-all duration-300" size={30} />
 
                     </div>
                 </DialogTrigger>
                 <DialogContent className="w-[90vw] h-[50vh] sm:w-[90vw] sm:h-[50vh] md:w-[70vw] md:h-[50vh] lg:max-w-[1200px] lg:h-[70vh]">
 
-                    <iframe 
+                    <iframe
                         className="w-full h-full"
                         src={`https://www.youtube.com/embed/${ytSlug}`}
                         title="YouTube video player"

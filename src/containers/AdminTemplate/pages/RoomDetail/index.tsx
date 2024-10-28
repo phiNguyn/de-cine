@@ -1,7 +1,7 @@
 import { Layout } from '@/components/Layout/layout'
 import { TopNav } from '@/containers/AdminTemplate/components/top-nav'
 import { UserNav } from '@/containers/AdminTemplate/components/user-nav'
-import { Dropdown } from '@/components/Auth'
+import { Dropdown } from '@/containers/ClientTemplate/component/Auth'
 import { ThemeProvider } from '@/components/theme-provider'
 import { RoomForm } from './RoomForm'
 

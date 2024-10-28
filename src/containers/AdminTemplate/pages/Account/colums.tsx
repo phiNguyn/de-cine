@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { User } from "@/types/user"
 import { Link } from "react-router-dom"
+import { formatDate } from "../GenreMovie/columns"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -35,7 +36,7 @@ export const columns: ColumnDef<User>[] = [
         enableHiding: false,
       },
     {
-        accessorKey: "id",
+        accessorKey: "id_account",
         header: ({ column }) => {
           return (
             <DataTableColumnHeader column={column} title="ID" />
@@ -43,7 +44,15 @@ export const columns: ColumnDef<User>[] = [
         },
       },
       {
-    accessorKey: "name",
+        accessorKey: "user_name",
+        header: ({ column }) => {
+          return (
+            <DataTableColumnHeader column={column} title="Tài Khoản" />
+          )
+        },
+      },
+      {
+    accessorKey: "full_name",
     header: ({ column }) => {
       return (
         <DataTableColumnHeader column={column} title="Tên" />
@@ -67,11 +76,39 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: "role",
+    accessorKey: "loyalty_points",
     header: ({ column }) => {
       return (
-        <DataTableColumnHeader column={column} title="Người dùng" />
+        <DataTableColumnHeader column={column} title="Điểm thưởng" />
       )
+    },
+  },
+  {
+    accessorKey: "role",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Thành viên' />
+    ),
+    cell: ({ row }) => {
+      const role = row.getValue("role")
+      return <div className={`text-center font-bold p-2 rounded-lg  ${role == 'admin' ? "bg-green-200 text-green-700" : "bg-yellow-200 text-yellow-700"}`}>{row.getValue("role")}</div>
+    },
+  },
+  {
+    accessorKey: "created_at",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Ngày cập nhật' />
+    ),
+    cell: ({ row }) => {
+      return <div className="text-right font-medium">{formatDate(row.getValue("updated_at"))}</div>
+    },
+  },
+  {
+    accessorKey: "updated_at",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Ngày cập nhật' />
+    ),
+    cell: ({ row }) => {
+      return <div className="text-right font-medium">{formatDate(row.getValue("updated_at"))}</div>
     },
   },
   {
@@ -91,12 +128,12 @@ export const columns: ColumnDef<User>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(String(user.id ))}
+              onClick={() => navigator.clipboard.writeText(String(user.id_account ))}
             >
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem><Link to={`/admin/users/${user.id}`}>Xem chi tiết khách hàng</Link></DropdownMenuItem>
+            <DropdownMenuItem><Link to={`/admin/users/${user.id_account}`}>Xem chi tiết khách hàng</Link></DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

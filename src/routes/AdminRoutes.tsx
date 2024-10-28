@@ -60,6 +60,9 @@ const AdminRoutes = [
         path : 'listGenreMovies/:id',
         element : <DetailGenreMoviePage/>
       },
+
+     
+//detail 
       {
         path: "listRoom/detail",
         element: <RoomDetail />

@@ -1,9 +1,9 @@
 import { BreadcrumbComponent } from "@/components/Breadcrumb"
-import Detail from "@/components/Film/Detail"
+import Detail from "@/containers/ClientTemplate/component/Film/Detail"
 import RootLayout from "@/components/Layout/RootLayout"
 import { movie } from "@/types/movie"
-import { ShowTimeTabs } from '@/components/Film/ShowTimeTabs';
-import MovieIsShowing from "@/components/Film/MovieIsShowing";
+import { ShowTimeTabs } from '@/containers/ClientTemplate/component/Film/ShowTimeTabs';
+import MovieIsShowing from "@/containers/ClientTemplate/component/Film/MovieIsShowing";
 
 const DetailMoviePage = () => {
     const movie: movie = {

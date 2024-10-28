@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form"; // FormMessage to show errors
 import { Input } from "@/components/ui/input";
-import { CardContent } from "../ui/card";
+import { CardContent } from "../../../../components/ui/card";
 import { Label } from "@/components/ui/label"; // Label for input fields
 
 // Schema validation with Zod

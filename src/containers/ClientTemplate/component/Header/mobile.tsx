@@ -8,29 +8,29 @@ import {
 } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 import SearchInput from "./Search"
-import { Dropdown } from "@/components/Auth"
-import ComboFoodPopup from "@/components/ComboFood"
-const  SheetDemo = () => {
+import { Dropdown } from "@/containers/ClientTemplate/component/Auth"
+import ComboFoodPopup from "@/containers/ClientTemplate/component/ComboFood"
+const SheetDemo = () => {
   return (
     <div className="block md:hidden">
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant={"outline"}><Menu/></Button>
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader className="mt-5">
-          
-          <SearchInput/>
-        </SheetHeader>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant={"outline"}><Menu /></Button>
+        </SheetTrigger>
+        <SheetContent>
+          <SheetHeader className="mt-5">
 
-        <SheetFooter className="mt-5">
+            <SearchInput />
+          </SheetHeader>
 
-         <Dropdown />
-        <ComboFoodPopup/>
-        </SheetFooter>
-      </SheetContent>
+          <SheetFooter className="mt-5">
 
-    </Sheet>
+            <Dropdown />
+            <ComboFoodPopup />
+          </SheetFooter>
+        </SheetContent>
+
+      </Sheet>
     </div>
   )
 }

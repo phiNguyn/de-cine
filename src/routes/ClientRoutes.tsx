@@ -5,8 +5,8 @@ import { lazy } from 'react'
 const HomeTempalte = lazy (() => import("@/containers/ClientTemplate"))
 const Homepage = lazy (() => import("@/containers/ClientTemplate/pages/Home"))
 const DetailMoviePage = lazy (() => import("@/containers/ClientTemplate/pages/Detail"))
-const UserProfile  =lazy (() => import("@/pages/UserProfile"))
-const SeatSelectionPage = lazy (() => import("@/pages/Seat"))
+const UserProfile  =lazy (() => import("@/containers/ClientTemplate/pages/UserProfile"))
+const SeatSelectionPage = lazy (() => import("@/containers/ClientTemplate/pages/Seat"))
 const ClientRoutes = [
     {
     path: '/',
@@ -20,11 +20,18 @@ const ClientRoutes = [
             path: 'dat-ve/:id',
             element : <DetailMoviePage/>
         },
-        {path : '/UserProfile' , element :  (
-            <RequireAuth roles={[ ROLE.ADMIN]}>
-                <UserProfile/>
-            </RequireAuth>
-          )},
+                
+                {path : '/UserProfile' , element : 
+                    //nào làm đăng nhập thì tắt cái này
+                    <UserProfile/>
+                    // bật cái dưới đây 
+            
+        //     (
+        //     <RequireAuth roles={[ ROLE.CLIENT]}>
+        //         <UserProfile/>
+        //     </RequireAuth>
+        //   )
+        },
         
      {path : '/Seat', element :<SeatSelectionPage/> }
     ] 

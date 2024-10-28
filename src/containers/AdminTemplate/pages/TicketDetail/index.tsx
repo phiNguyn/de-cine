@@ -1,7 +1,7 @@
 import { Layout } from '@/components/Layout/layout'
 import { TopNav } from '@/containers/AdminTemplate/components/top-nav'
 import { UserNav } from '@/containers/AdminTemplate/components/user-nav'
-import { Dropdown } from '@/components/Auth'
+import { Dropdown } from '@/containers/ClientTemplate/component/Auth'
 import { ThemeProvider } from '@/components/theme-provider'
 import { TicketForm } from './TicketForm'
 
@@ -22,11 +22,11 @@ const TicketDetail = () => {
         </Layout.Header>
         <h1 className='text-2xl font-bold tracking-tight p-3'>Room Detail </h1>
         <div className="flex flex-col lg:flex-row p-4">
-        <TicketForm />
-        <div className='p-20  '>
-        <img className='border-2 border-black rounded-lg'  src="/public/img/223224.jpg" alt="" />
+          <TicketForm />
+          <div className='p-20  '>
+            <img className='border-2 border-black rounded-lg' src="/public/img/223224.jpg" alt="" />
 
-        </div>
+          </div>
         </div>
       </Layout>
     </ThemeProvider>

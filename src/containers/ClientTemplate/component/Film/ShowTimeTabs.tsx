@@ -16,6 +16,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export const ShowTimeTabs: React.FC = () => {
   const [activeTab, setActiveTab] = React.useState("1")
@@ -158,14 +159,14 @@ export const ShowTimeTabs: React.FC = () => {
               </CardDescription>
               <div className="grid grid-cols-4 gap-5 max-w-md">
                 {time.listTime.map(time => (
-                  <div key={time.id} className="group w-fit cursor-pointer">
+                  <Link to={'/Seat'} key={time.id} className="group w-fit cursor-pointer">
 
                   <CardDescription className="border w-fit
                     border-yellow-500 text-primary 
                    rounded-md px-3 py-1.5 group-hover:border-white group-hover:bg-yellow-500">
                     {time.time}
                   </CardDescription>
-                     </div>
+                     </Link>
                 ))}
               </div>
 
