@@ -13,7 +13,7 @@ const profileFormSchema = z.object({
   user_name: z
     .string()
     .min(2, { message: 'Username must be at least 2 characters.' })
-    .max(10, { message: 'Username must not be longer than 30 characters.' }).optional(),
+    .max(20, { message: 'Username must not be longer than 30 characters.' }).optional(),
   email: z.string().email({ message: 'Please enter a valid email.' }).optional(),
   full_name: z.string().min(2, { message: 'Please enter a valid full name.' }),
   phone: z.string().min(10, { message: 'Please enter a valid phone number.' }).max(10, {message : "Số điện thoại không hợp lệ"}),

@@ -59,7 +59,7 @@ const AdminRoutes = [
       {
         path : 'listGenreMovies/:id',
         element : <DetailGenreMoviePage/>
-      }
+      },
      
 //detail 
       {
