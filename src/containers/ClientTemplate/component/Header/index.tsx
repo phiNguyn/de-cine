@@ -91,7 +91,7 @@ const Header: FC = () => {
                 </NavigationMenuItem>
 
               ))}
-              <Link to={"/"} className="text-xl">Vé</Link>
+              <Link to={"/booking"} className="text-xl">Vé</Link>
             </NavigationMenuList>
           </NavigationMenu>
           {/* <Dropdown /> */}
