@@ -8,7 +8,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Link } from "react-router-dom"
 import { DataTableColumnHeader } from "../Account/data-table-column-header"
 import {  Movie } from "@/types/movie"
-import { formatDate } from "../GenreMovie/columns"
 import moment from "moment-timezone"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -99,16 +98,16 @@ export const columns: ColumnDef<Movie>[] = [
       return <div className="text-left font-medium">{formatDay(row.getValue("release_date"))}</div>
     },
   },
-  {
-    accessorKey: "genre",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Thể loại' />
-    ),
-    cell: ({ row }) => {
-      const genreName = row.getValue("genre") as GenreMovie;
-      return <div className="text-left font-medium">{genreName.genre_name}</div>
-    },
-  },
+  // {
+  //   accessorKey: "genre",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Thể loại' />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const genreName = row.getValue("genre") as GenreMovie;
+  //     return <div className="text-left font-medium">{genreName.genre_name}</div>
+  //   },
+  // },
   {
     accessorKey: "country",
     header: ({ column }) => {

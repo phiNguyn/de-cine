@@ -13,7 +13,9 @@
   id_genre: number;
   created_at: string;
   updated_at: string;
-  genre:  GenreMovie ;
+  genre :  GenreMovie[] ;
+  youtube_url ?: string,
+  image_main ?: string
 }
 
 export interface GenreMovie {

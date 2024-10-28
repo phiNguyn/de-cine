@@ -18,6 +18,7 @@ import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { DataTableFilter } from "./data-table-toolbar";
 import MovieFilter from "./MovieFilter";
+import AddMovie from "./component/addMovie";
 
 
 export default function ListMovies() {
@@ -60,8 +61,12 @@ export default function ListMovies() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="w-full p-8">
+        <div className="flex items-center justify-between">
+
         <DataTableFilter table={table}/> 
-       
+        <AddMovie/>
+        </div>
+
         <div className="container mx-auto">
                 <DataTable columns={columns} data={movie} />
               </div>

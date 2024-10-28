@@ -20,7 +20,7 @@ import { useQuery } from "@tanstack/react-query"
 import moviesAPI from "@/apis/movie"
 import { useMovieStore } from "@/store/Movie"
 const Header: FC = () => {
-  const {movie, setMovie} = useMovieStore((state) => state)
+  const { movie, setMovie } = useMovieStore((state) => state)
 
   const { data } = useQuery({
     queryKey: ['movie'],
@@ -34,21 +34,21 @@ const Header: FC = () => {
   }, [data])
 
   // Thêm dữ liệu tag giả
-const test = [
-  {
-    id_tag: 1,
-    title: "Phim",
-    content : [
-      {
-        id : 1, tiltle : "Đang chiếu", list : [...movie].splice(1,3)
-      },
-      {
-        id : 2, tiltle : "Sắp chiếu", list : [...movie].splice(1,3)
-      }
-    ]
-  },
-  
-]
+  const test = [
+    {
+      id_tag: 1,
+      title: "Phim",
+      content: [
+        {
+          id: 1, tiltle: "Đang chiếu", list: [...movie].splice(0, 3)
+        },
+        {
+          id: 2, tiltle: "Sắp chiếu", list: [...movie].splice(0, 3)
+        }
+      ]
+    },
+
+  ]
 
   return (
     <>
@@ -75,7 +75,7 @@ const test = [
                         <Link className="text-2xl" to={"/"}>{c.tiltle}</Link>
                         <div className="flex justify-between gap-6 mt-2">
                           {c.list?.map((l) => (
-                            <FilmItem key={l.id_genre} Film={l} />
+                            <FilmItem key={l.id_movie} Film={l} />
                           ))}
                         </div>
                       </NavigationMenuLink>

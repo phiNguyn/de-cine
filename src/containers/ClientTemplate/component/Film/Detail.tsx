@@ -1,21 +1,22 @@
 import { FC} from "react"
 import { Movie } from "@/types/movie";
 import moment from "moment-timezone";
+import { PopupYoutubeDetail } from "./PopupYoutube";
 
 const Detail: FC<{ movie: Movie | undefined }> = ({ movie }) => {
   // const image = 'https://files.betacorp.vn/media/images/2024/10/15/1702wx621h-2-162415-151024-72.jpg'
   return (
     <div className="w-full  my-5 h-[80vh] md:h-[480px]">
       <div className="relative w-full h-full bg-gradient-to-t from-black md:bg-gradient-to-r md:from-black">
-        <div className="absolute  h-full w-full overflow-hidden bg-fixed  bg-center bg-no-repeat -z-[1] bg-[url('https://files.betacorp.vn/media/images/2024/10/15/1702wx621h-2-162415-151024-72.jpg')] " >
+        <div className={'absolute  h-full w-full overflow-hidden bg-fixed  bg-center bg-no-repeat -z-[1]'}  >
         </div>
 
         <div className="mx-auto w-full max-w-6xl px-5 md:px-8 lg:px-8 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <div className="flex flex-col gap-y-5 md:gap-x-5 md:flex-row   md:items-start ">
             <div className="w-[200px] md:w-fit relative">
-              <img src={movie?.poster_url} className="h-auto" alt={movie?.movie_name} />
+              <img src={movie?.image_main} className="h-auto" alt={movie?.movie_name} />
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white">
-                {/* <PopupYoutubeDetail ytSlug={movie.ytSlug} /> */}
+                <PopupYoutubeDetail ytSlug={movie?.youtube_url} />
               </div>
 
             </div>
@@ -37,7 +38,11 @@ const Detail: FC<{ movie: Movie | undefined }> = ({ movie }) => {
               </div>
               {/* Thể Loại */}
               <div className="flex justify-between items-center text-white w-fit gap-x-5">
-                <span>Thể Loại: </span> <span className="border border-white rounded-md px-2 py-1">{movie?.genre.genre_name}</span>
+                {movie?.genre?.map((item) => (
+                  <>
+                <span key={item.id_genre}>Thể Loại: </span> <span className="border border-white rounded-md px-2 py-1">{item.genre_name}</span>
+                  </>
+                ))}
               </div>
               {/* actor */}
               <div className="flex justify-between items-center text-white w-fit gap-x-5">
