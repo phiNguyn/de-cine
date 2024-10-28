@@ -16,18 +16,11 @@ import { cn } from '@/lib/utils'
 import { UserLogin } from '@/types/user'
 
 const formSchema = z.object({
-  email: z
+  user_name: z
     .string()
-    .min(1, { message: 'Please enter your email' })
-    .email({ message: 'Invalid email address' }),
+    .min(1, { message: 'Please enter your email' }),
   password: z
-    .string()
-    .min(1, {
-      message: 'Please enter your password',
-    })
-    .min(7, {
-      message: 'Password must be at least 7 characters long',
-    }),
+    .string({message : 'Please enter your password'})
 })
 interface FormLoginProps {
   onSubmit: (data: UserLogin) => void;
@@ -39,7 +32,7 @@ export function UserAuthForm({ onSubmit }: FormLoginProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      user_name: '',
       password: '',
     },
   })
@@ -60,10 +53,10 @@ export function UserAuthForm({ onSubmit }: FormLoginProps) {
           <div className='grid gap-2'>
             <FormField
               control={form.control}
-              name='email'
+              name='user_name'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>User Name</FormLabel>
                   <FormControl>
                     <Input placeholder='name@example.com' {...field} />
                   </FormControl>

@@ -1,7 +1,7 @@
 
 import { FC, useState } from "react"
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { Button } from "../ui/button"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../../components/ui/dialog"
+import { Button } from "../../../../components/ui/button"
 
 import { Minus, Plus } from "lucide-react"
 
@@ -18,7 +18,7 @@ export interface ComboFoodItemProps {
     onUpdateQuantity: (id: string, delta: number) => void
 }
 export const ComboItem = ({ combo, quantity, onUpdateQuantity }: { combo: Combo, quantity: number, onUpdateQuantity: (id: string, delta: number) => void }) => {
- 
+
     return (
         <>
             <div key={combo.id} className="flex items-center justify-between border-t pt-2 border-black">
@@ -31,7 +31,7 @@ export const ComboItem = ({ combo, quantity, onUpdateQuantity }: { combo: Combo,
                 </div>
                 <div className="flex items-center">
                     <Button
-                     onClick={() => onUpdateQuantity(combo.id, -1)}
+                        onClick={() => onUpdateQuantity(combo.id, -1)}
                     >
                         <Minus size={16} />
                     </Button>
@@ -74,9 +74,9 @@ const ComboFoodPopup: FC = () => {
 
                 </DialogHeader>
                 {fakeCombo.map((item) => (
-                    <ComboItem key={item.id} combo={item} 
-                    quantity={quantities[item.id] || 0}
-                    onUpdateQuantity={updateQuantity} />
+                    <ComboItem key={item.id} combo={item}
+                        quantity={quantities[item.id] || 0}
+                        onUpdateQuantity={updateQuantity} />
                 ))}
 
                 <DialogFooter className="!flex !flex-col">

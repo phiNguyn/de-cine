@@ -37,8 +37,14 @@ axiosClient.interceptors.response.use(
   (error) => {
     // Xử lý response lỗi
     if (error.response) {
+      const {data} = error.response
+      if(error.response.status == 402) {
+        // console.log(data);
+        
+        return data
+      }
       // Xử lý lỗi từ phía server (4xx, 5xx)
-      console.error("API Error: ", error.response.data.message || error.message);
+      // console.error("API Error: ", error.response.data.message || error.message);
     } else if (error.request) {
       // Không nhận được phản hồi từ server
       console.error("No response from server.");

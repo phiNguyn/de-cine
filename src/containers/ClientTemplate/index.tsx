@@ -1,4 +1,4 @@
-import Footer from "@/components/Footer"
+import Footer from "./component/Footer"
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/containers/ClientTemplate/component/Header/index"
 import { FC, Suspense } from "react"

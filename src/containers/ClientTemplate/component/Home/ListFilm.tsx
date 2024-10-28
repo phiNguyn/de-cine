@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FilmItemHover } from "../Film"
-import RootLayout from "../Layout/RootLayout"
+import { FilmItemHover } from "../Film/index"
+import RootLayout from "@/components/Layout/RootLayout"
 
 const ListFilm = () => {
   const fakeTabs = [

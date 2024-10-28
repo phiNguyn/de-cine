@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form"; // Thêm FormMessage để hiển thị lỗi
 import { Input } from "@/components/ui/input";
-import { CardContent } from "../ui/card";
+import { CardContent } from "../../../../components/ui/card";
 
 // Schema validation với Zod
 const formSchema = z.object({
@@ -70,7 +70,7 @@ const FormLogin = () => {
             </FormItem>
           )}
         />
-        
+
         {/* Password Field */}
         <FormField
           control={form.control}

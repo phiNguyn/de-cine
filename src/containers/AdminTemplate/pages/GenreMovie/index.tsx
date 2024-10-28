@@ -3,7 +3,7 @@ import { Layout } from '@/components/Layout/layout';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UserNav } from '@/containers/AdminTemplate/components/user-nav';
-import { Dropdown } from '@/components/Auth';
+import { Dropdown } from '@/containers/ClientTemplate/component/Auth';
 import { ThemeProvider } from '@/components/theme-provider';
 import { DatePickerWithRange } from '../../components/data-picker';
 import { DataTable } from './data-table';
@@ -14,18 +14,18 @@ import { useQuery } from '@tanstack/react-query';
 import AddGenreMovie from './add';
 
 export default function GenreMoviePage() {
-  const { genreMovie , setGenreMovie} = useGenreMovieStore()
+  const { genreMovie, setGenreMovie } = useGenreMovieStore()
 
   const { data } = useQuery({
     queryKey: ['genreMovie'],
     queryFn: moviesAPI.getAllGenreMovies,
     staleTime: 5 * 60 * 1000,
   });
-useEffect(() => {
-  if(data) {
-    setGenreMovie(data)
-  }
-},[data])
+  useEffect(() => {
+    if (data) {
+      setGenreMovie(data)
+    }
+  }, [data])
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Layout>
@@ -48,7 +48,7 @@ useEffect(() => {
               <TabsList>
                 <TabsTrigger value='overview'>Danh Sách</TabsTrigger>
               </TabsList>
-               <AddGenreMovie/>
+              <AddGenreMovie />
             </div>
             <TabsContent value='overview' className='space-y-4'>
               <div className="container mx-auto">
