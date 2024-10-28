@@ -10,9 +10,10 @@ export default function SignIn() {
 const handleLogin = async (data : UserLogin) => {
     try {
         const resp = await AuthAPI.login(data)
-        const {user} = resp
+        // eslint-disable-next-line no-unsafe-optional-chaining
+        const {user,message} = resp
         if(user.role === 'admin' ) {
-          toast.success(resp.message)
+          toast.success(message)
          login({role :user.role})
          localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(user))
          setTimeout(() => {
@@ -20,7 +21,7 @@ const handleLogin = async (data : UserLogin) => {
            window.location.href = '/admin'
          }, 3000);
         }else {
-          toast.error(resp.message)
+          toast.error("Tài khoản hoặc mật khẩu không đúng")
           
         }
           

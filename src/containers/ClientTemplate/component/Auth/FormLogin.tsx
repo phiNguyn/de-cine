@@ -1,68 +1,69 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form"; // Thêm FormMessage để hiển thị lỗi
 import { Input } from "@/components/ui/input";
 import { CardContent } from "../../../../components/ui/card";
+import { useState } from "react";
+import { UserLogin } from "@/types/user";
 
 // Schema validation với Zod
 const formSchema = z.object({
-  email: z.string().email({ message: "Email không hợp lệ" }),
+  user_name: z.string().min(1,{ message: "User name không hợp lệ" }),
   password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
 });
 
-// Kiểu dữ liệu của form
-type FormSchemaType = z.infer<typeof formSchema>;
 
-const FormLogin = () => {
-  const fakeUser = [
-    { email: "user1@example.com", password: "password123" },
-  ];
+interface FormLoginProps {
+  onSubmit: (data: UserLogin) => void;
+}
 
-  // Sử dụng useForm hook với zodResolver để xác thực form, chỉ rõ kiểu dữ liệu FormSchemaType
-  const form = useForm<FormSchemaType>({
+export function FormLogin({ onSubmit }: FormLoginProps) {
+
+  const [isLoading, setIsLoading] = useState(false)
+  console.log(isLoading);
+
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      user_name: '',
+      password: '',
     },
-  });
+  })
 
-  // Hàm xử lý khi submit form
-  const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
-    const user = fakeUser.find(
-      (user) => user.email === data.email && user.password === data.password
-    );
+  const dataSubmit = async (data: z.infer<typeof formSchema>) => {
+    setIsLoading(true)
+    console.log(data)
+    onSubmit(data)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+  }
 
-    if (user) {
-      console.log("Đăng nhập thành công:", user);
-    } else {
-      console.log("Thông tin đăng nhập không đúng");
-    }
-  };
+
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form className="space-y-8" onSubmit={form.handleSubmit(dataSubmit)} >
         {/* Email Field */}
         <FormField
           control={form.control}
-          name="email"
+          name="user_name"
           render={({ field }) => (
             <FormItem>
               <CardContent className="space-y-2">
                 <div className="flex flex-col">
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="user_name">Email</label>
                   <Input
-                    id="email"
+                    id="user_name"
                     className="mt-1"
                     {...field}
                   />
-                  {/* Hiển thị lỗi cho email */}
-                  {form.formState.errors.email && (
+                  {/* Hiển thị lỗi cho user_name */}
+                  {form.formState.errors.user_name && (
                     <FormMessage>
-                      {form.formState.errors.email.message}
+                      {form.formState.errors.user_name.message}
                     </FormMessage>
                   )}
                 </div>
@@ -105,4 +106,3 @@ const FormLogin = () => {
   );
 };
 
-export { FormLogin };
