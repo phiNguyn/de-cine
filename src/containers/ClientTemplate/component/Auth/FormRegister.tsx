@@ -14,7 +14,6 @@ const formSchema = z.object({
   email: z.string().email({ message: "Email không hợp lệ" }),
   full_name: z.string().min(1, { message: "Họ tên là bắt buộc" }),
   phone: z.string().optional(),
-  role: z.string().min(1, { message: "Vai trò là bắt buộc" }),
   loyalty_points: z.number().optional(),
   password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
   confirm_password: z.string().min(6, { message: "Vui lòng xác nhận mật khẩu" }),
@@ -38,16 +37,19 @@ export function FormRegister({ onSubmit }: FormRegisterProps) {
       email: "",
       full_name: "",
       phone: "",
-      role: "user",
       loyalty_points: 0,
       password: "",
       confirm_password: "",
     },
   });
 
+    const dataSubmit = async (data) => {
+        await onSubmit(data)
+    }
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(dataSubmit)} className="space-y-8">
         <CardContent className="space-y-2">
           <div className="grid gap-4 py-4">
             <FormField
@@ -105,15 +107,6 @@ export function FormRegister({ onSubmit }: FormRegisterProps) {
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <input type="hidden" {...field} />
-              )}
-            />
-
             <FormField
               control={form.control}
               name="loyalty_points"

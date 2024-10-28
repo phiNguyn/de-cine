@@ -14,7 +14,7 @@ export const AuthAPI = {
         }
     },
     
-    register : async (data: User): Promise<AxiosResponse<any, any> | undefined> => {
+    register : async (data: any) => {
         try {
         const resp = await axiosClient.post(`/${API_URL.register}` , data)
         return resp

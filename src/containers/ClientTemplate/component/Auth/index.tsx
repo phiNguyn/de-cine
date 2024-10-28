@@ -30,7 +30,7 @@ import { cn } from "@/lib/utils";
 import useAuth from "@/hooks/useAuth";
 import { AuthAPI } from "@/apis/auth";
 import { User, UserLogin } from "@/types/user";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { StorageKeys } from "@/constants/StorageKeys";
 
 // Dropdown component from nguyen-home
@@ -81,37 +81,39 @@ const TabsDemo = () => {
   const handleLogin = async (data: UserLogin) => {
     try {
       const resp = await AuthAPI.login(data);
-      const { user } = resp;
-      if (user.role === 'user') {
-        toast.success(resp.message);
+        // eslint-disable-next-line no-unsafe-optional-chaining
+        const {user , message} = resp
+
+        console.log(user);
+        
+      if (user?.role == 'user') {
+        toast.success(message);
         login({ role: user.role });
         localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(user));
         setTimeout(() => {
           window.location.href = '/';
         }, 3000);
-      } else {
-        toast.error(resp.message);
-      }
+      } 
     } catch (error) {
       console.log(error);
       toast.error("Có lỗi xảy ra khi đăng nhập.");
     }
   };
 
-  const handleRegister = async (data: User) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleRegister = async (data: any) => {
     try {
       const resp = await AuthAPI.register(data);
       if (resp) {
-        if (resp.success) {
-          toast.success(resp.message);
-          login({ role: data.role }); 
-          localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(data)); 
+        if (resp.status == 201) {
+            toast.success("Đã tạo thài khoản thành công")
          
         } else {
-          toast.error(resp.message);
+          toast.error("Email hoặc user_name đã tồn tại");
         }
       } else {
-        toast.error("Không có phản hồi từ server.");
+        toast.error("Email hoặc user_name đã tồn tại");
+
       }
     } catch (error) {
       console.log(error);
@@ -120,6 +122,7 @@ const TabsDemo = () => {
   };
 
   return (
+    <>
     <Tabs defaultValue="login" className="w-[400px]">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="login">Đăng Nhập</TabsTrigger>
@@ -136,6 +139,8 @@ const TabsDemo = () => {
         </Card>
       </TabsContent>
     </Tabs>
+    <Toaster/>
+    </>
   );
 };
 
