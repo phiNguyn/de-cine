@@ -7,7 +7,7 @@ import toast, {Toaster} from 'react-hot-toast'
 
 export default function SignIn() {
   const {login} = useAuth()
-  const handleLogin = async (data : UserLogin) => {
+const handleLogin = async (data : UserLogin) => {
     try {
         const resp = await AuthAPI.login(data)
         const {user} = resp

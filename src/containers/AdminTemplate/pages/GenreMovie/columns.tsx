@@ -57,7 +57,7 @@ export const columns: ColumnDef<GenreMovie>[] = [
       <DataTableColumnHeader column={column} title='Ngày tạo' />
     ),
     cell: ({ row }) => {
-      return <div className="text-right font-medium">{formatDate(row.getValue("created_at"))}</div>
+      return <div className="text-left font-medium">{formatDate(row.getValue("created_at"))}</div>
     },
   },
   {
@@ -66,7 +66,7 @@ export const columns: ColumnDef<GenreMovie>[] = [
       <DataTableColumnHeader column={column} title='Ngày cập nhật' />
     ),
     cell: ({ row }) => {
-      return <div className="text-right font-medium">{formatDate(row.getValue("updated_at"))}</div>
+      return <div className="text-left font-medium">{formatDate(row.getValue("updated_at"))}</div>
     },
   },
 

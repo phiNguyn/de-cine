@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Link } from "react-router-dom"
 
-export const BreadcrumbComponent = ({prop , href , title} : {prop ?: string , href ? : string, title : string}) => {
+export const BreadcrumbComponent = ({prop , href , title} : {prop ?: string , href ? : string, title? : string}) => {
   return (
     <Breadcrumb className="mt-5">
       <BreadcrumbList>

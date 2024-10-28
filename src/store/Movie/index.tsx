@@ -1,12 +1,12 @@
-import { movie } from "@/types/movie";
+import { Movie } from "@/types/movie";
 import { create } from "zustand";
 
 interface MovieStore {
-    movie: movie[];
+    movie: Movie[];
     
-    setMovie: (movies: movie[]) => void;
-    addMovie: (newMovies: movie) => void;
-    updateMovie: (updatedMovies: movie) => void;
+    setMovie: (movies: Movie[]) => void;
+    addMovie: (newMovies: Movie) => void;
+    updateMovie: (updatedMovies: Movie) => void;
 }
 
 export const useMovieStore = create<MovieStore>((set) => ({
@@ -17,9 +17,7 @@ export const useMovieStore = create<MovieStore>((set) => ({
     })),
     updateMovie: (updatedMovies) => set((state) => ({
         movie : state.movie.map((m) => 
-            m.id === updatedMovies.id ? updatedMovies : m)
-      
-        
+            m.id_movie === updatedMovies.id_movie ? updatedMovies : m)   
     }))
 
     
