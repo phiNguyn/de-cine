@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
-import axios from "axios";
-import { User } from "@/types/user";
+
 
 export  const UserAPI = {
     userDetail : async (id : string | undefined) => {

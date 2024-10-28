@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
+import { User } from "@/types/user";
+import { AxiosResponse } from "axios";
 
 export const AuthAPI = {
     login : async (data : {user_name : string, password : string}) => {
@@ -8,6 +11,16 @@ export const AuthAPI = {
             return resp.data
         } catch (error) {
             console.log(error);
+        }
+    },
+    
+    register : async (data: User): Promise<AxiosResponse<any, any> | undefined> => {
+        try {
+        const resp = await axiosClient.post(`/${API_URL.register}` , data)
+        return resp
+        } catch (error) {
+            console.log(error);
+            
         }
     }
 }

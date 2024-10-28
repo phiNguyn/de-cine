@@ -1,84 +1,69 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form"; // FormMessage to show errors
 import { Input } from "@/components/ui/input";
 import { CardContent } from "../../../../components/ui/card";
 import { Label } from "@/components/ui/label"; // Label for input fields
+import { UserRegister } from "@/types/user";
 
 // Schema validation with Zod
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Họ tên là bắt buộc" }),
-  phone: z
-    .string()
-    .regex(/^[0-9]{10,11}$/, { message: "Số điện thoại không hợp lệ" }),
+  user_name: z.string().min(1, { message: "Tên đăng nhập là bắt buộc" }),
   email: z.string().email({ message: "Email không hợp lệ" }),
+  full_name: z.string().min(1, { message: "Họ tên là bắt buộc" }),
+  phone: z.string().optional(),
+  role: z.string().min(1, { message: "Vai trò là bắt buộc" }),
+  loyalty_points: z.number().optional(),
   password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
-  confirmPassword: z.string().min(6, { message: "Vui lòng xác nhận mật khẩu" }),
-}).refine((data) => data.password === data.confirmPassword, {
+  confirm_password: z.string().min(6, { message: "Vui lòng xác nhận mật khẩu" }),
+}).refine((data) => data.password === data.confirm_password, {
   message: "Mật khẩu không khớp",
-  path: ["confirmPassword"],
+  path: ["confirm_password"],
 });
 
 // Define form data type based on Zod schema
 type FormSchemaType = z.infer<typeof formSchema>;
+interface FormRegisterProps {
+  onSubmit: (data: UserRegister) => Promise<void>; 
+}
 
-const FormRegister = () => {
-  // UseForm hook with zodResolver for validation
+export function FormRegister({ onSubmit }: FormRegisterProps) {
+
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      phone: "",
+      user_name: "",
       email: "",
+      full_name: "",
+      phone: "",
+      role: "user",
+      loyalty_points: 0,
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
     },
   });
-
-  // Handle form submission
-  const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
-    console.log("Form Submitted: ", data);
-    // Perform additional actions (e.g. API calls)
-  };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <CardContent className="space-y-2">
           <div className="grid gap-4 py-4">
-            {/* Name Field */}
             <FormField
               control={form.control}
-              name="name"
+              name="user_name"
               render={({ field }) => (
                 <FormItem>
-                  <Label htmlFor="name">Họ tên</Label>
-                  <Input id="name" {...field} />
-                  {form.formState.errors.name && (
-                    <FormMessage>{form.formState.errors.name.message}</FormMessage>
+                  <Label htmlFor="user_name">Tên đăng nhập</Label>
+                  <Input id="user_name" {...field} />
+                  {form.formState.errors.user_name && (
+                    <FormMessage>{form.formState.errors.user_name.message}</FormMessage>
                   )}
                 </FormItem>
               )}
             />
 
-            {/* Phone Field */}
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="phone">Số điện thoại</Label>
-                  <Input id="phone" {...field} />
-                  {form.formState.errors.phone && (
-                    <FormMessage>{form.formState.errors.phone.message}</FormMessage>
-                  )}
-                </FormItem>
-              )}
-            />
-
-            {/* Email Field */}
             <FormField
               control={form.control}
               name="email"
@@ -93,7 +78,50 @@ const FormRegister = () => {
               )}
             />
 
-            {/* Password Field */}
+            <FormField
+              control={form.control}
+              name="full_name"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="full_name">Họ tên</Label>
+                  <Input id="full_name" {...field} />
+                  {form.formState.errors.full_name && (
+                    <FormMessage>{form.formState.errors.full_name.message}</FormMessage>
+                  )}
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="phone">Số điện thoại</Label>
+                  <Input id="phone" {...field} />
+                  {form.formState.errors.phone && (
+                    <FormMessage>{form.formState.errors.phone.message}</FormMessage>
+                  )}
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <input type="hidden" {...field} />
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="loyalty_points"
+              render={({ field }) => (
+                <input type="hidden" {...field} />
+              )}
+            />
+
             <FormField
               control={form.control}
               name="password"
@@ -108,17 +136,16 @@ const FormRegister = () => {
               )}
             />
 
-            {/* Confirm Password Field */}
             <FormField
               control={form.control}
-              name="confirmPassword"
+              name="confirm_password"
               render={({ field }) => (
                 <FormItem>
-                  <Label htmlFor="confirm-password">Nhập lại mật khẩu</Label>
-                  <Input id="confirm-password" type="password" {...field} />
-                  {form.formState.errors.confirmPassword && (
+                  <Label htmlFor="confirm_password">Nhập lại mật khẩu</Label>
+                  <Input id="confirm_password" type="password" {...field} />
+                  {form.formState.errors.confirm_password && (
                     <FormMessage>
-                      {form.formState.errors.confirmPassword.message}
+                      {form.formState.errors.confirm_password.message}
                     </FormMessage>
                   )}
                 </FormItem>
@@ -127,13 +154,10 @@ const FormRegister = () => {
           </div>
         </CardContent>
 
-        {/* Submit Button */}
         <div className="flex justify-center">
           <Button type="submit">Đăng Ký</Button>
         </div>
       </form>
     </Form>
   );
-};
-
-export { FormRegister };
+}

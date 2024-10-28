@@ -3,7 +3,7 @@ export interface User {
   user_name: string;
   email: string;
   full_name: string;
-  phone: string;
+  phone?: string;
   role: string;
   loyalty_points: number | undefined;
   created_at ?: Date;
@@ -13,4 +13,15 @@ export interface User {
 export interface UserLogin {
     user_name: string;
   password: string;
+}
+
+export interface UserRegister {
+  user_name: string;
+  email: string;
+  full_name: string;
+  password: string;
+  confirm_password: string;
+  phone?: string; 
+  role: string;
+  loyalty_points?: number; // Đánh dấu là tùy chọn
 }
