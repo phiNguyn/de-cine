@@ -1,6 +1,8 @@
 import { API_URL } from '@/constants/api';
 import axiosClient from './axiosClient';
 const moviesAPI = {
+
+  // genre movie
   getMovieDetails: async (id: number | undefined) => {
     try {
      
@@ -23,6 +25,15 @@ const moviesAPI = {
   }
   ,
 
+    getMovieById : async(id : number) => {
+      try {
+        const resp = await axiosClient.get(`/${API_URL.movies}/${id}`)
+        return resp.data
+      } catch (error) {
+        console.log(error);
+         
+      }
+    } ,
   getAllGenreMovies : async () => {
     try {
       const resp = await axiosClient.get(`/${API_URL.genremovie}`)

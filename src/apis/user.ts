@@ -33,7 +33,7 @@ export  const UserAPI = {
             
         }
     },
-    addUser : async (data : any) => {
+    addUser : async (data : User) => {
         try {
         const resp = await axiosClient.post(`/${API_URL.register}` , data)
         return resp

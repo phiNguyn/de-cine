@@ -9,85 +9,31 @@ import {
   getFilteredRowModel,
   useReactTable,
   ColumnFiltersState,
-  ColumnDef,
 } from "@tanstack/react-table";
 import { ThemeProvider } from "@/components/theme-provider";
+import { useMovieStore } from "@/store/Movie";
+import moviesAPI from "@/apis/movie";
+import { useQuery } from "@tanstack/react-query";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
+import { DataTableFilter } from "./data-table-toolbar";
 import MovieFilter from "./MovieFilter";
-import MovieTable from "./MovieTable";
+import AddMovie from "./component/addMovie";
 
-export interface Ticket {
-  id: string;
-  tenPhim: string;
-  theLoai: string;
-  thoiLuong: number; 
-  ngaySanXuat: string; 
-}
-
-// Dữ liệu của bạn
-const data: Ticket[] = [
-  {
-    id: "phim001",
-    tenPhim: "Bí Mật Đen Tối",
-    theLoai: "Kinh Dị",
-    thoiLuong: 120,
-    ngaySanXuat: "2022-10-01",
-  },
-  {
-    id: "phim002",
-    tenPhim: "Cuộc Đua Kỳ Thú",
-    theLoai: "Hành Động",
-    thoiLuong: 135,
-    ngaySanXuat: "2021-05-12",
-  },
-  {
-    id: "phim003",
-    tenPhim: "Bên Kia Giấc Mơ",
-    theLoai: "Khoa Học Viễn Tưởng",
-    thoiLuong: 110,
-    ngaySanXuat: "2023-02-20",
-  },
-  {
-    id: "phim004",
-    tenPhim: "Tình Yêu Màu Nắng",
-    theLoai: "Tình Cảm",
-    thoiLuong: 95,
-    ngaySanXuat: "2020-07-15",
-  },
-  {
-    id: "phim005",
-    tenPhim: "Vũ Trụ Lạc Lối",
-    theLoai: "Phiêu Lưu",
-    thoiLuong: 140,
-    ngaySanXuat: "2019-12-03",
-  },
-];
-
-// Định nghĩa các cột
-export const columns: ColumnDef<Ticket>[] = [
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'tenPhim',
-    header: 'Tên Phim',
-    filterFn: 'includesString', // nếu bạn muốn hỗ trợ lọc theo chuỗi
-  },
-  {
-    accessorKey: 'theLoai',
-    header: 'Thể Loại',
-  },
-  {
-    accessorKey: 'thoiLuong',
-    header: 'Thời Lượng (phút)',
-  },
-  {
-    accessorKey: 'ngaySanXuat',
-    header: 'Ngày Sản Xuất',
-  },
-];
 
 export default function ListMovies() {
+  const {movie, setMovie} = useMovieStore((state) => state)
+
+  const { data } = useQuery({
+    queryKey: ['movie'],
+    queryFn: moviesAPI.getAllMovie,
+    staleTime: 5 * 60 * 1000,
+  });
+  React.useEffect(() => {
+    if (data) {
+      setMovie(data)
+    }
+  }, [data])
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -115,12 +61,15 @@ export default function ListMovies() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="w-full p-8">
-        <MovieFilter
-          filterValue={(table.getColumn("tenPhim")?.getFilterValue() as string) ?? ""}
-          onFilterChange={(value) => table.getColumn("tenPhim")?.setFilterValue(value)}
-          columns={table.getAllColumns()}
-        />
-        <MovieTable rows={table.getRowModel().rows} columns={table.getHeaderGroups()} />
+        <div className="flex items-center justify-between">
+
+        <DataTableFilter table={table}/> 
+        <AddMovie/>
+        </div>
+
+        <div className="container mx-auto">
+                <DataTable columns={columns} data={movie} />
+              </div>
       </div>
     </ThemeProvider>
   );

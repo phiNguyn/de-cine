@@ -29,10 +29,7 @@ const profileFormSchema = z.object({
   
   export type ProfileFormValues = z.infer<typeof profileFormSchema>;
   
-  interface AccountAddProp {
-    onSubmit: (data: ProfileFormValues) => void;
-  }
-const AddAccount : FC<AccountAddProp> = () => {
+const AddAccount = () => {
     const [type, setType] = useState(true)
   const [open, setOpen] = useState(false);
   const add = useUser((state) => state.addUser)

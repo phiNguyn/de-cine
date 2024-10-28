@@ -31,7 +31,6 @@ import {
   } from "@/components/ui/dropdown-menu"
    
 import React from "react"
-import { DataTableToolbar } from "./data-table-toolbar"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -68,7 +67,7 @@ export function DataTable<TData, TValue>({
   return (
     <>
     <div className="flex items-center py-4">
-    <DataTableToolbar table={table}/>
+    {/* <DataTableToolbar table={table}/> */}
 
       <DropdownMenu>
           <DropdownMenuTrigger asChild>
