@@ -1,4 +1,5 @@
 import { ROLE } from '@/constants/role'
+import Booking from '@/containers/ClientTemplate/component/Booking/Booking'
 import RequireAuth from '@/guards'
 import { lazy } from 'react'
 
@@ -33,7 +34,8 @@ const ClientRoutes = [
         //   )
         },
         
-     {path : '/Seat', element :<SeatSelectionPage/> }
+     {path : '/Seat', element :<SeatSelectionPage/> },
+     {path : '/Booking', element :<Booking/> }
     ] 
 }
     
