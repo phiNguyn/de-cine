@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -43,7 +44,7 @@ export function FormRegister({ onSubmit }: FormRegisterProps) {
     },
   });
 
-    const dataSubmit = async (data) => {
+    const dataSubmit = async (data:any) => {
         await onSubmit(data)
     }
 

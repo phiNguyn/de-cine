@@ -29,7 +29,7 @@ import { Moon, Sun } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import useAuth from "@/hooks/useAuth";
 import { AuthAPI } from "@/apis/auth";
-import { User, UserLogin } from "@/types/user";
+import { UserLogin } from "@/types/user";
 import toast, { Toaster } from "react-hot-toast";
 import { StorageKeys } from "@/constants/StorageKeys";
 
@@ -81,7 +81,7 @@ const TabsDemo = () => {
   const handleLogin = async (data: UserLogin) => {
     try {
       const resp = await AuthAPI.login(data);
-        // eslint-disable-next-line no-unsafe-optional-chaining
+         
         const {user , message} = resp
 
         console.log(user);
