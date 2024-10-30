@@ -16,6 +16,8 @@ const useAuth = () => {
 
   const logout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("role");
+    window.location.href = '/admin'
     setUser(null); // Set user to null instead of an empty object
   };
 

@@ -19,7 +19,7 @@ export default function GenreMoviePage() {
   const { data } = useQuery({
     queryKey: ['genreMovie'],
     queryFn: moviesAPI.getAllGenreMovies,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 30 * 1000,
   });
   useEffect(() => {
     if (data) {

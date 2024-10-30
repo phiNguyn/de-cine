@@ -24,14 +24,14 @@ const ListFilm = () => {
     {
       id: 1, slug: 'sap-chieu', title: 'Sắp Chiếu', List: [
        ...movie
-      ]
+      ].splice(0,1)
     },
     {
-      id: 2, slug: 'dang-chieu', title: 'Đang chiếu', List: [...movie],
+      id: 2, slug: 'dang-chieu', title: 'Đang chiếu', List: [...movie].splice(1,1),
 
     },
     {
-      id: 3, slug: 'dac-biet', title: 'Suất Chiếu Đặc Biệt', List: [...movie   ]
+      id: 3, slug: 'dac-biet', title: 'Suất Chiếu Đặc Biệt', List: [...movie].splice(1,1)
     }
   ]
 

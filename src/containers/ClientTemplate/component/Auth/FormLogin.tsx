@@ -54,7 +54,7 @@ export function FormLogin({ onSubmit }: FormLoginProps) {
             <FormItem>
               <CardContent className="space-y-2">
                 <div className="flex flex-col">
-                  <label htmlFor="user_name">Email</label>
+                  <label htmlFor="user_name">Tài Khoản</label>
                   <Input
                     id="user_name"
                     className="mt-1"

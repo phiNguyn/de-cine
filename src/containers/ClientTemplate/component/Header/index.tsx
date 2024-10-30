@@ -19,8 +19,10 @@ import { FilmItem } from "@/containers/ClientTemplate/component/Film"
 import { useQuery } from "@tanstack/react-query"
 import moviesAPI from "@/apis/movie"
 import { useMovieStore } from "@/store/Movie"
+import { UserNav } from "../Auth/UserNav"
 const Header: FC = () => {
   const { movie, setMovie } = useMovieStore((state) => state)
+  const userData = localStorage.getItem("user")
 
   const { data } = useQuery({
     queryKey: ['movie'],
@@ -88,7 +90,16 @@ const Header: FC = () => {
             </NavigationMenuList>
           </NavigationMenu>
           {/* <Dropdown /> */}
-          <Auth />
+          <div>
+      {userData ? (
+        <>
+          <UserNav /> {/* Pass user data if needed */}
+          {/* Display components for logged-in users */}
+        </>
+      ) : (
+        <Auth /> // Display authentication component if not logged in
+      )}
+    </div>
           <SheetDemo />
         </div>
 

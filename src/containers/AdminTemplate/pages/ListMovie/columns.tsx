@@ -57,19 +57,19 @@ export const columns: ColumnDef<Movie>[] = [
     },
   },
   {
-    accessorKey: "poster_url",
+    accessorKey: "image_main",
     header: ({ column }) => {
       return (
         <DataTableColumnHeader column={column} title="Ảnh banner" />
       )
     },
     cell: ({ row }) => {
-      const posterUrl = row.getValue("poster_url"); // Lấy URL của ảnh
+      const image_main = row.getValue("image_main"); // Lấy URL của ảnh
       return (
         <div className="text-left">
-          {posterUrl ? (
+          {image_main ? (
             <img
-              src={`${posterUrl}`}
+              src={`${image_main}`}
               alt="Ảnh banner"
               style={{ width: '100px', height: 'auto', borderRadius: '4px' }} // Tùy chỉnh kích thước ảnh
             />
