@@ -57,7 +57,7 @@ const Header: FC = () => {
       <RootLayout>
         <div className="flex justify-between mt-5 font-bold">
           <div>
-            <img src="https://suno.vn/blog/wp-content/uploads/2014/12/nike-lich-su-thiet-ke-logo.jpg" alt="" className="w-10" />
+            <img src="/public/img/logoDecine.png" alt="" className="w-20" />  
           </div>
 
           <NavigationMenu className="hidden lg:block">
