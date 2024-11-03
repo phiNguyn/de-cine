@@ -59,7 +59,7 @@ const Header: FC = () => {
       <RootLayout>
         <div className="flex items-center justify-between mt-5 font-bold">
           <div>
-            <img src={Logo}  alt={Logo} className="w-10" />
+            <img src="/public/img/logoDecine.png" alt="" className="w-20" />  
           </div>
 
           <NavigationMenu className="hidden md:block">

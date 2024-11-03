@@ -2,12 +2,11 @@
 import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
 import { User } from "@/hooks/useAuth";
-
-
+import { UserRegister } from "@/types/user";
 export  const UserAPI = {
     userDetail : async (id : string | undefined) => {
         try {
-            const resp = await axiosClient.get(`/${API_URL.users}/${id}`)
+            const resp = await axiosClient.get(`/${API_URL.accounts}/${id}`)
 
             return resp.data
         } catch (error) {
@@ -34,7 +33,7 @@ export  const UserAPI = {
             
         }
     },
-    addUser : async (data : User) => {
+    addUser : async (data : UserRegister) => {
         try {
         const resp = await axiosClient.post(`/${API_URL.register}` , data)
         return resp
