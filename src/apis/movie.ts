@@ -44,6 +44,8 @@ const moviesAPI = {
     }
   },
 
+ 
+
   addGenreMovie : async (genre_name : string) => {
     try {
       const resp = await axiosClient.post(`/${API_URL.genremovie}`, {genre_name})
@@ -51,6 +53,36 @@ const moviesAPI = {
     } catch (error) {
       console.error(error);
       throw error
+      
+    }
+  },
+
+  updateGenreMovie : async (id:number | undefined, genre_name : string) => {
+    try {
+      const resp = await axiosClient.put(`/${API_URL.genremovie}/${id}`,{genre_name} )
+      return resp
+    } catch (error) {
+      console.log(error);
+      
+    }
+  },
+
+  addMovie : async (data) => {
+    try {
+      const resp = await axiosClient.post(`/${API_URL.movies}`,data )
+      return resp
+    } catch (error) {
+      console.log(error);
+      
+    }
+  },
+
+  updateMovie : async (id : number, data) => {
+    try {
+      const resp = await axiosClient.put(`/${API_URL.movies}/${id}`,data)
+      return resp
+    } catch (error) {
+      console.log(error);
       
     }
   }

@@ -1,25 +1,30 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// RoomFilter.tsx
-import { Input } from "@/components/ui/input";
+import { Table } from '@tanstack/react-table'
 
-type RoomFilterProps = {
-  filterValue: string;
-  onFilterChange: (value: string) => void;
-  columns: any[]; // Thay đổi kiểu dữ liệu này nếu cần
-};
+import { Input } from '@/components/ui/input'
 
-const RoomFilter: React.FC<RoomFilterProps> = ({ filterValue, onFilterChange }) => {
+
+interface DataTableToolbarProps<TData> {
+  table: Table<TData>,
+  value  : string
+}
+
+export function RoomFilter<TData>({
+  table,
+  value
+}: DataTableToolbarProps<TData>) {
+
   return (
-    <div className="flex items-center py-4">
-      <Input
-        placeholder="Lọc theo tên phòng..."
-        value={filterValue}
-        onChange={(event) => onFilterChange(event.target.value)}
-        className="max-w-sm"
-      />
-      {/* Có thể thêm các bộ lọc khác ở đây */}
+    <div className='flex items-center justify-between'>
+      <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
+        <Input
+          placeholder='Tìm phòng'
+          value={(table.getColumn(value)?.getFilterValue() as string) ?? ''}
+          onChange={(event) =>
+            table.getColumn(value)?.setFilterValue(event.target.value)
+          }
+          className='h-8 w-[150px] lg:w-[250px]  placeholder:font-bold'
+        />
+      </div>
     </div>
-  );
-};
-
-export default RoomFilter;
+  )
+}

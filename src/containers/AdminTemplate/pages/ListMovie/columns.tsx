@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Link } from "react-router-dom"
 import { DataTableColumnHeader } from "../Account/data-table-column-header"
 import {  Movie } from "@/types/movie"
 import moment from "moment-timezone"
+import { NavLink } from '../../components/silelinks';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 interface GenreMovie {
@@ -98,16 +98,33 @@ export const columns: ColumnDef<Movie>[] = [
       return <div className="text-left font-medium">{formatDay(row.getValue("release_date"))}</div>
     },
   },
-  // {
-  //   accessorKey: "genre",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title='Thể loại' />
-  //   ),
-  //   cell: ({ row }) => {
-  //     const genreName = row.getValue("genre") as GenreMovie;
-  //     return <div className="text-left font-medium">{genreName.genre_name}</div>
-  //   },
-  // },
+  {
+    accessorKey: "genres",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Thể loại' />
+    ),
+    cell: ({ row }) => {
+      const genreName = row.getValue("genres") as GenreMovie[] || [];
+      return <div className="text-left font-medium">{genreName.map((n) => (
+      <div key={n.id_genre} className="flex">
+        <div> {n.genre_name}</div>
+        </div>
+))}</div>
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader column={column} title="Danh mục" />
+      )
+    },
+    cell: ({ row }) => {
+      const status = row.getValue("status") ;
+      
+      return <div className={`text-center px-1 py-2 rounded-lg font-medium ${status == 'active' ? "bg-green-200 text-green-800"  : ""} }`}>{status == 'active' ? "Đang Chiếu" : ""}</div>
+    },
+  },
   {
     accessorKey: "country",
     header: ({ column }) => {
@@ -128,23 +145,23 @@ export const columns: ColumnDef<Movie>[] = [
     accessorKey: "Chức năng",
     cell: ({ row }) => {
 
-      const genreMovie = row.original
+      const movie = row.original
 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
+
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
+            <DropdownMenuItem 
             >
-              Cập nhật
+              <Link to={`/admin/listMovie/${movie.id_movie}`}>Xem chi tiết</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem><Link to={`/admin/listGenreMovies/${genreMovie.id_movie}`}>Xóa Chủ đề</Link></DropdownMenuItem>
+            <DropdownMenuItem><Link to={``}>Xóa Chủ đề</Link></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

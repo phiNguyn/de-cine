@@ -5,5 +5,6 @@ export const API_URL = {
   register: "register",
   movies: "movies",
   genremovie: "genre_movies",
-  accounts : 'accounts'
+  accounts : 'accounts',
+  rooms : 'rooms',
 };

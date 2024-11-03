@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
+import { User } from "@/hooks/useAuth";
 import { UserRegister } from "@/types/user";
-
-
 export  const UserAPI = {
     userDetail : async (id : string | undefined) => {
         try {
@@ -38,9 +37,8 @@ export  const UserAPI = {
         try {
         const resp = await axiosClient.post(`/${API_URL.register}` , data)
         return resp
-        } catch (error) {
-            console.log(error);
-            
+        } catch (err) {
+            console.log(err);
         }
     }
 }

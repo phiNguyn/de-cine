@@ -38,7 +38,7 @@ axiosClient.interceptors.response.use(
     // Xử lý response lỗi
     if (error.response) {
       const {data} = error.response
-      if(error.response.status == 402) {
+      if(error.response.status == 422) {
         // console.log(data);
         
         return data

@@ -10,42 +10,73 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { Select as SelectOne, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, SelectLabel } from "@/components/ui/select";
+
 import { Input } from "@/components/ui/input"
+import { useParams } from "react-router-dom"
+import { useRoomStore } from "@/store/Room"
+import moment from "moment-timezone"
+import RoomAPI from "@/apis/room"
+import toast, {Toaster} from "react-hot-toast"
 
 // Định nghĩa schema cho form
 const formSchema = z.object({
-  roomName: z.string().min(2, { message: "Tên phòng phải có ít nhất 2 ký tự." }),
-  roomType: z.string().min(2, { message: "Loại phòng phải có ít nhất 2 ký tự." }),
-  seats: z.number().min(1, { message: "Số chỗ ngồi phải lớn hơn 0." }),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional(),
+  id_room: z.number(),
+  room_name: z.string().min(2, { message: "Tên phòng phải có ít nhất 2 ký tự." }),
+  room_status: z.string(),
+  room_type: z.string().optional(),
+  chair_number: z.number()
+    .min(30, { message: "Số ghế ít nhất là 30" })
+    .max(120, { message: "Số ghế tối đa là 120" }), // Thêm thông báo cho max
+  created_at: z.string().optional(),
+  updated_at: z.string().optional(),
 })
+export type RoomFormValues = z.infer<typeof formSchema>;
 
 export function RoomForm() {
-  const form = useForm({
+
+  const { id } = useParams()
+  const { getRoomById, updateRoom } = useRoomStore((state) => state)
+  const roomDetail = getRoomById(Number(id))
+  const form = useForm<RoomFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      roomName: "",
-      roomType: "",
-      seats: "",
-      createdAt: "",
-      updatedAt: "",
+      id_room: roomDetail?.id_room,
+      room_name: roomDetail?.room_name,
+      room_status: roomDetail?.room_status,
+      room_type: roomDetail?.room_type,
+      chair_number: roomDetail?.chair_number || 30,
+      created_at: moment.tz(roomDetail?.created_at, 'Asia/Ho_Chi_Minh').format("DD-MM-YYYY HH:mm:ss"),
+      updated_at: moment.tz(roomDetail?.updated_at, 'Asia/Ho_Chi_Minh').format("DD-MM-YYYY HH:mm:ss")
     },
   })
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: RoomFormValues) => {
     console.log(data)
     // Xử lý khi submit
+    const { chair_number, id_room, room_name, room_status, room_type } = data
+    const updateData = {
+      chair_number, id_room, room_name, room_status, room_type
+    }
+    try {
+      const resp = await RoomAPI.updateRoom(data.id_room, updateData)
+      if (resp?.status == 200) {
+        updateRoom(resp.data)
+        toast.success("Đã cập nhật phòng")
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
+    <>
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FormField
             control={form.control}
-            name="roomName"
+            name="room_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Tên phòng</FormLabel>
@@ -58,13 +89,24 @@ export function RoomForm() {
           />
           <FormField
             control={form.control}
-            name="roomType"
+            name="room_status"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Loại phòng</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nhập loại phòng" {...field} />
-                </FormControl>
+                <FormLabel>Trạng thái phòng</FormLabel>
+                <SelectOne onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Danh mục" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Danh Mục</SelectLabel>
+                      <SelectItem value="active">Đang chiếu</SelectItem>
+                      <SelectItem value="maintenance">Bảo trì</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </SelectOne>
                 <FormMessage />
               </FormItem>
             )}
@@ -74,12 +116,15 @@ export function RoomForm() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FormField
             control={form.control}
-            name="seats"
+            name="chair_number"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Số chỗ ngồi</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="Nhập số chỗ ngồi" {...field} />
+                  <Input type="number" placeholder="Nhập số chỗ ngồi" {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,33 +132,62 @@ export function RoomForm() {
           />
           <FormField
             control={form.control}
-            name="createdAt"
+            name="room_type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Loại phòng</FormLabel>
+                <SelectOne onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Danh mục" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Danh Mục</SelectLabel>
+                      <SelectItem value="2D">Phòng 2D</SelectItem>
+                      <SelectItem value="3D">Phòng 3D</SelectItem>
+                      <SelectItem value="VIP">Phòng VIP</SelectItem>
+                      <SelectItem value="normal">Phòng thường</SelectItem>
+
+                    </SelectGroup>
+                  </SelectContent>
+                </SelectOne>
+                <FormMessage />
+              </FormItem>
+            )}
+            />
+
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="created_at"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Ngày tạo</FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} disabled />
+                  <Input    {...field} disabled />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
-          />
-        </div>
-
-        <div className="w-full">
+            />
           <FormField
             control={form.control}
-            name="updatedAt"
+            name="updated_at"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Ngày cập nhật</FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} disabled />
+                  <Input {...field} disabled />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
         </div>
 
         <div className="flex justify-end">
@@ -121,5 +195,7 @@ export function RoomForm() {
         </div>
       </form>
     </Form>
+    <Toaster/>
+            </>
   )
 }

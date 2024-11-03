@@ -1,14 +1,17 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Link } from "react-router-dom"
 import { DataTableColumnHeader } from "../Account/data-table-column-header"
 import { GenreMovie } from "@/types/movie"
 import moment from 'moment-timezone';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button"
+import { Link } from "react-router-dom"
+import { MoreHorizontal } from "lucide-react"
+import { useState } from "react"
+import EditGenreMovie from "./editGenreMovie"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -69,33 +72,56 @@ export const columns: ColumnDef<GenreMovie>[] = [
       return <div className="text-left font-medium">{formatDate(row.getValue("updated_at"))}</div>
     },
   },
-
   {
     accessorKey: "Chức năng",
     cell: ({ row }) => {
-
-      const genreMovie = row.original
-
+      const movie = row.original;
+  
+      const [isDialogOpen, setIsDialogOpen] = useState(false);
+     
+      const handleOpenDialog = () => {
+        setIsDialogOpen(true);
+      };
+      const handleCloseDialog = () => {
+        setIsDialogOpen(false);
+      };
       return (
+        <>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-            >
-              Cập nhật
-            </DropdownMenuItem>
+            <DropdownMenuLabel>Chức năng</DropdownMenuLabel>
+            
             <DropdownMenuSeparator />
-            <DropdownMenuItem><Link to={`/admin/listGenreMovies/${genreMovie.id_genre}`}>Xóa Chủ đề</Link></DropdownMenuItem>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()} onClick={handleOpenDialog}>
+                 Cập nhật thể loại
+                </DropdownMenuItem>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Thể loại phim</DialogTitle>
+                  <DialogDescription>
+                   Thể loại phim
+                  </DialogDescription>
+                </DialogHeader>
+               <EditGenreMovie onClose={handleCloseDialog} selectedId={movie.id_genre}/>
+              </DialogContent>
+            </Dialog>
+            <DropdownMenuItem>Ẩn thể loại</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+        </>
+      );
     },
-  },
+  }
+  
+  
 ]
 
  export function formatDate (date : string) {

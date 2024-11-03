@@ -20,10 +20,12 @@ import { useQuery } from "@tanstack/react-query"
 import moviesAPI from "@/apis/movie"
 import { useMovieStore } from "@/store/Movie"
 import { UserNav } from "../Auth/UserNav"
+import Logo from "@/assets/logo_decine.jpeg"
+import SearchBar from "./Search"
 const Header: FC = () => {
   const { movie, setMovie } = useMovieStore((state) => state)
   const userData = localStorage.getItem("user")
-
+  
   const { data } = useQuery({
     queryKey: ['movie'],
     queryFn: moviesAPI.getAllMovie,
@@ -55,18 +57,18 @@ const Header: FC = () => {
   return (
     <>
       <RootLayout>
-        <div className="flex justify-between mt-5 font-bold">
+        <div className="flex items-center justify-between mt-5 font-bold">
           <div>
             <img src="/public/img/logoDecine.png" alt="" className="w-20" />  
           </div>
 
-          <NavigationMenu className="hidden lg:block">
+          <NavigationMenu className="hidden md:block">
             <NavigationMenuList>
               <Button size={"default"} variant={"primary"} className="flex gap-x-5 font-bold text-lg">
                 <img src={ticketBlack}></img>
-                <span>
+                <Link to={'/Booking'}>
                   Mua vé ngay
-                </span>
+                </Link>
               </Button>
               {test.map((item, i) => (
                 <NavigationMenuItem key={i}>
@@ -90,17 +92,17 @@ const Header: FC = () => {
             </NavigationMenuList>
           </NavigationMenu>
           {/* <Dropdown /> */}
-          <div>
+          <div className=" flex gap-x-5 items-center">
       {userData ? (
-        <>
+        <div className="flex items-center gap-x-5">
+          <SearchBar className="hidden md:block"/>
           <UserNav /> {/* Pass user data if needed */}
-          {/* Display components for logged-in users */}
-        </>
+        </div>
       ) : (
         <Auth /> // Display authentication component if not logged in
       )}
-    </div>
           <SheetDemo />
+    </div>
         </div>
 
       </RootLayout>

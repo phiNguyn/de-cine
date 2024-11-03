@@ -49,6 +49,7 @@ export default function GenreMoviePage() {
                 <TabsTrigger value='overview'>Danh Sách</TabsTrigger>
               </TabsList>
               <AddGenreMovie />
+
             </div>
             <TabsContent value='overview' className='space-y-4'>
               <div className="container mx-auto">

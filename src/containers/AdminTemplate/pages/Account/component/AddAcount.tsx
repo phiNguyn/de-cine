@@ -49,14 +49,19 @@ const AddAccount = () => {
  async function dataSubmit(data: ProfileFormValues) {
    
     try {
-    console.log(data);
     
          const resp = await UserAPI.addUser(data)
         if(resp?.status == 201) {
             add(resp.data)
             toast.success("Đã thêm tài khoản")
+            form.reset()
+            setOpen(false)
         }
-        setOpen(false)
+       else {
+         toast.error("Email hoặc tài khoản đã được sử dụng")
+
+       } 
+      
     } catch (error) {
         console.log(error);
         

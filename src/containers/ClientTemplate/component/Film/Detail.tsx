@@ -1,13 +1,16 @@
-import { FC} from "react"
+import { FC, ReactNode} from "react"
 import { Movie } from "@/types/movie";
 import moment from "moment-timezone";
 import { PopupYoutubeDetail } from "./PopupYoutube";
+import { CalendarFold, Clock } from "lucide-react";
+import { Blockquote } from "@/components/Typography/blockquote";
+import { cn } from "@/lib/utils";
 
-const Detail: FC<{ movie: Movie | undefined }> = ({ movie }) => {
+const Detail: FC<{ movie: Movie | undefined , className ?: ReactNode}> = ({ movie, className }) => {
   // const image = 'https://files.betacorp.vn/media/images/2024/10/15/1702wx621h-2-162415-151024-72.jpg'
   return (
-    <div className="w-full  my-5 h-[80vh] md:h-[480px]">
-      <div className="relative w-full h-full bg-gradient-to-t from-black md:bg-gradient-to-r md:from-black">
+    <div className="w-full my-5 h-[80vh] md:h-[480px]">
+      <div className={cn("relative w-full h-full bg-gradient-to-t from-black md:bg-gradient-to-r md:from-black", className)}>
         <div className={'absolute  h-full w-full overflow-hidden bg-fixed  bg-center bg-no-repeat -z-[1]'}  >
         </div>
 
@@ -24,13 +27,21 @@ const Detail: FC<{ movie: Movie | undefined }> = ({ movie }) => {
               <div className="flex flex-col gap-x-2">
                 <div className="flex  justify-center items-center w-fit px-2 py-1 border rounded-md bg-red-800 text-sm text-white font-bold">T18</div>
                 <h1 className="text-white text-xl font-bold md:text-4xl">{movie?.movie_name}</h1>
-                <div className="text-md text-gray-300"> {moment.utc(movie?.release_date).tz('Asia/Ho_Chi_Minh').format("YYYY")} - {movie?.duration}</div>
+                <div className="text-md text-gray-300 flex gap-x-1 mt-2">
+                  <div className="flex gap-x-2 items-center">
+
+                  <Clock size={25} className="text-yellow-300"/>
+                   {moment.utc(movie?.release_date).tz('Asia/Ho_Chi_Minh').format("DD/MM/YYYY")} -
+                  </div>
+                  <div className="flex items-center gap-x-2"></div>
+                <CalendarFold size={25} className="text-yellow-300"/> {movie?.duration} phút
+                  </div>
 
               </div>
               {/* decripetion */}
               <div className="text-white">
                 <h2 className=" text-xl font-bold md:text-2xl">Nội dung</h2>
-                <span className="">{movie?.description}</span>
+                <Blockquote>{movie?.description}</Blockquote>
               </div>
               {/* Country */}
               <div className="flex justify-between items-center text-white w-fit gap-x-5">
@@ -38,9 +49,10 @@ const Detail: FC<{ movie: Movie | undefined }> = ({ movie }) => {
               </div>
               {/* Thể Loại */}
               <div className="flex justify-between items-center text-white w-fit gap-x-5">
-                {movie?.genre?.map((item) => (
+              <span>Thể Loại: </span>
+                {movie?.genres?.map((item) => (
                   <>
-                <span key={item.id_genre}>Thể Loại: </span> <span className="border border-white rounded-md px-2 py-1">{item.genre_name}</span>
+                <span key={item.id_genre} className="border border-white rounded-md px-2 py-1">{item.genre_name}</span>
                   </>
                 ))}
               </div>

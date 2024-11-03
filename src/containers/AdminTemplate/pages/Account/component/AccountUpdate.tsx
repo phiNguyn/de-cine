@@ -144,7 +144,7 @@ const AccountUpdate : React.FC<AccountUpdateProp> = ({onSubmit}) => {
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Roles</SelectLabel>
-                          <SelectItem  value='admin'>Admin</SelectItem>
+                          <SelectItem   value='admin'>Admin</SelectItem>
                           <SelectItem value='user'>Khách hàng</SelectItem>
                           {/* Add more roles as needed */}
                         </SelectGroup>
