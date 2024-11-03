@@ -2,7 +2,7 @@ import { UserAPI } from '@/apis/user';
 import { User } from '@/types/user';
 import { useEffect, useState } from 'react';
 import UserTable from '../component/UserProfileTable';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -108,6 +108,7 @@ const UserProfile = () => {
           Cập nhật
         </button>
       </div>
+      <Toaster /> 
     </div>
   );
 };
