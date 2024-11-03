@@ -1,125 +1,70 @@
-/* eslint-disable react-refresh/only-export-components */
-import * as React from "react";
-import {
-  SortingState,
-  VisibilityState,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  useReactTable,
-  ColumnFiltersState,
-  ColumnDef,
-} from "@tanstack/react-table";
+
 import { ThemeProvider } from "@/components/theme-provider";
-import RoomFilter from "./RoomFilter"; // Đổi thành RoomFilter
-import RoomTable from "./RoomTable";   // Đổi thành RoomTable
+import { Layout } from "@/components/Layout/layout";
+import {useRoomStore } from "@/store/Room";
+import { useQuery } from "@tanstack/react-query";
+import RoomAPI from "@/apis/room";
+import { useEffect } from 'react';
+import { columns } from './columns';
+import { DataTable } from "./RoomTable";
+import { Dropdown } from "@/containers/ClientTemplate/component/Auth";
+import { UserNav } from "../../components/user-nav";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AddRoom from "../RoomDetail/AddRoom";
 
-export interface Room {
-    id: string;
-    tenPhong: string;
-    loaiPhong: string;
-    soChoNgoi: number;
-    ngayTao: string;
-  }
-  
-  // Dữ liệu phòng
-  const data: Room[] = [
-    {
-      id: "phong001",
-      tenPhong: "Phòng 1",
-      loaiPhong: "2D",
-      soChoNgoi: 10,
-      ngayTao: "2023-01-15",
-    },
-    {
-      id: "phong002",
-      tenPhong: "Phòng 2",
-      loaiPhong: "3D",
-      soChoNgoi: 30,
-      ngayTao: "2023-02-20",
-    },
-    {
-      id: "phong003",
-      tenPhong: "Phòng 3",
-      loaiPhong: "2D",
-      soChoNgoi: 5,
-      ngayTao: "2023-03-10",
-    },
-    {
-      id: "phong004",
-      tenPhong: "Phòng 4",
-      loaiPhong: "4D",
-      soChoNgoi: 15,
-      ngayTao: "2023-04-25",
-    },
-    {
-      id: "phong005",
-      tenPhong: "Phòng 5",
-      loaiPhong: "3D",
-      soChoNgoi: 8,
-      ngayTao: "2023-05-30",
-    },
-  ];
 
-  export const columns: ColumnDef<Room>[] = [
-    {
-      accessorKey: 'id',
-      header: 'ID',
-    },
-    {
-      accessorKey: 'tenPhong',
-      header: 'Tên Phòng',
-      filterFn: 'includesString', // hỗ trợ lọc theo chuỗi
-    },
-    {
-      accessorKey: 'loaiPhong',
-      header: 'Loại Phòng',
-    },
-    {
-      accessorKey: 'soChoNgoi',
-      header: 'Số Chỗ Ngồi',
-    },
-    {
-      accessorKey: 'ngayTao',
-      header: 'Ngày Tạo',
-    },
-  ];
-  
-  
+
+// Dữ liệu phòng
+
 export default function ListRooms() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const {Room, setRoom} = useRoomStore((state) => state)
+    const {data} = useQuery({
+      queryKey : ['room'],
+      queryFn : RoomAPI.getAllRoom,
+    staleTime: 60 * 1000,
 
-  const table = useReactTable({
-    data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
-  });
+    })
 
+    useEffect(() => {
+      if(data) {
+        setRoom(data)
+      }
+    },[data])
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="w-full p-8">
-        <RoomFilter
-                  filterValue={(table.getColumn("tenPhong")?.getFilterValue() as string) ?? ""}
-                  onFilterChange={(value) => table.getColumn("tenPhong")?.setFilterValue(value)} columns={[]}        />
-        <RoomTable rows={table.getRowModel().rows} columns={table.getHeaderGroups()} />
-      </div>
+      <Layout>
+      <Layout.Header>
+          <div className='ml-auto flex items-center space-x-4'>
+            <Dropdown className='!mt-0 px-2 cursor-pointer' />
+            <UserNav />
+          </div>
+        </Layout.Header>
+        <Layout.Body>
+        <Tabs
+            orientation='vertical'
+            defaultValue='overview'
+            className='space-y-4'
+          >
+            <div className='w-full flex justify-between overflow-x-auto pb-2'>
+              <TabsList>
+                <TabsTrigger value='overview'>Danh Sách</TabsTrigger>
+                <TabsTrigger value='analytics'>Biểu Đồ</TabsTrigger>
+                <TabsTrigger value='reports'>Reports</TabsTrigger>
+                <TabsTrigger value='add'>Thêm phim mới</TabsTrigger>
+              </TabsList>
+              <AddRoom/>
+            </div>
+            <TabsContent value='overview' className='space-y-4'>
+             
+            </TabsContent>
+          
+          </Tabs>
+          <div className="w-full p-8 ">
+            <DataTable columns={columns} data={Room}/>
+          </div>
+
+        </Layout.Body>
+      </Layout>
     </ThemeProvider>
   );
 }

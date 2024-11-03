@@ -31,8 +31,8 @@ import {
   } from "@/components/ui/dropdown-menu"
    
 import React from "react"
-import { DataTablePagination } from "./data-panigation"
-import { DataTableToolbar } from "./data-table-toolbar"
+import { DataTableFilter } from "../../components/table/filter"
+import { DataTablePagination } from "../../components/table/data-panigation"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -69,8 +69,7 @@ export function DataTable<TData, TValue>({
   return (
     <>
     <div className="flex items-center py-4">
-    <DataTableToolbar table={table}/>
-
+    <DataTableFilter value="email"  table={table}/>
       <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

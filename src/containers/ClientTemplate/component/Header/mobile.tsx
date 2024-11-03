@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 import SearchInput from "./Search"
-import { Dropdown } from "@/containers/ClientTemplate/component/Auth"
 import ComboFoodPopup from "@/containers/ClientTemplate/component/ComboFood"
 const SheetDemo = () => {
   return (
@@ -25,7 +24,6 @@ const SheetDemo = () => {
 
           <SheetFooter className="mt-5">
 
-            <Dropdown />
             <ComboFoodPopup />
           </SheetFooter>
         </SheetContent>

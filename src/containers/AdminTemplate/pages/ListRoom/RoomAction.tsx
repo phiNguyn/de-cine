@@ -3,14 +3,15 @@
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import { Room } from "."; // Đảm bảo đường dẫn đúng
+import { Room } from "@/types/room"; // Đảm bảo đường dẫn đúng
 
 type RoomActionsProps = {
   room: Room;
 };
 
-const RoomActions: React.FC<RoomActionsProps> = ({  }) => {
+const RoomActions: React.FC<RoomActionsProps> = () => {
   return (
+    
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">

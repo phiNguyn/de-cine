@@ -7,9 +7,11 @@ interface MovieStore {
     setMovie: (movies: Movie[]) => void;
     addMovie: (newMovies: Movie) => void;
     updateMovie: (updatedMovies: Movie) => void;
+     getMovieById: (id: number) => Movie | undefined;
+
 }
 
-export const useMovieStore = create<MovieStore>((set) => ({
+export const useMovieStore = create<MovieStore>((set,get) => ({
     movie:[],
     setMovie: (movie) => set({movie}),
     addMovie: (newMovies) => set((state) => ({
@@ -18,7 +20,11 @@ export const useMovieStore = create<MovieStore>((set) => ({
     updateMovie: (updatedMovies) => set((state) => ({
         movie : state.movie.map((m) => 
             m.id_movie === updatedMovies.id_movie ? updatedMovies : m)   
-    }))
+    })),
+    getMovieById: (id) => {
+        // Sử dụng get() để lấy trạng thái hiện tại
+        return get().movie.find((u) => u.id_movie === id);
+      },
 
     
 }));

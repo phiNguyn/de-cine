@@ -9,9 +9,9 @@ const HomeTemplate = () => {
    <>
    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
      <Header />
-    {/* <Suspense fallback={<Loading />}> */}
+    <Suspense fallback={<Loading />}>
      <Outlet />
-    {/* </Suspense> */}
+    </Suspense>
      <Footer />
    </ThemeProvider>
    </>
@@ -21,5 +21,9 @@ const HomeTemplate = () => {
 export default HomeTemplate
 
 export const Loading :FC =() =>{
-  return <p><i>Loading...</i></p>;
+  return (
+    <>
+    
+    </>
+  )
 }
