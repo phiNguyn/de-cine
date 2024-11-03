@@ -8,6 +8,7 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
+// day la useEffect 
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
@@ -20,6 +21,7 @@ const UserProfile = () => {
     };
     fetchUserDetails();
   }, []);
+  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
