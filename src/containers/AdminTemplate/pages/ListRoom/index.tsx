@@ -11,6 +11,7 @@ import { Dropdown } from "@/containers/ClientTemplate/component/Auth";
 import { UserNav } from "../../components/user-nav";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AddRoom from "../RoomDetail/AddRoom";
+import { RoomChair } from "../RoomDetail/RoomChair";
 
 
 
@@ -55,7 +56,6 @@ export default function ListRooms() {
               <AddRoom/>
             </div>
             <TabsContent value='overview' className='space-y-4'>
-             
             </TabsContent>
           
           </Tabs>

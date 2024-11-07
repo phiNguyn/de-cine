@@ -45,7 +45,7 @@ export default function Users() {
           <div className='mb-2 flex items-center justify-between space-y-2'>
             <h1 className='text-2xl font-bold tracking-tight'>Tài Khoản</h1>
             <div className='flex w-fit items-center space-x-5'>
-              <DatePickerWithRange className='w-fit' />      
+              <DatePickerWithRange className='w-fit' />
               {/* <Button>Download</Button> */}
             </div>
           </div>
@@ -65,7 +65,7 @@ export default function Users() {
             </div>
             <TabsContent value='overview' className='space-y-4'>
               <div className="container mx-auto ">
-                <DataTable columns={columns} data={user} />
+                <DataTable name='email' value='email' columns={columns} data={user} />
               </div>
             </TabsContent>
           </Tabs>

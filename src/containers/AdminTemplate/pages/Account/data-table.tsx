@@ -35,12 +35,16 @@ import { DataTableFilter } from "../../components/table/filter"
 import { DataTablePagination } from "../../components/table/data-panigation"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  data: TData[],
+  name : string ,
+  value : string
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  name ,
+   value
   
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -69,7 +73,7 @@ export function DataTable<TData, TValue>({
   return (
     <>
     <div className="flex items-center py-4">
-    <DataTableFilter value="email"  table={table}/>
+    <DataTableFilter name={name}  value={value}  table={table}/>
       <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

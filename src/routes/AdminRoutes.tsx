@@ -16,6 +16,7 @@ const RoomDetail = lazy(() => import("@/containers/AdminTemplate/pages/RoomDetai
 const TicketDetail = lazy(() => import("@/containers/AdminTemplate/pages/TicketDetail"));
 const AddMoviePage = lazy(() => import("@/containers/AdminTemplate/pages/ListMovie/AddMoviePage"))
 const EditMoviePage = lazy(() => import("@/containers/AdminTemplate/pages/ListMovie/DetailMovie"))
+const ListShowTimePage = lazy(() => import("@/containers/AdminTemplate/pages/ShowTime"))
 // Định nghĩa AdminRoutes với kiểu RouteObject
 const AdminRoutes = [
   {
@@ -62,7 +63,10 @@ const AdminRoutes = [
         element : <GenreMoviePage/>
       },
 
-     
+      {
+        path : 'listShowTimes',
+        element : <ListShowTimePage/>
+      },
 //detail 
       {
         path: "listRoom/:id",

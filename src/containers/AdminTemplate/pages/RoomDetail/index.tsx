@@ -7,6 +7,7 @@ import { RoomForm } from './RoomForm'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRoomStore } from '@/store/Room'
 import { useParams } from 'react-router-dom'
+import { RoomChair } from './RoomChair'
 
 
 
@@ -41,6 +42,7 @@ const RoomDetail = () => {
             </div>
             <TabsContent value='overview' className='space-y-4'>
               <div className="container mx-auto ">
+             <RoomChair />
 
               </div>
             </TabsContent>

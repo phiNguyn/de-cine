@@ -18,9 +18,9 @@ import { UserLogin } from '@/types/user'
 const formSchema = z.object({
   user_name: z
     .string()
-    .min(1, { message: 'Please enter your email' }),
+    .min(1, { message: 'Nhập tài khoản' }),
   password: z
-    .string({message : 'Please enter your password'})
+    .string({message : 'Vui lòng nhập mật khẩu'})
 })
 interface FormLoginProps {
   onSubmit: (data: UserLogin) => void;
@@ -56,7 +56,7 @@ export function UserAuthForm({ onSubmit }: FormLoginProps) {
               name='user_name'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>User Name</FormLabel>
+                  <FormLabel>Tài khoản</FormLabel>
                   <FormControl>
                     <Input placeholder='name@example.com' {...field} />
                   </FormControl>

@@ -18,8 +18,45 @@ export default function EditMoviePage ()  {
   const movie = getMovieById(Number(id))
 
   const handleSubmit = async (data) => {
+    console.log("update ",data);
+    
+    const formData = new FormData;
+    formData.append('movie_name', data.movie_name);
+// formData.append('price', data.price);
+formData.append('description', data.description);
+formData.append('duration', data.duration);
+formData.append('release_date', data.release_date);
+formData.append('country', data.country);
+formData.append('producer', data.producer);
+formData.append('director', data.director);
+formData.append('cast', data.cast);
+data.genres.forEach((genre) => {
+    formData.append('genres[]', genre); 
+});
+formData.append('status', data.status);
+formData.append('youtube_url', data.youtube_url);
+if(data.image_main && data.image_main.length > 0) {
+
+  formData.append('image_main', data.image_main[0]); 
+}
+if(data.poster_url && data.poster_url.length > 0) {
+
+  formData.append('poster_url', data.poster_url[0]); 
+}
+
+
+const {image_main,poster_url} = data
+console.log(image_main, poster_url);
+
+const updateData = {
+  ... data,
+  image_main : image_main,
+  poster_url : poster_url
+}
+
+
     try {
-      const resp = await moviesAPI.updateMovie(data.id_movie, data)
+      const resp = await moviesAPI.updateMovie(data.id_movie, updateData)
       if(resp?.status == 200) {
         toast.success("Cập nhật thành công")
         updateMovie(resp.data)

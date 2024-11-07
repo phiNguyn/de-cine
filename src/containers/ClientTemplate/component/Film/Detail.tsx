@@ -5,6 +5,7 @@ import { PopupYoutubeDetail } from "./PopupYoutube";
 import { CalendarFold, Clock } from "lucide-react";
 import { Blockquote } from "@/components/Typography/blockquote";
 import { cn } from "@/lib/utils";
+import { API_URL } from '../../../../constants/api';
 
 const Detail: FC<{ movie: Movie | undefined , className ?: ReactNode}> = ({ movie, className }) => {
   // const image = 'https://files.betacorp.vn/media/images/2024/10/15/1702wx621h-2-162415-151024-72.jpg'
@@ -17,7 +18,7 @@ const Detail: FC<{ movie: Movie | undefined , className ?: ReactNode}> = ({ movi
         <div className="mx-auto w-full max-w-6xl px-5 md:px-8 lg:px-8 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <div className="flex flex-col gap-y-5 md:gap-x-5 md:flex-row   md:items-start ">
             <div className="w-[200px] md:w-fit relative">
-              <img src={movie?.image_main} className="h-auto" alt={movie?.movie_name} />
+              <img src={`${API_URL.baseUrl}/${movie?.image_main}`} className="h-auto" alt={movie?.movie_name} />
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white">
                 <PopupYoutubeDetail ytSlug={movie?.youtube_url} />
               </div>

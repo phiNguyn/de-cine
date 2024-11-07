@@ -9,6 +9,7 @@ import { DataTableColumnHeader } from "../Account/data-table-column-header"
 import {  Movie } from "@/types/movie"
 import moment from "moment-timezone"
 import { NavLink } from '../../components/silelinks';
+import { API_URL } from "@/constants/api"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 interface GenreMovie {
@@ -69,7 +70,7 @@ export const columns: ColumnDef<Movie>[] = [
         <div className="text-left">
           {image_main ? (
             <img
-              src={`${image_main}`}
+              src={`${API_URL.baseUrl}/${image_main}`}
               alt="Ảnh banner"
               style={{ width: '100px', height: 'auto', borderRadius: '4px' }} // Tùy chỉnh kích thước ảnh
             />

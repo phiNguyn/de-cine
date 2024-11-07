@@ -67,9 +67,14 @@ const moviesAPI = {
     }
   },
 
-  addMovie : async (data) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  addMovie : async (data : any) => {
     try {
-      const resp = await axiosClient.post(`/${API_URL.movies}`,data )
+      const resp = await axiosClient.post(`/${API_URL.movies}`,data, 
+        {headers : {
+          'Content-Type' : 'multipart/form-data'
+        }}
+      )
       return resp
     } catch (error) {
       console.log(error);
@@ -77,9 +82,13 @@ const moviesAPI = {
     }
   },
 
-  updateMovie : async (id : number, data) => {
+  updateMovie : async (id : number, body) => {
     try {
-      const resp = await axiosClient.put(`/${API_URL.movies}/${id}`,data)
+      const resp = await axiosClient.put(`/${API_URL.movies}/${id}`,body  , 
+         {headers : {
+          'Content-Type' : 'multipart/form-data'
+        }}
+      )
       return resp
     } catch (error) {
       console.log(error);
