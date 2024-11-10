@@ -11,9 +11,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { TopNav } from '@/containers/AdminTemplate/components/top-nav'
 import { UserNav } from '@/containers/AdminTemplate/components/user-nav'
 import { RecentSales } from '@/containers/AdminTemplate/components/recent-sale'
-import { Overview } from '@/containers/AdminTemplate/components/overview'
 import { Dropdown } from '@/containers/ClientTemplate/component/Auth'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Overview } from '../components/overview'
 
 export default function Dashboard() {
   return (
@@ -161,7 +161,7 @@ export default function Dashboard() {
                     <CardTitle>Overview</CardTitle>
                   </CardHeader>
                   <CardContent className='pl-2'>
-                    <Overview />
+                    {/* <Overview /> */}
                   </CardContent>
                 </Card>
                 <Card className='col-span-1 lg:col-span-3'>

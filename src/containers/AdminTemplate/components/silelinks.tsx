@@ -40,7 +40,7 @@ import { Armchair, Box, ChartColumn, CircleX, Clapperboard, FileLock, Film, GitP
     },
     {
       title: 'Suất chiếu',
-      href: '/admin/listMovie',
+      href: '/admin/listShowTimes',
       icon: <Armchair size={18} />,
     },
     {

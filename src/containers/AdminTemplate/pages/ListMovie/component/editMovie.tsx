@@ -21,6 +21,7 @@ import { useGenreMovieStore } from "@/store/GenreMove";
 import { useQuery } from "@tanstack/react-query";
 import { useMovieStore } from "@/store/Movie";
 import { useParams } from "react-router-dom";
+import { API_URL } from '../../../../../constants/api';
 const movieFormSchema = z.object({
     movie_name: z.string().min(1, { message: "Tên phim không được để trống" }),
     description: z.string().min(1, { message: "Tên phim không được để trống" }),
@@ -32,11 +33,40 @@ const movieFormSchema = z.object({
     producer: z.string().min(1, { message: "Nhà sản xuất không được để trống" }),
     director: z.string().min(1, { message: "Đạo diễn không được để trống" }),
     cast: z.string().min(1, { message: "Diễn viên không được để trống" }),
-    poster_url: z.string().optional(),
+    posterOld: z.string().optional(),
+    poster_url: z.any().refine(
+        (value, context) => {
+            // Nếu `img` trống và không có `imgOld`, trả về lỗi
+            if (!value || (Array.isArray(value) && value.length === 0)) {
+                return !!context.parent.posterOld; // Kiểm tra nếu có ảnh cũ
+            }
+            return true; // Có file mới hoặc ảnh cũ
+        },
+        {
+            message: 'Hãy chọn file',
+            path: ['image_main'], // Chỉ định trường bị lỗi
+        }
+    ).nullable(),
     youtube_url: z.string().min(1, { message: "Đây là trường bắt buộc" }),
-    image_main: z.string().optional(),
+    imgOld: z.string().optional(), // Thêm trường imgOld
+    image_main: z.any().refine(
+        (value, context) => {
+            // Nếu `img` trống và không có `imgOld`, trả về lỗi
+            if (!value || (Array.isArray(value) && value.length === 0)) {
+                return !!context.parent.imgOld; // Kiểm tra nếu có ảnh cũ
+            }
+            return true; // Có file mới hoặc ảnh cũ
+        },
+        {
+            message: 'Hãy chọn file',
+            path: ['image_main'], // Chỉ định trường bị lỗi
+        }
+    )
+        .nullable(),
     genres: z.array(z.number()).min(1, { message: "Phải chọn ít nhất 1 thể loại phim" }),
     status: z.string(),
+    id_movie: z.number().optional()
+
 });
 
 export type MovieFormValues = z.infer<typeof movieFormSchema>;
@@ -45,19 +75,19 @@ export interface EditMovieProp {
     onSubmit: (data: MovieFormValues) => void
 }
 export default function EditMovie({ onSubmit }: EditMovieProp) {
-    const {id} = useParams()
-    const {getMovieById} = useMovieStore((state) => state)
+    const { id } = useParams()
+    const { getMovieById } = useMovieStore((state) => state)
     const movie = getMovieById(Number(id))
     const { genreMovie, setGenreMovie } = useGenreMovieStore()
     const [selectdOptions, setSelectedOptions] = useState([])
-    
+
     const { data } = useQuery({
-      queryKey: ['genreMovie'],
-      queryFn: moviesAPI.getAllGenreMovies,
-      staleTime: 30 * 1000,
+        queryKey: ['genreMovie'],
+        queryFn: moviesAPI.getAllGenreMovies,
+        staleTime: 5 * 60 * 1000,
     });
-   
-  
+
+
     const form = useForm<MovieFormValues>({
         resolver: zodResolver(movieFormSchema),
         defaultValues: {
@@ -69,50 +99,54 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
             producer: movie?.producer,
             director: movie?.director,
             cast: movie?.cast,
-            poster_url: movie?.poster_url || "",
             youtube_url: movie?.youtube_url,
-            image_main: movie?.image_main,
-            genres: movie?.genres.map(i=> i.id_genre),
+            image_main: null,
+            genres: movie?.genres.map(i => i.id_genre),
             status: movie?.status || "",
+            imgOld: movie?.image_main,
+            poster_url: null,
+            posterOld: movie?.poster_url,
+            id_movie: Number(id)
         },
     });
-// Thiết lập các tùy chọn khi dữ liệu được lấy về
-useEffect(() => {
-    if (data) {
-        const formattedData = data.map((genre: { genre_name: string, id_genre: number }) => ({
-            label: genre.genre_name,
-            value: genre.id_genre,
-        }));
-        setGenreMovie(formattedData);
-    }
-}, [data]);
+    // Thiết lập các tùy chọn khi dữ liệu được lấy về
+    useEffect(() => {
+        if (data) {
+            const formattedData = data.map((genre: { genre_name: string, id_genre: number }) => ({
+                label: genre.genre_name,
+                value: genre.id_genre,
+            }));
+            setGenreMovie(formattedData);
+        }
+    }, [data]);
 
-useEffect(() => {
-    if (movie && genreMovie.length) {
-        const defaultOptions = genreMovie.filter((genre) =>
-            movie.genres.some((g: { id_genre: number }) => g.id_genre === genre.value)
-        );
-        setSelectedOptions(defaultOptions);
-        form.setValue("genres", defaultOptions.map(option => option.value));
-    }
-}, [movie, genreMovie]);
-  const handleChange = (options) => {
-    setSelectedOptions(options);
-   form.setValue("genres", options.map((option) => option.value));
-  };
+    useEffect(() => {
+        if (movie && genreMovie.length) {
+            const defaultOptions = genreMovie.filter((genre) =>
+                movie.genres.some((g: { id_genre: number }) => g.id_genre === genre.value)
+            );
+            setSelectedOptions(defaultOptions);
+            form.setValue("genres", defaultOptions.map(option => option.value));
+        }
+    }, [movie, genreMovie]);
+    const handleChange = (options) => {
+        setSelectedOptions(options);
+        form.setValue("genres", options.map((option) => option.value));
+    };
 
     async function dataSubmit(data: MovieFormValues) {
-        const { release_date } = data
-        console.log(data);
-        
+        const { release_date, genres } = data
+        // console.log(data);
+        const processedGenres = Array.isArray(genres) && genres.length > 0 ? genres : [];
         const updateReleaseDate = {
             ...data,
-            id_movie : movie?.id_movie,
+            id_movie: movie?.id_movie,
+            genres: processedGenres,
             release_date: moment.tz(release_date, 'Asia/Ho_Chi_Minh').format("YYYY-MM-DD"),
-            
+
         }
         try {
-            
+
             onSubmit(updateReleaseDate)
         } catch (error) {
             // Xử lý lỗi (nếu cần)
@@ -128,8 +162,8 @@ useEffect(() => {
                 </Layout>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(dataSubmit)} className="space-y-8">
-                        <div className="grid grid-cols-2 gap-x-10">
+                    <form encType="multipart/form-data" onSubmit={form.handleSubmit(dataSubmit)} className="space-y-8">
+                        <div className="grid grid-cols-1  lg:grid-cols-2 gap-x-10">
                             <div >
 
                                 <div className=" mb-5">
@@ -146,8 +180,8 @@ useEffect(() => {
                                             </FormItem>
                                         )}
                                     />
-                                    
-                                    
+
+
                                 </div>
                                 <div className="grid grid-cols-1 items-center gap-x-5 lg:grid-cols-2 mb-5">
 
@@ -255,27 +289,27 @@ useEffect(() => {
                                     />
                                 </div>
 
-                                    <Controller
-                                        control={form.control}
-                                        name="genres"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Chọn thể loại phim</FormLabel>
+                                <Controller
+                                    control={form.control}
+                                    name="genres"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Chọn thể loại phim</FormLabel>
 
-                                                <Select 
-                                                    className="text-primary-foreground w-full bg-primary-foreground"
-                                                    defaultValue={[field.value]}
-                                                    options={genreMovie}
-                                                    value={selectdOptions}
-                                                    onChange={handleChange}
-                                                    isMulti={true}
-                                                />
-                                                <FormMessage />
+                                            <Select
+                                                className="text-primary-foreground w-full bg-primary-foreground"
+                                                defaultValue={[field.value]}
+                                                options={genreMovie}
+                                                value={selectdOptions}
+                                                onChange={handleChange}
+                                                isMulti={true}
+                                            />
+                                            <FormMessage />
 
-                                            </FormItem>
-                                        )}
+                                        </FormItem>
+                                    )}
 
-                                    />
+                                />
 
 
                                 <div className="grid grid-cols-1 items-center gap-x-5 lg:grid-cols-2  mb-5">
@@ -285,7 +319,7 @@ useEffect(() => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Danh mục</FormLabel>
-                                                <SelectOne onValueChange={field.onChange}  defaultValue={field.value}>
+                                                <SelectOne onValueChange={field.onChange} defaultValue={field.value}>
                                                     <FormControl>
                                                         <SelectTrigger className="w-full">
                                                             <SelectValue placeholder="Danh mục" />
@@ -293,7 +327,7 @@ useEffect(() => {
                                                     </FormControl>
                                                     <SelectContent>
                                                         <SelectGroup>
-                                <SelectLabel>Danh Mục</SelectLabel>
+                                                            <SelectLabel>Danh Mục</SelectLabel>
                                                             <SelectItem value="active">Đang chiếu</SelectItem>
                                                             <SelectItem value="future">Sắp chiếu</SelectItem>
                                                             <SelectItem value="disable">Ngừng kinh doanh</SelectItem>
@@ -350,37 +384,72 @@ useEffect(() => {
                                         )}
                                     />
                                 </div>
-                                <Button type="submit">Cập nhật phim</Button>
+
                             </div>
                             <div>
-                                <FormField
-                                    control={form.control}
-                                    name="image_main"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Ảnh chính</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="..." {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
+                                <div>
+                                    <div className="p-2 mx-auto w-full">
+                                        {movie?.image_main && (
+                                            <img className="w-[250px] rounded-xl" src={`${API_URL.baseUrl}/${movie.image_main}`} alt="Hình ảnh chính" />
+                                        )}
+                                    </div>
+                                    <FormField
                                         control={form.control}
-                                        name="poster_url"
+                                        name="image_main"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Tên phim</FormLabel>
+                                                <FormLabel>Ảnh chính</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Nhập tên phim" {...field} />
+                                                    <Input
+                                                        type="file"
+                                                        placeholder="..."
+                                                        accept="image/*" // Thêm thuộc tính này để chỉ định định dạng tệp hợp lệ
+                                                        onChange={(e) => {
+                                                            // Lưu tệp đầu tiên vào field
+                                                            if (e.target.files.length > 0) {
+                                                                field.onChange(e.target.files[0]);
+                                                            }
+                                                        }}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
                                     />
+                                </div>
+                                <div>
+                                    <div className="p-2 mx-auto w-full">
+                                        {movie?.poster_url && (
+                                            <img className="w-[250px] rounded-xl" src={`${API_URL.baseUrl}/${movie.poster_url}`} alt="Ảnh Banner" />
+                                        )}
+                                    </div>
+                                    <FormField
+                                        control={form.control}
+                                        name="poster_url"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Ảnh poster</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        type="file"
+                                                        placeholder="..."
+                                                        accept="image/*" // Thêm thuộc tính này để chỉ định định dạng tệp hợp lệ
+                                                        onChange={(e) => {
+                                                            // Lưu tệp đầu tiên vào field
+                                                            if (e.target.files.length > 0) {
+                                                                field.onChange(e.target.files[0]);
+                                                            }
+                                                        }}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
                             </div>
                         </div>
+                        <Button type="submit">Cập nhật phim</Button>
                     </form>
                 </Form>
 

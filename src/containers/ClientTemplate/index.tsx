@@ -23,7 +23,7 @@ export default HomeTemplate
 export const Loading :FC =() =>{
   return (
     <>
-    
+    <div>...Loading</div>
     </>
   )
 }

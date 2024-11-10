@@ -20,12 +20,11 @@ import { useQuery } from "@tanstack/react-query"
 import moviesAPI from "@/apis/movie"
 import { useMovieStore } from "@/store/Movie"
 import { UserNav } from "../Auth/UserNav"
-import Logo from "@/assets/logo_decine.jpeg"
 import SearchBar from "./Search"
 const Header: FC = () => {
   const { movie, setMovie } = useMovieStore((state) => state)
   const userData = localStorage.getItem("user")
-  
+
   const { data } = useQuery({
     queryKey: ['movie'],
     queryFn: moviesAPI.getAllMovie,
@@ -37,17 +36,20 @@ const Header: FC = () => {
     }
   }, [data])
 
-  // Thêm dữ liệu tag giả
   const test = [
     {
       id_tag: 1,
       title: "Phim",
       content: [
         {
-          id: 1, tiltle: "Đang chiếu", list: [...movie].splice(0, 3)
+          id: 1, slug: 'active', tiltle: "Đang chiếu", list: movie.filter(movie => {
+            return movie.status === "active"
+          }).splice(0,4)
         },
         {
-          id: 2, tiltle: "Sắp chiếu", list: [...movie].splice(0, 3)
+          id: 2, slug: 'future', tiltle: "Sắp chiếu", list: movie.filter(movie => {
+            return movie.status === "future"
+          })
         }
       ]
     },
@@ -58,9 +60,9 @@ const Header: FC = () => {
     <>
       <RootLayout>
         <div className="flex items-center justify-between mt-5 font-bold">
-          <div>
-            <img src="/public/img/logoDecine.png" alt="" className="w-20" />  
-          </div>
+          <Link to={'/'}>
+            <img src="/img/logoDecine.png" alt="" className="w-20" />
+          </Link>
 
           <NavigationMenu className="hidden md:block">
             <NavigationMenuList>
@@ -93,16 +95,16 @@ const Header: FC = () => {
           </NavigationMenu>
           {/* <Dropdown /> */}
           <div className=" flex gap-x-5 items-center">
-      {userData ? (
-        <div className="flex items-center gap-x-5">
-          <SearchBar className="hidden md:block"/>
-          <UserNav /> {/* Pass user data if needed */}
-        </div>
-      ) : (
-        <Auth /> // Display authentication component if not logged in
-      )}
-          <SheetDemo />
-    </div>
+            {userData ? (
+              <div className="flex items-center gap-x-5">
+                <SearchBar className="hidden md:block" />
+                <UserNav /> {/* Pass user data if needed */}
+              </div>
+            ) : (
+              <Auth /> // Display authentication component if not logged in
+            )}
+            <SheetDemo />
+          </div>
         </div>
 
       </RootLayout>
