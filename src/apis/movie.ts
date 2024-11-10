@@ -1,11 +1,11 @@
 import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
+
 const moviesAPI = {
   // genre movie
   getMovieDetails: async (id: number | undefined) => {
     try {
       const resp = await axiosClient.get(`${API_URL.genremovie}/${id}`);
-
       return resp.data;
     } catch (error) {
       console.log(error);
@@ -20,6 +20,7 @@ const moviesAPI = {
       console.log(error);
     }
   },
+
   getMovieById: async (id: number) => {
     try {
       const resp = await axiosClient.get(`/${API_URL.movies}/${id}`);
@@ -28,6 +29,7 @@ const moviesAPI = {
       console.log(error);
     }
   },
+
   getAllGenreMovies: async () => {
     try {
       const resp = await axiosClient.get(`/${API_URL.genremovie}`);
@@ -40,9 +42,7 @@ const moviesAPI = {
 
   addGenreMovie: async (genre_name: string) => {
     try {
-      const resp = await axiosClient.post(`/${API_URL.genremovie}`, {
-        genre_name,
-      });
+      const resp = await axiosClient.post(`/${API_URL.genremovie}`, { genre_name });
       return resp;
     } catch (error) {
       console.error(error);
@@ -52,16 +52,13 @@ const moviesAPI = {
 
   updateGenreMovie: async (id: number | undefined, genre_name: string) => {
     try {
-      const resp = await axiosClient.put(`/${API_URL.genremovie}/${id}`, {
-        genre_name,
-      });
+      const resp = await axiosClient.put(`/${API_URL.genremovie}/${id}`, { genre_name });
       return resp;
     } catch (error) {
       console.log(error);
     }
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   addMovie: async (data: any) => {
     try {
       const resp = await axiosClient.post(`/${API_URL.movies}`, data, {
@@ -75,9 +72,9 @@ const moviesAPI = {
     }
   },
 
-  updateMovie: async (id: number, body) => {
+  updateMovie: async (id: number, data: any) => {
     try {
-      const resp = await axiosClient.post(`/${API_URL.movies}/${id}`, body, {
+      const resp = await axiosClient.post(`/${API_URL.movies}/${id}`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
           "X-HTTP-Method-Override": "PUT", // Dùng header để báo đây là PUT

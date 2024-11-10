@@ -1,3 +1,4 @@
+// Điều chỉnh component DetailMoviePage
 import { BreadcrumbComponent } from "@/components/Breadcrumb"
 import Detail from "@/containers/ClientTemplate/component/Film/Detail"
 import RootLayout from "@/components/Layout/RootLayout"
@@ -29,11 +30,11 @@ const DetailMoviePage = () => {
       </RootLayout>
       <Detail movie={movieDetail} />
       <RootLayout className="max-w[1240px] mx-auto grid grid-cols-1 md:grid-cols-[70%_30%] gap-x-5">
-        <ShowTimeTabs />
+         <ShowTimeTabs showDay={movieDetail}  />
         <MovieIsShowing className="hidden md:block" />
       </RootLayout>
     </div>
   )
 }
 
-export default DetailMoviePage
+export default DetailMoviePage;

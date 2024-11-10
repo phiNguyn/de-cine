@@ -8,7 +8,6 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
-// day la useEffect 
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {

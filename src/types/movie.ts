@@ -1,22 +1,22 @@
  export interface Movie {
   id_movie: number;
-  movie_name: string;
-  price: number;
-  description?: string;
-  duration: number;
-  release_date: string;
-  country: string;
-  producer: string;
-  director: string;
-  cast: string;
-  poster_url?: string;
-  id_genre: number;
-  created_at: string;
-  updated_at: string;
-  genres :  GenreMovie[] ;
-  youtube_url ?: string,
-  image_main ?: string
-  status ? :string
+    movie_name: string;
+    price: number;
+    description: string;
+    duration: number;
+    release_date: string;
+    country: string;
+    producer: string;
+    director: string;
+    cast: string;
+    image_main: string;
+    youtube_url: string;
+    poster_url: string;
+    status: string;
+    created_at: string;
+    updated_at: string;
+    genres: GenreMovie[];
+    showtimes: Showtime[];
 }
 
 export interface GenreMovie {
@@ -24,4 +24,29 @@ export interface GenreMovie {
   genre_name: string;
   created_at: Date;
   updated_at: Date;
+}
+
+
+
+export interface Showtime {
+  id_showtime: number;
+  id_movie: number;
+  id_room: number;
+  date_time: string;
+  start_time: string;
+  end_time: string;
+  created_at: string;
+  updated_at: string;
+  showtime_slots: ShowtimeSlot[];
+}
+
+interface ShowtimeSlot {
+  id_slot: number;
+  slot_time: string;
+  created_at: string;
+  updated_at: string;
+  pivot: {
+      id_showtime: number;
+      id_slot: number;
+  };
 }

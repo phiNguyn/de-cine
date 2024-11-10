@@ -8,8 +8,10 @@ export const API_URL = {
   genremovie: "genre_movies",
   accounts : 'accounts',
   rooms : 'rooms',
+  showtime: 'showtime',
   room : 'room',
   chairs : 'chairs',
   showtimeSlots : 'showtime-slots',
   showtimes : 'showtimes'
+
 };
