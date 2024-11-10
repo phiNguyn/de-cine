@@ -44,6 +44,7 @@ export default function ShowTime() {
                                 <TabsTrigger value='reports'>Reports</TabsTrigger>
                                 <TabsTrigger value='add'>Thêm phim mới</TabsTrigger>
                             </TabsList>
+
                             <AddShowTime />
                         </div>
                         <TabsContent value='overview' className='space-y-4'>
@@ -51,7 +52,7 @@ export default function ShowTime() {
 
                     </Tabs>
                     <div className="w-full p-8 ">
-                        <DataTable  name="suất chiếu" value="date_time" columns={columns} data={ShowTimes} />
+                        <DataTable name="suất chiếu" value="date_time" columns={columns} data={ShowTimes} />
                     </div>
 
                 </Layout.Body>

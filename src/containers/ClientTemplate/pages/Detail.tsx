@@ -11,18 +11,20 @@ import { Movie } from "@/types/movie";
 import { useQuery } from "@tanstack/react-query";
 
 const DetailMoviePage = () => {
-  const { id } = useParams()
-  const [movieDetail, setMovieDetail] = useState<Movie>()
-  const { data } = useQuery({
-    queryKey: ['movieDetail'],
-    queryFn: () => moviesAPI.getMovieById(Number(id))
+  const { id } = useParams();
+const [movieDetail, setMovieDetail] = useState<Movie>();
 
-  })
-  useEffect(() => {
-    if (data) {
-      setMovieDetail(data)
-    }
-  }, [id, data])
+const { data } = useQuery({
+  queryKey: ['movieDetail', id], // include id in the query key
+  queryFn: () => moviesAPI.getMovieById(Number(id)),
+});
+
+useEffect(() => {
+  if (data) {
+    setMovieDetail(data);
+  }
+}, [data, setMovieDetail]);
+
   return (
     <div >
       <RootLayout>
@@ -31,7 +33,7 @@ const DetailMoviePage = () => {
       <Detail movie={movieDetail} />
       <RootLayout className="max-w[1240px] mx-auto grid grid-cols-1 md:grid-cols-[70%_30%] gap-x-5">
          <ShowTimeTabs showDay={movieDetail}  />
-        <MovieIsShowing className="hidden md:block" />
+        {/* <MovieIsShowing className="hidden md:block" /> */}
       </RootLayout>
     </div>
   )

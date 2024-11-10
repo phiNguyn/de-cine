@@ -43,7 +43,7 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
   }, [activeTab]);
 
   return (
-    <div>
+    <div className="w-full">
       <Tabs
         defaultValue="0"
         className="w-full my-5 max-w-2xl mx-auto"

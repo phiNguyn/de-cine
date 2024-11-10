@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRoomStore } from "@/store/Room";
 import RoomAPI from "@/apis/room";
@@ -20,8 +20,12 @@ import moviesAPI from "@/apis/movie";
 import ShowtimeAPI from "@/apis/showtime";
 import { ShowTimeSlot } from "@/types/showtime";
 import { Checkbox } from "@/components/ui/checkbox";
-import { format } from "date-fns";
 import moment from "moment-timezone";
+import { Label } from "@/components/ui/label";
+import { useShowTimesStore } from "@/store/Showtime";
+import { NextShowtime } from "@/types/movie";
+const removePointerEvents = "!pointer-events-auto"
+
 const formSchema = z.object({
     id_room: z.string(),
     id_movie: z.string(),
@@ -37,6 +41,8 @@ export default function AddShowTime() {
     const { movie, setMovie } = useMovieStore((state) => state)
     const { Room, setRoom } = useRoomStore((state) => state)
     const [showtimeSlotData, setShowtimeSlot] = useState<ShowTimeSlot[]>([])
+    const addShowtime = useShowTimesStore((state) => state.addShowTimes)
+    const [disabledDates, setDisabledDates] = useState<Date[]>([]);
     const { data } = useQuery({
         queryKey: ['room'],
         queryFn: RoomAPI.getAllRoom,
@@ -53,7 +59,7 @@ export default function AddShowTime() {
     useEffect(() => {
         const fetchMovie = async () => {
             try {
-                const resp = await moviesAPI.getAllMovie()
+                const resp = await moviesAPI.getAllMovieActive('active')
                 const showtimeSlot = await ShowtimeAPI.getShowtimeSlot()
 
                 setMovie(resp)
@@ -72,7 +78,16 @@ export default function AddShowTime() {
             slots: []
         }
     });
-
+    const handleMovieChange = async (movieId: string) => {
+        form.setValue("id_movie", movieId); // Set movie value in the form
+        try {
+            const showtimes = await moviesAPI.getShowtimesByMovieId(Number(movieId));
+            const disabledDatesArray = showtimes.map((showtime: NextShowtime) => new Date(showtime.date_time));
+            setDisabledDates(disabledDatesArray); // Update disabled dates
+        } catch (error) {
+            console.error("Error fetching showtimes:", error);
+        }
+    };
     async function dataSubmit(data: ShowTimeFormValues) {
         const { date_time, id_room, id_movie } = data
         const updateData = {
@@ -88,6 +103,7 @@ export default function AddShowTime() {
             const resp = await ShowtimeAPI.addShowtime(updateData)
             if (resp?.status == 201) {
                 toast.success("ShowTime add successfully")
+                addShowtime(resp.data)
                 form.reset()
                 setOpen(false)
 
@@ -108,9 +124,9 @@ export default function AddShowTime() {
             </DialogTrigger>
             <DialogContent className="">
                 <DialogHeader>
-                    <DialogTitle>Thêm Tài Khoản</DialogTitle>
+                    <DialogTitle>Suất chiếu</DialogTitle>
                     <DialogDescription>
-                        Thêm tài khoản người dùng mới
+                        {/* Make changes to your profile here. Click save when you're done. */}
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -156,7 +172,10 @@ export default function AddShowTime() {
 
 
                                             <FormLabel className="w-[150px]">Chọn phim</FormLabel>
-                                            <Select onValueChange={field.onChange}>
+                                            <Select onValueChange={(value) => {
+                                                field.onChange(value);
+                                                handleMovieChange(value); // Update disabled dates
+                                            }}>
                                                 <FormControl>
                                                     <SelectTrigger className="w-full">
                                                         <SelectValue placeholder='Chọn phim' />
@@ -229,58 +248,59 @@ export default function AddShowTime() {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="date_time"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                    <FormLabel>Ngày chiếu phim</FormLabel>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <FormControl>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="date_time" className="text-center">
+                                Ngày chiếu
+                            </Label>
+                            <Controller
+                                control={form.control}
+                                name="date_time"
+                                render={({ field }) => (
+                                    <FormItem>
+
+
+                                        <Popover>
+                                            <PopoverTrigger asChild>
                                                 <Button
+                                                    id="date_time"
                                                     variant={"outline"}
                                                     className={cn(
-                                                        "w-[240px] pl-3 text-left font-normal",
+                                                        "w-[240px] justify-start text-left font-normal col-span-3",
                                                         !field.value && "text-muted-foreground"
                                                     )}
                                                 >
+                                                    <CalendarIcon className="mr-2 h-4 w-4" />
                                                     {field.value ? (
-                                                        format(field.value, "PPP")
+                                                        moment.tz(field.value, 'Asia/Ho_Chi_Minh').format("DD-MM-YYYY")
+
                                                     ) : (
                                                         <span>Pick a date</span>
                                                     )}
-                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                                 </Button>
-                                            </FormControl>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0" align="start">
-                                            <Calendar
-                                                mode="single"
-                                                selected={field.value}
-                                                onSelect={(date) => {
-                                                    if (date) {
-                                                        field.onChange(new Date(date))
+                                            </PopoverTrigger>
+                                            <PopoverContent className={`w-auto p-0 ${removePointerEvents}`} align="start">
+                                                <Calendar
+                                                    mode="single"
+                                                    selected={field.value instanceof Date ? field.value : undefined}
+                                                    onSelect={field.onChange}
+                                                    disabled={(date) =>
+                                                        date < new Date() || disabledDates.some(disabledDate =>
+                                                            moment(disabledDate).isSame(date, 'day')
+                                                        )
                                                     }
-                                                }}
-                                                disabled={(date) =>
-                                                    date > new Date() || date < new Date("1900-01-01")
-                                                }
-                                                initialFocus
-                                            />
-                                        </PopoverContent>
-                                    </Popover>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <div className="w-full flex justify-between items-center">
-                            <Button className="" type='submit'>Thêm phòng</Button>
-                            <Button variant={"outline"} type='button'
-                                onClick={() => form.reset}
-                            >Reset</Button>
-
+                                                    initialFocus
+                                                    className={removePointerEvents}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                         </div>
+                        <DialogFooter>
+                            <Button type="submit">Save changes</Button>
+                        </DialogFooter>
                     </form>
                 </Form>
             </DialogContent>

@@ -1,7 +1,5 @@
-/* eslint-disable react-refresh/only-export-components */
 
 import { ThemeProvider } from "@/components/theme-provider";
-import { useMovieStore } from "@/store/Movie";
 import moviesAPI from "@/apis/movie";
 import { useQuery } from "@tanstack/react-query";
 import { columns } from "./columns";
@@ -12,8 +10,9 @@ import { DatePickerWithRange } from "../../components/data-picker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 import { DataTable } from "../../components/table/data-table";
+import { useEffect } from "react";
+import { useMovieStore } from "@/store/Movie";
 
 
 export default function ListMovies() {
@@ -22,8 +21,8 @@ export default function ListMovies() {
   const { data } = useQuery({
     queryKey: ['movie'],
     queryFn: moviesAPI.getAllMovie,
-    staleTime: 20 * 1000,
-  });
+    staleTime: 60 * 1000
+  })
   useEffect(() => {
     if (data) {
       setMovie(data)

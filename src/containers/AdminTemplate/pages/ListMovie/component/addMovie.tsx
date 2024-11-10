@@ -5,7 +5,6 @@ import { Select as SelectOne, SelectContent, SelectGroup, SelectItem, SelectTrig
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { useEffect, useState } from "react";
@@ -20,6 +19,7 @@ import { Layout } from "@/components/Layout/layout";
 import moment from "moment-timezone";
 import { useGenreMovieStore } from "@/store/GenreMove";
 import { useQuery } from "@tanstack/react-query";
+
 const movieFormSchema = z.object({
     movie_name: z.string().min(1, { message: "Tên phim không được để trống" }),
     description: z.string().min(1, { message: "Tên phim không được để trống" }),
@@ -61,7 +61,7 @@ export type MovieFormValues = z.infer<typeof movieFormSchema>;
 // const = userGenremo
 export interface AddMovieProp {
     onSubmit: (data: MovieFormValues) => void,
-   
+
 }
 export default function AddMovie({ onSubmit }: AddMovieProp) {
     const [preview, setPreview] = useState<string | null>(null);
@@ -112,7 +112,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function dataSubmit(data: any) {
-        const { release_date} = data
+        const { release_date } = data
         const updateData = {
             ...data,
             price: 0,
@@ -136,7 +136,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                 </Layout>
 
                 <Form {...form}>
-                    <form  onSubmit={form.handleSubmit(dataSubmit)} className="space-y-8">
+                    <form onSubmit={form.handleSubmit(dataSubmit)} className="space-y-8">
                         <div className="grid grid-cols-2 gap-x-10">
                             <div >
 
@@ -174,7 +174,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                                                 )}
                                                             >
                                                                 {field.value ? (
-                                                                    format(field.value, "PPP")
+                                                                    moment.tz(field.value, 'Asia/Ho_Chi_Minh').format("DD-MM-YYYY")
                                                                 ) : (
                                                                     <span>Pick a date</span>
                                                                 )}
@@ -191,9 +191,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                                                     field.onChange(new Date(date))
                                                                 }
                                                             }}
-                                                            disabled={(date) =>
-                                                                date > new Date() || date < new Date("1900-01-01")
-                                                            }
+
                                                             initialFocus
                                                         />
                                                     </PopoverContent>

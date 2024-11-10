@@ -38,8 +38,8 @@ export const PopupYoutubeDetail = ({ ytSlug }: { ytSlug: string | undefined }) =
             <Dialog>
                 <DialogTrigger>
                     <div className="relative group">
-                        <Circle className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-all duration-300" absoluteStrokeWidth size={70} />
-                        <Play className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-all duration-300" size={30} />
+                        <Circle className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-all duration-300 text-yellow-500" absoluteStrokeWidth strokeWidth={5} size={80} />
+                        <Play className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-all duration-300 text-yellow-500" size={40} />
 
                     </div>
                 </DialogTrigger>
@@ -54,6 +54,7 @@ export const PopupYoutubeDetail = ({ ytSlug }: { ytSlug: string | undefined }) =
                         allowFullScreen
                     >
                     </iframe>
+
                 </DialogContent>
             </Dialog>
         </div>

@@ -20,7 +20,16 @@ const moviesAPI = {
       console.log(error);
     }
   },
-
+  getAllMovieActive: async (status?: string) => {
+    try {
+      const resp = await axiosClient.get(`/${API_URL.movies}`, {
+        params: { status },
+      });
+      return resp.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   getMovieById: async (id: number) => {
     try {
       const resp = await axiosClient.get(`/${API_URL.movies}/${id}`);
@@ -42,7 +51,9 @@ const moviesAPI = {
 
   addGenreMovie: async (genre_name: string) => {
     try {
-      const resp = await axiosClient.post(`/${API_URL.genremovie}`, { genre_name });
+      const resp = await axiosClient.post(`/${API_URL.genremovie}`, {
+        genre_name,
+      });
       return resp;
     } catch (error) {
       console.error(error);
@@ -52,7 +63,9 @@ const moviesAPI = {
 
   updateGenreMovie: async (id: number | undefined, genre_name: string) => {
     try {
-      const resp = await axiosClient.put(`/${API_URL.genremovie}/${id}`, { genre_name });
+      const resp = await axiosClient.put(`/${API_URL.genremovie}/${id}`, {
+        genre_name,
+      });
       return resp;
     } catch (error) {
       console.log(error);
@@ -81,6 +94,17 @@ const moviesAPI = {
         },
       });
       return resp;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getShowtimesByMovieId: async (id: number) => {
+    try {
+      const resp = await axiosClient.get(
+        `/${API_URL.movies}/${id}/next-showtimes`
+      );
+      return resp.data;
     } catch (error) {
       console.log(error);
     }

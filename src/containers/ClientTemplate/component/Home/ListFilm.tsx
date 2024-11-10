@@ -11,7 +11,7 @@ const ListFilm = ({ className }: { className?: ReactNode }) => {
 
   const { data } = useQuery({
     queryKey: ['movie'],
-    queryFn: moviesAPI.getAllMovie,
+    queryFn: () => moviesAPI.getAllMovie(),
     staleTime: 5 * 60 * 1000,
   });
   useEffect(() => {
@@ -19,7 +19,7 @@ const ListFilm = ({ className }: { className?: ReactNode }) => {
       setMovie(data)
 
     }
-  }, [data])
+  }, [data, setMovie])
 
   const fakeTabs = [
     {

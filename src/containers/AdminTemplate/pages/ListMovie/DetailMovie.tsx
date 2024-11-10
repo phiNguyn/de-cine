@@ -88,8 +88,8 @@ export default function EditMoviePage() {
       if (resp?.status == 200) {
         toast.success("Cập nhật thành công")
         console.log(resp.data.movie);
-        
-        // updateMovie(resp.data.movie)
+
+        updateMovie(resp.data.movie)
       }
 
     } catch (error) {
