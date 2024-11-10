@@ -12,9 +12,10 @@ const Home: FC = () => {
     <div className="w-full  mx-auto">
       <Banner />
 
-      <ListFilm  className="max-w-[1440px] mx-auto"/>
+      <ListFilm className="   2xl:max-w-[1440px] mx-auto px-5"/>
+  
       <Promotions className="max-w-[1440px] mx-auto">
-        
+        {/* de thong tin vao day */}
       </Promotions>
     </div>
   )

@@ -3,13 +3,13 @@ import { Layout } from "@/components/Layout/layout";
 import { Dropdown } from "@/containers/ClientTemplate/component/Auth";
 import { UserNav } from "../../components/user-nav";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DataTable } from "../Account/data-table";
 import AddShowTime from "./AddShowTime";
 import { useShowTimesStore } from "@/store/Showtime";
 import { useQuery } from "@tanstack/react-query";
 import ShowtimeAPI from "@/apis/showtime";
 import { useEffect } from "react";
 import { columns } from './columns';
+import { DataTable } from "../../components/table/data-table";
 export default function ShowTime() {
     const { ShowTimes, setShowTimes } = useShowTimesStore((state) => state)
     const { data } = useQuery({
@@ -51,7 +51,7 @@ export default function ShowTime() {
 
                     </Tabs>
                     <div className="w-full p-8 ">
-                        <DataTable name="suất chiếu" value="date_time" columns={columns} data={ShowTimes} />
+                        <DataTable  name="suất chiếu" value="date_time" columns={columns} data={ShowTimes} />
                     </div>
 
                 </Layout.Body>

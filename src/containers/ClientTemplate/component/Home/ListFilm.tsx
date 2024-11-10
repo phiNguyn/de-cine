@@ -1,6 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FilmItemHover } from "../Film/index"
-import RootLayout from "@/components/Layout/RootLayout"
 import { useMovieStore } from "@/store/Movie"
 import { useQuery } from "@tanstack/react-query"
 import moviesAPI from "@/apis/movie"
@@ -48,7 +47,7 @@ const ListFilm = ({ className }: { className?: ReactNode }) => {
       }
       return false;
     });
-  
+
     // Trả về tab đã cập nhật với List mới
     return {
       ...tab,
@@ -57,18 +56,23 @@ const ListFilm = ({ className }: { className?: ReactNode }) => {
   });
   return (
     <>
-      <RootLayout className={cn("", className)}>
-        <Tabs defaultValue="future" className=" mx-auto">
-          <TabsList className="w-full gap-x-5 md:w-auto ">
-            {updatedTabs.map((item) => (
-              <TabsTrigger className="cursor-pointer " key={item.id} value={item.slug}>{item.title}</TabsTrigger>
+      <div className={cn("", className)}>
+        <Tabs defaultValue="future" className="mx-auto">
+          <div className="flex items-center gap-x-5">
+            <div className="hidden gap-x-5 lg:flex">
+              <span className="border-l-2 border-yellow-300"></span>
+              <h1 className="text-md font-bold uppercase lg:text-xl">Phim</h1>
+            </div>
+            <TabsList className="w-full gap-x-5 md:w-auto ">
+              {updatedTabs.map((item) => (
+                <TabsTrigger className="cursor-pointer text-xs lg:text-md" key={item.id} value={item.slug}>{item.title}</TabsTrigger>
+              ))}
+            </TabsList>
 
-            ))}
-          </TabsList>
-
+          </div>
           {updatedTabs.map((tab) => (
             <TabsContent key={tab.id} value={tab.slug}>
-              <div className="py-5 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-6 mb-10">
                 {tab.List.map((film) => (
                   <FilmItemHover key={film.id_movie} Film={film} />
                 ))}
@@ -77,8 +81,8 @@ const ListFilm = ({ className }: { className?: ReactNode }) => {
           ))}
 
         </Tabs>
-      </RootLayout>
 
+      </div>
     </>
   )
 }

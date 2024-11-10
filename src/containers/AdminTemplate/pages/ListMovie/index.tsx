@@ -4,7 +4,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { useMovieStore } from "@/store/Movie";
 import moviesAPI from "@/apis/movie";
 import { useQuery } from "@tanstack/react-query";
-import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { Layout } from "@/components/Layout/layout";
 import { Dropdown } from "@/containers/ClientTemplate/component/Auth";
@@ -14,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import { DataTable } from "../../components/table/data-table";
 
 
 export default function ListMovies() {
@@ -28,7 +28,7 @@ export default function ListMovies() {
     if (data) {
       setMovie(data)
     }
-  }, [data])
+  }, [data, setMovie])
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Layout>
@@ -62,7 +62,7 @@ export default function ListMovies() {
             </div>
             <TabsContent value='overview' className='space-y-4'>
               <div className="container mx-auto ">
-                <DataTable columns={columns} data={movie} />
+                <DataTable name="tên phim" value="movie_name" columns={columns} data={movie} />
               </div>
             </TabsContent>
             {/* <TabsContent value='add' className='space-y-4'>
