@@ -5,13 +5,15 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "../../../../components/ui/button"
 import { Circle, Play } from "lucide-react"
+import { ReactNode } from "react"
+import { cn } from "@/lib/utils"
 
-const PopupYoutube = ({ title, ytSlug }: { title: string, ytSlug: string | undefined }) => {
+const PopupYoutube = ({ title, ytSlug, className }: { title: string, ytSlug: string | undefined, className?: ReactNode }) => {
     return (
         <div className="w-full sm:max-w-[300px]">
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant={"trailer"} className="w-full">{title}</Button>
+                    <Button variant={"trailer"} className={cn('w-full', className)}>{title}</Button>
                 </DialogTrigger>
                 <DialogContent className="w-[90vw] h-[50vh] sm:w-[90vw] sm:h-[50vh] md:w-[70vw] md:h-[50vh] lg:max-w-[1200px] lg:h-[70vh]">
 

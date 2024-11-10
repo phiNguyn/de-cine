@@ -6,10 +6,11 @@ import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { Link } from "react-router-dom"
 import { DataTableColumnHeader } from "../Account/data-table-column-header"
-import {  Movie } from "@/types/movie"
+import { Movie } from "@/types/movie"
 import moment from "moment-timezone"
 import { NavLink } from '../../components/silelinks';
 import { API_URL } from "@/constants/api"
+import PopupYoutube from "@/containers/ClientTemplate/component/Film/PopupYoutube"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 interface GenreMovie {
@@ -50,6 +51,18 @@ export const columns: ColumnDef<Movie>[] = [
     },
   },
   {
+    accessorKey: "youtube_url",
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader column={column} title="Trailer" />
+      )
+    },
+    cell: ({ row }) => {
+
+      return <div className="text-left font-medium"><PopupYoutube className='text-primary border-primary' title="Xem trailer" ytSlug={row.getValue('youtube_url')} /></div>
+    },
+  },
+  {
     accessorKey: "movie_name",
     header: ({ column }) => {
       return (
@@ -61,9 +74,10 @@ export const columns: ColumnDef<Movie>[] = [
     accessorKey: "image_main",
     header: ({ column }) => {
       return (
-        <DataTableColumnHeader column={column} title="Ảnh banner" />
+        <DataTableColumnHeader column={column} title="Ảnh chính" />
       )
     },
+
     cell: ({ row }) => {
       const image_main = row.getValue("image_main"); // Lấy URL của ảnh
       return (
@@ -107,10 +121,10 @@ export const columns: ColumnDef<Movie>[] = [
     cell: ({ row }) => {
       const genreName = row.getValue("genres") as GenreMovie[] || [];
       return <div className="text-left font-medium">{genreName.map((n) => (
-      <div key={n.id_genre} className="flex">
-        <div> {n.genre_name}</div>
+        <div key={n.id_genre} className="flex">
+          <div> {n.genre_name}</div>
         </div>
-))}</div>
+      ))}</div>
     },
   },
   {
@@ -121,9 +135,12 @@ export const columns: ColumnDef<Movie>[] = [
       )
     },
     cell: ({ row }) => {
-      const status = row.getValue("status") ;
-      
-      return <div className={`text-center px-1 py-2 rounded-lg font-medium ${status == 'active' ? "bg-green-200 text-green-800"  : ""} }`}>{status == 'active' ? "Đang Chiếu" : ""}</div>
+      const status = row.getValue("status");
+
+      return <div className={`text-center px-1 py-2 rounded-lg font-medium 
+        ${status === 'active' ? "bg-green-200 text-green-800"
+          : status === 'future' ? "text-yellow-700 bg-yellow-200" : "text-red-700 bg-red-200"} }`}>
+        {status === 'active' ? "Đang Chiếu" : status === 'future' ? "Sắp chiếu" : "Ngừng kinh doanh"}</div>
     },
   },
   {
@@ -157,7 +174,7 @@ export const columns: ColumnDef<Movie>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem 
+            <DropdownMenuItem
             >
               <Link to={`/admin/listMovie/${movie.id_movie}`}>Xem chi tiết</Link>
             </DropdownMenuItem>
@@ -170,6 +187,6 @@ export const columns: ColumnDef<Movie>[] = [
   },
 ]
 
-export function formatDay (date : string ) {
+export function formatDay(date: string) {
   return moment.utc(date).tz("Asia/Ho_Chi_Minh").format("DD-MM-YYYY")
 }

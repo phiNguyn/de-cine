@@ -6,12 +6,12 @@ import { UserNav } from '@/containers/AdminTemplate/components/user-nav';
 import { Dropdown } from '@/containers/ClientTemplate/component/Auth';
 import { ThemeProvider } from '@/components/theme-provider';
 import { DatePickerWithRange } from '../../components/data-picker';
-import { DataTable } from './data-table';
 import { useGenreMovieStore } from '@/store/GenreMove';
 import moviesAPI from '@/apis/movie';
 import { columns } from './columns';
 import { useQuery } from '@tanstack/react-query';
 import AddGenreMovie from './add';
+import { DataTable } from '../../components/table/data-table';
 
 export default function GenreMoviePage() {
   const { genreMovie, setGenreMovie } = useGenreMovieStore()
@@ -53,7 +53,7 @@ export default function GenreMoviePage() {
             </div>
             <TabsContent value='overview' className='space-y-4'>
               <div className="container mx-auto">
-                <DataTable columns={columns} data={genreMovie} />
+                <DataTable name='thể loại' value='genre_name' columns={columns} data={genreMovie} />
               </div>
             </TabsContent>
           </Tabs>

@@ -45,7 +45,7 @@ const movieFormSchema = z.object({
         {
             message: 'Hãy chọn file',
             path: ['image_main'], // Chỉ định trường bị lỗi
-        } 
+        }
     ).nullable(),
     youtube_url: z.string().min(1, { message: "Đây là trường bắt buộc" }),
     imgOld: z.string().optional(), // Thêm trường imgOld
@@ -84,7 +84,7 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
     const { data } = useQuery({
         queryKey: ['genreMovie'],
         queryFn: moviesAPI.getAllGenreMovies,
-        staleTime: 30 * 1000,
+        staleTime: 5 * 60 * 1000,
     });
 
 
@@ -106,7 +106,7 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
             imgOld: movie?.image_main,
             poster_url: null,
             posterOld: movie?.poster_url,
-            id_movie:  Number(id)
+            id_movie: Number(id)
         },
     });
     // Thiết lập các tùy chọn khi dữ liệu được lấy về
@@ -135,13 +135,13 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
     };
 
     async function dataSubmit(data: MovieFormValues) {
-        const { release_date , genres } = data
+        const { release_date, genres } = data
         // console.log(data);
         const processedGenres = Array.isArray(genres) && genres.length > 0 ? genres : [];
         const updateReleaseDate = {
             ...data,
             id_movie: movie?.id_movie,
-            genres :processedGenres ,
+            genres: processedGenres,
             release_date: moment.tz(release_date, 'Asia/Ho_Chi_Minh').format("YYYY-MM-DD"),
 
         }
@@ -162,8 +162,8 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
                 </Layout>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(dataSubmit)} className="space-y-8">
-                        <div className="grid grid-cols-2 gap-x-10">
+                    <form encType="multipart/form-data" onSubmit={form.handleSubmit(dataSubmit)} className="space-y-8">
+                        <div className="grid grid-cols-1  lg:grid-cols-2 gap-x-10">
                             <div >
 
                                 <div className=" mb-5">
@@ -384,7 +384,7 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
                                         )}
                                     />
                                 </div>
-                                <Button type="submit">Cập nhật phim</Button>
+
                             </div>
                             <div>
                                 <div>
@@ -449,6 +449,7 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
                                 </div>
                             </div>
                         </div>
+                        <Button type="submit">Cập nhật phim</Button>
                     </form>
                 </Form>
 
