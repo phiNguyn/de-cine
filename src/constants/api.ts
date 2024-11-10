@@ -7,4 +7,7 @@ export const API_URL = {
   genremovie: "genre_movies",
   accounts : 'accounts',
   rooms : 'rooms',
+  showtime: 'showtime',
+  showtimes: 'showtimes',
+
 };
