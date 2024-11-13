@@ -14,21 +14,20 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { UserLogin } from '@/types/user'
+import { Eye, EyeOff } from 'lucide-react'
 
 const formSchema = z.object({
   user_name: z
     .string()
     .min(1, { message: 'Nhập tài khoản' }),
   password: z
-    .string({message : 'Vui lòng nhập mật khẩu'})
+    .string().min(1, { message: 'Vui lòng nhập mật khẩu' })
 })
 interface FormLoginProps {
   onSubmit: (data: UserLogin) => void;
 }
 export function UserAuthForm({ onSubmit }: FormLoginProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  console.log(isLoading);
-
+  const [typePassword, setTypePassword] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,11 +37,9 @@ export function UserAuthForm({ onSubmit }: FormLoginProps) {
   })
 
   const dataSubmit = async (data: z.infer<typeof formSchema>) => {
-    setIsLoading(true)
     console.log(data)
     onSubmit(data)
     setTimeout(() => {
-      setIsLoading(false)
     }, 3000)
   }
 
@@ -69,13 +66,19 @@ export function UserAuthForm({ onSubmit }: FormLoginProps) {
               name='password'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <div className='flex items-center justify-between'>
-                    <FormLabel>Password</FormLabel>
+                  <FormLabel>Nhập mật khẩu</FormLabel>
+                  <div className='flex items-center justify-between relative'>
 
+                    <FormControl>
+                      <Input type={`${typePassword ? 'text' : 'password'}`} placeholder='********' {...field} />
+                    </FormControl>
+                    <div onClick={() => setTypePassword((prev) => !prev)} className="absolute right-3 cursor-pointer">
+                      {typePassword ?
+                        <Eye />
+                        : <EyeOff />
+                      }
+                    </div>
                   </div>
-                  <FormControl>
-                    <Input type='password' placeholder='********' {...field} />
-                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
