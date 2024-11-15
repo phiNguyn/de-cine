@@ -31,3 +31,41 @@ export const useShowTimesStore = create<ShowTimesStore>((set, get) => ({
   RooDetail: null, // Khởi tạo giá trị mặc định là null (hoặc là một đối tượng ShowTimes tùy vào yêu cầu của bạn)
   setRooDetail: (ShowTimes) => set({ RooDetail: ShowTimes }), // Thêm phương thức để cập nhật RooDetail
 }));
+
+
+
+interface ShowtimeStore {
+  selectedShowDate: string;
+  selectedShowTime: string;
+  selectedRoomId: number;  // Kiểu là number thay vì string
+
+  setSelectedShowDate: (date: string) => void;
+  setSelectedShowTime: (time: string) => void;
+  setSelectedRoomId: (roomId: number) => void;  // Phương thức này nhận tham số kiểu number
+
+}
+
+const useShowtimeStore = create<ShowtimeStore>((set) => ({
+  selectedShowDate: '',  // Ban đầu là rỗng
+  selectedShowTime: '',  // Ban đầu là rỗng
+  selectedRoomId: 0,  // Khởi tạo với giá trị số (0 thay vì chuỗi)
+
+  setSelectedShowDate: (date) => set({ selectedShowDate: date }),
+  setSelectedShowTime: (time) => set({ selectedShowTime: time }),
+  setSelectedRoomId: (roomId) => set({ selectedRoomId: roomId }),  // Phương thức nhận số
+
+}));
+
+export default useShowtimeStore;
+
+interface MovieStore {
+  movieName: string;
+  movieImage: string;
+  setMovie: (name: string, image: string) => void;
+}
+
+export const useMovieStore = create<MovieStore>((set) => ({
+  movieName: '',
+  movieImage: '',
+  setMovie: (name, image) => set({ movieName: name, movieImage: image }),
+}));

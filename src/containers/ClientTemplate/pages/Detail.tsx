@@ -15,7 +15,7 @@ const DetailMoviePage = () => {
 const [movieDetail, setMovieDetail] = useState<Movie>();
 
 const { data } = useQuery({
-  queryKey: ['movieDetail', id], // include id in the query key
+  queryKey: ['movieDetail', id],
   queryFn: () => moviesAPI.getMovieById(Number(id)),
 });
 

@@ -1,19 +1,17 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import moment from "moment-timezone";
 import { Movie, Showtime } from "@/types/movie";
-import ShowTimeSlot from "./ShowTimeSlot";  // Component hiển thị suất chiếu
+import ShowTimeSlot from "./ShowTimeSlot";
+import useShowtimeStore from "@/store/Showtime";
 
 export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: (showDay: Movie) => void }> = ({ showDay, onTabChange }) => {
   const [activeTab, setActiveTab] = React.useState("0");
-  const [showSlots, setShowSlots] = React.useState<Showtime[]>(showDay?.showtimes || []);
+  const [showSlots, setShowSlots] = React.useState<Showtime[] | []>([]);
   const tabsListRef = React.useRef<HTMLDivElement>(null);
+  const { setSelectedShowDate, setSelectedShowTime, setSelectedRoomId } = useShowtimeStore((state) => state);
 
   const scrollTabs = (direction: 'left' | 'right') => {
     if (tabsListRef.current) {
@@ -23,7 +21,6 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
   };
 
   React.useEffect(() => {
-    // Cập nhật lại showSlots khi showDay thay đổi
     if (showDay) {
       setShowSlots(showDay.showtimes);
     }
@@ -42,18 +39,35 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
     }
   }, [activeTab]);
 
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    const selectedShowtime = showDay?.showtimes[parseInt(value)];
+    if (selectedShowtime) {
+      const selectedDate = moment
+        .tz(selectedShowtime.date_time, "Asia/Ho_Chi_Minh")
+        .format("DD/MM/YYYY");
+      const selectedTime = moment
+        .tz(selectedShowtime.date_time, "Asia/Ho_Chi_Minh")
+        .format("HH:mm");
+
+      // Lưu vào Zustand
+      setSelectedShowDate(selectedDate);
+      setSelectedShowTime(selectedTime);
+      setSelectedRoomId(Number(selectedShowtime.id_room));
+
+      if (onTabChange) {
+        onTabChange(showDay);
+      }
+    }
+  };
+
+
   return (
     <div className="w-full">
       <Tabs
         defaultValue="0"
         className="w-full my-5 max-w-2xl mx-auto"
-        onValueChange={(value) => {
-          setActiveTab(value);
-          const selectedShowtime = showDay?.showtimes[parseInt(value)];
-          if (selectedShowtime && onTabChange) {
-            onTabChange(showDay);  
-          }
-        }}
+        onValueChange={handleTabChange}
       >
         <div className="relative mb-4">
           <Button
@@ -73,6 +87,7 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
                   className="flex-shrink-0 px-3 py-1.5 text-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-yellow-500 data-[state=active]:text-foreground data-[state=active]:shadow-sm"
                 >
                   {moment.tz(time.date_time, "Asia/Ho_Chi_Minh").format("DD/MM")}
+                  - {time.id_room}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -89,8 +104,9 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
       </Tabs>
 
       {/* Hiển thị suất chiếu cho ngày đã chọn */}
-      <ShowTimeSlot 
+      <ShowTimeSlot
         showSlots={showSlots.length > 0 ? showSlots[parseInt(activeTab)]?.showtime_slots : []}
+        idRoom={showSlots.length > 0 ? showSlots[parseInt(activeTab)]?.id_room : undefined}
       />
     </div>
   );
