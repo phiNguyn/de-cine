@@ -46,7 +46,7 @@ const SeatSelection = () => {
             </div>
           </div>
           <img src="/img/ic-screen.png" alt="screen" className="w-auto mt-6" />
-          <div className="grid grid-cols-12 gap-2 w-fit justify-center pl-60 pt-10">
+          <div >
             <Seats showChair={chair} />
           </div>
         </div>

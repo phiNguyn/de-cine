@@ -1,4 +1,3 @@
-import { API_URL } from "@/constants/api";
 import useShowtimeStore, { useMovieStore } from "@/store/Showtime";
 
 const Ticket = () => {
@@ -16,7 +15,7 @@ const Ticket = () => {
       </div>
       
       <img
-        src={`${API_URL.baseUrl}/${movieImage}`}
+        src={movieImage}
         alt="Poster"
         className="mb-4 w-full rounded-lg"
       />
