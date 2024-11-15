@@ -98,7 +98,7 @@ function NavLink({
           variant: checkActiveNav(href) ? 'default' : 'ghost',
           size: 'sm',
         }),
-        'h-12 justify-start text-wrap rounded-none px-6',
+        'h-12 justify-start text-wrap mx-4 rounded-xl',
         subLink && 'h-10 w-full border-l border-l-slate-500 px-2'
       )}
       aria-current={checkActiveNav(href) ? 'page' : undefined}
@@ -141,7 +141,7 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
             'ml-auto transition-all group-data-[state="open"]:-rotate-180'
           )}
         >
-          <ChevronDown  />
+          <ChevronDown />
         </span>
       </CollapsibleTrigger>
       <CollapsibleContent className='collapsibleDropdown' asChild>

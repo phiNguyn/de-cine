@@ -38,7 +38,7 @@ export default function Sidebar({
   return (
     <aside
       className={cn(
-        `fixed left-0 right-0 top-0 z-50 w-full border-r-2 border-r-muted transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? 'md:w-14' : 'md:w-64'}`,
+        `fixed left-0 right-0 top-0 z-50 w-full border-r border-r-primary transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? 'md:w-14' : 'md:w-64'}`,
         className
       )}
     >
@@ -119,7 +119,7 @@ export default function Sidebar({
           onClick={toggleSidebar}
           size='icon'
           variant='outline'
-          className='absolute -right-5 top-1/2 z-50 hidden rounded-full md:inline-flex'
+          className='absolute -right-5 top-1/2 z-50 hidden border border-primary rounded-full md:inline-flex'
         >
           <ChevronLeft className={`h-5 w-5 ${isCollapsed ? 'rotate-180' : ''}`} />
         </Button>

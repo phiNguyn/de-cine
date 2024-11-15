@@ -25,7 +25,7 @@ const Detail: FC<{ movie: Movie | undefined; className?: ReactNode }> = ({
 
           }}
           className={
-            `absolute hidden w-full h-[50vh] my-auto  md:block  bg-cover bg-center bg-no-repeat  overflow-hidden -z-[1] `
+            `absolute hidden w-full h-full my-auto  md:block  bg-cover bg-center bg-no-repeat  overflow-hidden -z-[1] `
           }
         >
           {/* <img className="hidden md:block lg:block top-0 left-0 w-full object-cover" loading="lazy" src={`${API_URL.baseUrl}/${movie?.poster_url}`} alt="" /> */}
