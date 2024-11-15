@@ -6,6 +6,8 @@ const Homepage = lazy(() => import("@/containers/ClientTemplate/pages/Home"))
 const DetailMoviePage = lazy(() => import("@/containers/ClientTemplate/pages/Detail"))
 const UserProfile = lazy(() => import("@/containers/ClientTemplate/pages/UserProfile"))
 const SeatSelection = lazy(() => import("@/containers/ClientTemplate/pages/Seat"))
+
+const MoviesPage = lazy(() => import("@/containers/ClientTemplate/pages/Movies"))
 const ClientRoutes = [
     {
         path: '/',
@@ -32,9 +34,9 @@ const ClientRoutes = [
                 //     </RequireAuth>
                 //   )
             },
-
             { path: '/Seat/:id', element: <SeatSelection /> },
-            { path: '/Booking', element: <Booking /> }
+            { path: '/Booking', element: <Booking /> },
+            { path: '/Movies', element: <MoviesPage /> }
         ]
     }
 

@@ -5,11 +5,12 @@ import { useQuery } from "@tanstack/react-query"
 import moviesAPI from "@/apis/movie"
 import { ReactNode, useEffect } from "react"
 import { cn } from "@/lib/utils"
+import Loader from "@/components/loader"
 
 const ListFilm = ({ className }: { className?: ReactNode }) => {
   const { movie, setMovie } = useMovieStore((state) => state)
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['movie'],
     queryFn: () => moviesAPI.getAllMovie(),
     staleTime: 5 * 60 * 1000,
@@ -65,18 +66,21 @@ const ListFilm = ({ className }: { className?: ReactNode }) => {
             </div>
             <TabsList className="w-full gap-x-5 md:w-auto ">
               {updatedTabs.map((item) => (
-                <TabsTrigger className="cursor-pointer text-xs lg:text-md" key={item.id} value={item.slug}>{item.title}</TabsTrigger>
+                <TabsTrigger className="cursor-pointer text-xs lg:text-lg" key={item.id} value={item.slug}>{item.title}</TabsTrigger>
               ))}
             </TabsList>
 
           </div>
+
           {updatedTabs.map((tab) => (
             <TabsContent key={tab.id} value={tab.slug}>
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-6 mb-10">
-                {tab.List.map((film) => (
-                  <FilmItemHover key={film.id_movie} Film={film} />
-                ))}
-              </div>
+              {isLoading ? <Loader /> :
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-6 m-10">
+                  {tab.List.map((film) => (
+                    <FilmItemHover key={film.id_movie} Film={film} />
+                  ))}
+                </div>
+              }
             </TabsContent>
           ))}
 

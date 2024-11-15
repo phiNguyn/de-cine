@@ -3,6 +3,7 @@ import { BreadcrumbComponent } from "@/components/Breadcrumb"
 import Detail from "@/containers/ClientTemplate/component/Film/Detail"
 import RootLayout from "@/components/Layout/RootLayout"
 import { ShowTimeTabs } from '@/containers/ClientTemplate/component/Film/ShowTimeTabs';
+// import MovieIsShowing from "@/containers/ClientTemplate/component/Film/MovieIsShowing";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import moviesAPI from "@/apis/movie";

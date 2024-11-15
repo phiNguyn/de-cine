@@ -34,7 +34,7 @@ const Header: FC = () => {
     if (data) {
       setMovie(data)
     }
-  }, [data])
+  }, [data,setMovie])
 
   const test = [
     {
@@ -42,12 +42,12 @@ const Header: FC = () => {
       title: "Phim",
       content: [
         {
-          id: 1, slug: 'active', tiltle: "Đang chiếu", list: movie.filter(movie => {
+          id: 1, slug: 'active', tiltle: "Đang chiếu", link: "Movies", list: movie.filter(movie => {
             return movie.status === "active"
-          }).splice(0,4)
+          }).splice(0, 4)
         },
         {
-          id: 2, slug: 'future', tiltle: "Sắp chiếu", list: movie.filter(movie => {
+          id: 2, slug: 'future', tiltle: "Sắp chiếu", link: "Movies", list: movie.filter(movie => {
             return movie.status === "future"
           })
         }
@@ -78,7 +78,7 @@ const Header: FC = () => {
                   <NavigationMenuContent className="p-2">
                     {item?.content?.map((c, i) => (
                       <NavigationMenuLink key={i} className="flex flex-col p-2">
-                        <Link className="text-2xl" to={"/"}>{c.tiltle}</Link>
+                        <Link className="text-2xl" to={`/${c.link}`} >{c.tiltle}</Link>
                         <div className="flex justify-between gap-6 mt-2">
                           {c.list?.map((l) => (
                             <FilmItem key={l.id_movie} Film={l} />

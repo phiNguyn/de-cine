@@ -25,7 +25,7 @@ const FilmItem = ({ Film }: { Film: Movie }) => {
 const FilmItemHover = ({ Film }: { Film: Movie }) => {
     return (
         <>
-            <div key={Film.id_genre} className="relative group w-full h-auto">
+            <div key={Film.id_movie} className="relative group w-full h-auto">
                 <div className="w-[185px] h-[275px] lg:w-[290px] lg:h-[435px]">
                     <AspectRatio ratio={2 / 3}>
                         <img loading="lazy" className="rounded-xl h-full object-cover" src={`${API_URL.baseUrl}/${Film.image_main}`} alt={Film.movie_name} />
