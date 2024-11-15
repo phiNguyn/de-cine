@@ -2,26 +2,25 @@ import { ChairAPI } from "@/apis/chair";
 import { useEffect, useState } from "react";
 import Seats from "../component/Seat";
 import Ticket from "../component/Seat/ticket";
-import useShowtimeStore from "@/store/Showtime";
+import { Chair } from "@/types/chair";
+import { useParams } from "react-router-dom";
 
 const SeatSelection = () => {
-  const { selectedRoomId } = useShowtimeStore((state) => state);
-  const [chair, setChair] = useState(null);
+  const [chair, setChair] = useState<Chair[] | []>([]);
+  const { id } = useParams()
 
   useEffect(() => {
-    const fetchChair = async () => {
-      if (selectedRoomId) {
-        try {
-          const resp = await ChairAPI.getAllChairByRoomId(selectedRoomId);
-          setChair(resp);
-        } catch (error) {
-          console.log("Error fetching chairs:", error);
-        }
-      }
-    };
-    fetchChair();
-  }, [selectedRoomId]); 
+    const fetchChairs = async () => {
+      try {
+        const resp = await ChairAPI.getAllChairByRoomId(Number(id))
+        setChair(resp)
+      } catch (error) {
+        console.log(error);
 
+      }
+    }
+    fetchChairs()
+  }, [id])
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white m-2">
       <div className="w-full text-center py-4 bg-red-600 text-white">
