@@ -1,8 +1,6 @@
 import { ChairAPI } from "@/apis/chair"
 import { Button } from "@/components/ui/button"
-import { useChairStore } from "@/store/Chair"
 import { Chair } from "@/types/chair"
-import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
@@ -20,7 +18,7 @@ export const RoomChair = () => {
     //   })
     const alpha = Array.from({ length: 6 }, (_, index) => String.fromCharCode(65 + index));
     console.log(alpha);
-    
+
     useEffect(() => {
         const fetchChair = async () => {
             try {
@@ -65,34 +63,34 @@ export const RoomChair = () => {
                         />
                         <div className="grid grid-cols-[90%_10%] gap-x-5 items-center px-5">
 
-                        <div className="grid grid-cols-10 gap-1 md:gap-2 w-fit justify-center mx-auto">
+                            <div className="grid grid-cols-10 gap-1 md:gap-2 w-fit justify-center mx-auto">
 
-                            {data?.map((seat) => (
-                                <div key={seat.id_chair} className="group">
-                                    <button
-                                        className={` 
+                                {data?.map((seat) => (
+                                    <div key={seat.id_chair} className="group">
+                                        <button
+                                            className={` 
         ${seat.chair_status === 'sold'
-                                                ? "bg-blue-500 hover:bg-none cursor-default"
-                                                : seat.chair_status === 'pending'
-                                                    ? "bg-yellow-300"
-                                                    : "bg-gray-300 group-hover:bg-yellow-300 group-active:bg-yellow-300"}
+                                                    ? "bg-blue-500 hover:bg-none cursor-default"
+                                                    : seat.chair_status === 'pending'
+                                                        ? "bg-yellow-300"
+                                                        : "bg-gray-300 group-hover:bg-yellow-300 group-active:bg-yellow-300"}
         
         size-6 text-xs md:size-10 md:text-lg rounded hover:text-black text-gray-900 transition-colors duration-200`}
-                                    >
-                                        {seat.chair_name}
-                                    </button>
-                                </div>
-                            ))}
+                                        >
+                                            {seat.chair_name}
+                                        </button>
+                                    </div>
+                                ))}
 
 
-                        </div>
-                        <div className="grid grid-cols-1 gap-y-2 items-center">
-                            {alpha.map((item, i) => (
-                             <Button key={i} size={"icon"} variant={"primary"}>
-                                {item}
-                             </Button>   
-                            ))}
-                        </div>
+                            </div>
+                            <div className="grid grid-cols-1 gap-y-2 items-center">
+                                {alpha.map((item, i) => (
+                                    <Button key={i} size={"icon"} variant={"primary"}>
+                                        {item}
+                                    </Button>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>

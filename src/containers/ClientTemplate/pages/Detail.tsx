@@ -3,7 +3,6 @@ import { BreadcrumbComponent } from "@/components/Breadcrumb"
 import Detail from "@/containers/ClientTemplate/component/Film/Detail"
 import RootLayout from "@/components/Layout/RootLayout"
 import { ShowTimeTabs } from '@/containers/ClientTemplate/component/Film/ShowTimeTabs';
-import MovieIsShowing from "@/containers/ClientTemplate/component/Film/MovieIsShowing";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import moviesAPI from "@/apis/movie";
@@ -15,7 +14,7 @@ const DetailMoviePage = () => {
 const [movieDetail, setMovieDetail] = useState<Movie>();
 
 const { data } = useQuery({
-  queryKey: ['movieDetail', id], // include id in the query key
+  queryKey: ['movieDetail', id],
   queryFn: () => moviesAPI.getMovieById(Number(id)),
 });
 

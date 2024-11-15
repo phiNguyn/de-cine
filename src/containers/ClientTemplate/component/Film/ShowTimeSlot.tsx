@@ -2,11 +2,21 @@ import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/
 import { ShowtimeSlot } from "@/types/movie";
 import moment from "moment-timezone";
 import { Link } from "react-router-dom";
+import useShowtimeStore from "@/store/Showtime";  // Import hook từ Zustand
 
 const ShowTimeSlot: React.FC<{ showSlots: ShowtimeSlot[] | undefined }> = ({ showSlots }) => {
+  // Lấy state từ Zustand
+  const { setSelectedShowTime } = useShowtimeStore((state) => state);
+
+  // Hàm xử lý khi người dùng chọn suất chiếu
+  const handleSlotSelect = (slotTime: string) => {
+    // Cập nhật thời gian suất chiếu vào Zustand
+    setSelectedShowTime(slotTime);
+  };
+
   return (
     <div className="mx-auto max-w-2xl mb-5">
-      <Card >
+      <Card>
         <CardHeader>
           <CardDescription>Chọn giờ xem bạn nhé</CardDescription>
         </CardHeader>
@@ -14,7 +24,12 @@ const ShowTimeSlot: React.FC<{ showSlots: ShowtimeSlot[] | undefined }> = ({ sho
           {showSlots && showSlots.length > 0 ? (
             <div className="grid grid-cols-4 gap-4 max-w-md">
               {showSlots.map((slot) => (
-                <Link to={`/Seat`} className="group w-fit cursor-pointer" key={slot.id_slot}>
+                <Link
+                  to={`/Seat`}
+                  className="group w-fit cursor-pointer"
+                  key={slot.id_slot}
+                  onClick={() => handleSlotSelect(slot.slot_time)} 
+                >
                   <CardDescription className="border w-fit border-yellow-500 text-primary rounded-md px-3 py-1.5 group-hover:border-white group-hover:bg-yellow-500">
                     {moment(slot.slot_time, 'HH:mm:ss').format('HH:mm')}
                   </CardDescription>
