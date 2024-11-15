@@ -10,9 +10,10 @@ import ShowtimeAPI from "@/apis/showtime";
 import { useEffect } from "react";
 import { columns } from './columns';
 import { DataTable } from "../../components/table/data-table";
+import Loader from "@/components/loader";
 export default function ShowTime() {
     const { ShowTimes, setShowTimes } = useShowTimesStore((state) => state)
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ['showtimes'],
         queryFn: ShowtimeAPI.getAllShowtimes
     })
@@ -48,12 +49,14 @@ export default function ShowTime() {
                             <AddShowTime />
                         </div>
                         <TabsContent value='overview' className='space-y-4'>
+                            {isLoading ? <Loader /> :
+                                <div className="w-full p-8 ">
+                                    <DataTable name="suất chiếu" value="date_time" columns={columns} data={ShowTimes} />
+                                </div>
+                            }
                         </TabsContent>
 
                     </Tabs>
-                    <div className="w-full p-8 ">
-                        <DataTable name="suất chiếu" value="date_time" columns={columns} data={ShowTimes} />
-                    </div>
 
                 </Layout.Body>
             </Layout>

@@ -12,11 +12,12 @@ import { columns } from './columns';
 import { useQuery } from '@tanstack/react-query';
 import AddGenreMovie from './add';
 import { DataTable } from '../../components/table/data-table';
+import Loader from '@/components/loader';
 
 export default function GenreMoviePage() {
   const { genreMovie, setGenreMovie } = useGenreMovieStore()
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['genreMovie'],
     queryFn: moviesAPI.getAllGenreMovies,
     staleTime: 30 * 1000,
@@ -25,7 +26,7 @@ export default function GenreMoviePage() {
     if (data) {
       setGenreMovie(data)
     }
-  }, [data])
+  }, [data, setGenreMovie])
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Layout>
@@ -52,9 +53,12 @@ export default function GenreMoviePage() {
 
             </div>
             <TabsContent value='overview' className='space-y-4'>
-              <div className="container mx-auto">
-                <DataTable name='thể loại' value='genre_name' columns={columns} data={genreMovie} />
-              </div>
+              {
+                isLoading ? <Loader /> :
+                  <div className="container mx-auto">
+                    <DataTable name='thể loại' value='genre_name' columns={columns} data={genreMovie} />
+                  </div>
+              }
             </TabsContent>
           </Tabs>
         </Layout.Body>

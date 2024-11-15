@@ -84,6 +84,7 @@ export const columns: ColumnDef<Movie>[] = [
         <div className="text-left">
           {image_main ? (
             <img
+            loading="lazy"
               src={`${API_URL.baseUrl}/${image_main}`}
               alt="Ảnh banner"
               style={{ width: '100px', height: 'auto', borderRadius: '4px' }} // Tùy chỉnh kích thước ảnh

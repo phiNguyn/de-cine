@@ -13,12 +13,13 @@ import { Link } from "react-router-dom";
 import { DataTable } from "../../components/table/data-table";
 import { useEffect } from "react";
 import { useMovieStore } from "@/store/Movie";
+import Loader from "@/components/loader";
 
 
 export default function ListMovies() {
   const { movie, setMovie } = useMovieStore((state) => state)
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['movie'],
     queryFn: moviesAPI.getAllMovie,
     staleTime: 60 * 1000
@@ -60,9 +61,13 @@ export default function ListMovies() {
               <Button size={"default"} variant={"default"} ><Link to={'/admin/listMovie/add'}>Thêm phim</Link></Button>
             </div>
             <TabsContent value='overview' className='space-y-4'>
-              <div className="container mx-auto ">
-                <DataTable name="tên phim" value="movie_name" columns={columns} data={movie} />
-              </div>
+              {
+                isLoading ? <Loader /> :
+
+                  <div className="container mx-auto ">
+                    <DataTable name="tên phim" value="movie_name" columns={columns} data={movie} />
+                  </div>
+              }
             </TabsContent>
             {/* <TabsContent value='add' className='space-y-4'>
               <div className="container mx-auto ">
