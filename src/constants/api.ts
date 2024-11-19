@@ -2,7 +2,7 @@ export const API_URL = {
   url: "http://127.0.0.1:8000/api",
   baseUrl : 'http://127.0.0.1:8000',
   users: "users",
-  login: "login",
+  login: "auth/login",
   register: "register",
   movies: "movies",
   genremovie: "genre_movies",

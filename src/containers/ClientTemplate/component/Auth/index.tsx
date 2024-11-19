@@ -85,7 +85,7 @@ const TabsDemo = () => {
 
         console.log(user);
         
-      if (resp.message == "Login successful") {
+      if (user.role) {
         toast.success(message);
         login({ role: user.role });
         localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(user));
