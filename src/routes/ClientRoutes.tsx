@@ -8,6 +8,8 @@ const UserProfile = lazy(() => import("@/containers/ClientTemplate/pages/UserPro
 const SeatSelection = lazy(() => import("@/containers/ClientTemplate/pages/Seat"))
 
 const MoviesPage = lazy(() => import("@/containers/ClientTemplate/pages/Movies"))
+const PaymentsPage = lazy(() => import("@/containers/ClientTemplate/pages/Payment"))
+const ProductsPage = lazy(() => import("@/containers/ClientTemplate/pages/Product"))
 const ClientRoutes = [
     {
         path: '/',
@@ -36,7 +38,10 @@ const ClientRoutes = [
             },
             { path: '/Seat/:id', element: <SeatSelection /> },
             { path: '/Booking', element: <Booking /> },
-            { path: '/Movies', element: <MoviesPage /> }
+            { path: '/Movies', element: <MoviesPage /> },
+            { path: '/Payments', element: <PaymentsPage /> },
+            { path: '/products', element: <ProductsPage /> },
+
         ]
     }
 

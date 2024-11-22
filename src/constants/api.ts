@@ -12,6 +12,7 @@ export const API_URL = {
   room : 'room',
   chairs : 'chairs',
   showtimeSlots : 'showtime-slots',
-  showtimes : 'showtimes'
+  showtimes : 'showtimes',
+  products : 'products'
 
 };
