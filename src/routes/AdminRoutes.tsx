@@ -6,7 +6,7 @@ import { lazy } from "react";
 const AppShell = lazy(() => import("@/containers/AdminTemplate/components/app-shell"));
 const DashBoard = lazy(() => import("@/containers/AdminTemplate/pages/DashBoard"));
 const LoginPage = lazy(() => import("@/containers/AdminTemplate/pages/auth/Login"));
-const UsersPage = lazy (() => import('@/containers/AdminTemplate/pages/Account'))
+const UsersPage = lazy(() => import('@/containers/AdminTemplate/pages/Account'))
 const ListMovies = lazy(() => import("@/containers/AdminTemplate/pages/ListMovie"));
 const ListTickets = lazy(() => import("@/containers/AdminTemplate/pages/ListTicket"));
 const ListRooms = lazy(() => import("@/containers/AdminTemplate/pages/ListRoom"));
@@ -17,30 +17,32 @@ const TicketDetail = lazy(() => import("@/containers/AdminTemplate/pages/TicketD
 const AddMoviePage = lazy(() => import("@/containers/AdminTemplate/pages/ListMovie/AddMoviePage"))
 const EditMoviePage = lazy(() => import("@/containers/AdminTemplate/pages/ListMovie/DetailMovie"))
 const ListShowTimePage = lazy(() => import("@/containers/AdminTemplate/pages/ShowTime"))
+const Product = lazy(() => import("@/containers/AdminTemplate/pages/Products"))
 // Định nghĩa AdminRoutes với kiểu RouteObject
 const AdminRoutes = [
   {
     path: 'admin',
-    element:    
-    //  <AppShell />
+    element:
+      //  <AppShell />
 
-    // nào làm đăng nhập thì bật cái này lên
-    (
-      <RequireAuth roles={[ROLE.ADMIN]}>
-        <AppShell />
-      </RequireAuth>
-    )
+      // nào làm đăng nhập thì bật cái này lên
+      (
+        <RequireAuth roles={[ROLE.ADMIN]}>
+          <AppShell />
+        </RequireAuth>
+      )
     ,
     children: [
       {
         path: "",
         element: <DashBoard />
       },
-      {path : 'users' ,
-        element : <UsersPage/>
-        
+      {
+        path: 'users',
+        element: <UsersPage />
+
       },
-      { path : 'users/:id', element : <AccountDetailPage/>},
+      { path: 'users/:id', element: <AccountDetailPage /> },
       {
         path: "listMovie",
         element: <ListMovies />
@@ -49,7 +51,7 @@ const AdminRoutes = [
         path: "listMovie/add",
         element: <AddMoviePage />
       },
-      {path : 'listMovie/:id', element: <EditMoviePage/>},
+      { path: 'listMovie/:id', element: <EditMoviePage /> },
       {
         path: "listTicket",
         element: <ListTickets />
@@ -59,15 +61,15 @@ const AdminRoutes = [
         element: <ListRooms />
       },
       {
-        path : 'listGenreMovies',
-        element : <GenreMoviePage/>
+        path: 'listGenreMovies',
+        element: <GenreMoviePage />
       },
 
       {
-        path : 'listShowTimes',
-        element : <ListShowTimePage/>
+        path: 'listShowTimes',
+        element: <ListShowTimePage />
       },
-//detail 
+      //detail 
       {
         path: "listRoom/:id",
         element: <RoomDetail />
@@ -75,7 +77,11 @@ const AdminRoutes = [
       {
         path: "listTicket/detail",
         element: <TicketDetail />
-      }
+      },
+      {
+        path: "products",
+        element: <Product />
+      },
     ]
   },
   {

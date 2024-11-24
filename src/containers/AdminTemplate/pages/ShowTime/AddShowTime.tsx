@@ -54,7 +54,7 @@ export default function AddShowTime() {
         if (data) {
             setRoom(data)
         }
-    }, [data])
+    }, [data, setRoom])
 
     useEffect(() => {
         const fetchMovie = async () => {
@@ -92,7 +92,7 @@ export default function AddShowTime() {
         const { date_time, id_room, id_movie } = data
         const updateData = {
             ...data,
-            date_time: moment.tz(date_time, 'Asia/Ho_Chi_Minh').format('YYYY-MM-DD'),
+            date_time: moment.tz(date_time, 'Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss'),
             id_room: Number(id_room),
             id_movie: Number(id_movie),
             start_time: moment.tz(date_time, 'Asia/Ho_Chi_Minh').format('YYYY-MM-DD')

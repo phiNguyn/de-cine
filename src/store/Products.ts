@@ -14,7 +14,7 @@ export const useProductStore = create<ProductStore>((set, get) => ({
   setProduct: (Product) => set({ Product }),
   addProduct: (newProduct) =>
     set((state) => ({
-      Product: [...state.Product, newProduct],
+      Product: [newProduct, ...state.Product],
     })),
   updateProduct: (updatedProduct) =>
     set((state) => ({
