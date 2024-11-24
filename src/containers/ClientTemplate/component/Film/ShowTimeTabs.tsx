@@ -5,14 +5,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import moment from "moment-timezone";
 import { Movie, Showtime } from "@/types/movie";
 import ShowTimeSlot from "./ShowTimeSlot";
-import useShowtimeStore from "@/store/Showtime";
+import { useTicketStore } from '@/store/intex';
 
 export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: (showDay: Movie) => void }> = ({ showDay, onTabChange }) => {
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [showSlots, setShowSlots] = useState<Showtime[] | []>([]);
   const tabsListRef = React.useRef<HTMLDivElement>(null);
-  const { setSelectedShowDate, setSelectedShowTime, setSelectedRoomId } = useShowtimeStore((state) => state);
-
+  const { setTicketData } = useTicketStore()
   const scrollTabs = (direction: 'left' | 'right') => {
     if (tabsListRef.current) {
       const scrollAmount = direction === 'left' ? -200 : 200;
@@ -50,11 +49,12 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
         .tz(selectedShowtime.date_time, "Asia/Ho_Chi_Minh")
         .format("HH:mm");
 
-      // Lưu vào Zustand
-      setSelectedShowDate(selectedDate);
-      setSelectedShowTime(selectedTime);
-      setSelectedRoomId(Number(selectedShowtime.id_room));
-
+    
+      setTicketData({
+        selectedRoomId: Number(selectedShowtime.id_room),
+        selectedShowDate: selectedDate,
+        selectedShowTime: selectedTime
+      })
       if (onTabChange) {
         onTabChange(showDay);
       }

@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { useChairStore } from "@/store/Chair";
+import { useTicketStore } from "@/store/intex";
 import { Chair } from "@/types/chair";
 
 const Seats: React.FC<{ showChair: Chair[] | null }> = ({ showChair }) => {
-  const { selectedSeats, addSelectedSeat, removeSelectedSeat } = useChairStore();
+  const {selectedSeats, addSelectedSeat,removeSelectedSeat } = useTicketStore()
   const alpha = Array.from({ length: 6 }, (_, index) => String.fromCharCode(65 + index));
 
   const handleSeatClick = (seat: Chair) => {

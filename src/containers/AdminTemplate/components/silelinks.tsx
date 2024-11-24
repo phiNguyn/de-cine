@@ -1,4 +1,4 @@
-import { Armchair, Clapperboard, Film, LayoutDashboard, Settings, ShoppingBasket, SquarePercent, Ticket, TvMinimal, Users, Videotape } from "lucide-react"
+import { Armchair, Film, LayoutDashboard, Settings, ShoppingBasket, SquarePercent, Ticket, TvMinimal, Users, Videotape } from "lucide-react"
 
 export interface NavLink {
   title: string
@@ -28,11 +28,7 @@ export const sidelinks: SideLink[] = [
     href: '/admin/listTicket',
     icon: <Ticket size={18} />,
   },
-  {
-    title: 'Danh mục phim',
-    href: '/admin/listMovie',
-    icon: <Clapperboard size={18} />,
-  },
+  
   {
     title: 'Danh sách phòng',
     href: '/admin/listRoom',
@@ -168,10 +164,10 @@ export const sidelinks: SideLink[] = [
   //     },
   //   ],
   // },
-  {
-    title: 'Settings',
-    label: '',
-    href: '/admin/settings',
-    icon: <Settings size={18} />,
-  },
+  // {
+  //   title: 'Settings',
+  //   label: '',
+  //   href: '/admin/settings',
+  //   icon: <Settings size={18} />,
+  // },
 ]

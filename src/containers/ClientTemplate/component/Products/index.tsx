@@ -3,16 +3,15 @@ import { Card } from "@/components/ui/card";
 import { Minus, Plus } from 'lucide-react';
 // import VNPAY from "/payment/vnpay.png";
 import { Product } from "@/types/product";
-import { useProductStore } from "@/store/Products";
 import { API_URL } from "@/constants/api";
+import { useTicketStore } from "@/store/intex";
 
 interface TableProductProps {
   products: Product[];
 }
 
 const TableProduct: React.FC<TableProductProps> = ({ products }) => {
-  const { addProduct, decreaseProductQuantity, selectedProducts } = useProductStore();
-
+  const {addProduct,selectedProducts ,decreaseProductQuantity} = useTicketStore()
   const handleAddProduct = (product: Product) => {
     addProduct(product);
   };

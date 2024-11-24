@@ -11,6 +11,7 @@ interface ProductStore {
   selectedProducts: SelectedProduct[];
   setProduct: (Products: Product[]) => void;
   addProduct: (newProduct: Product) => void;
+  addProductNew: (newProduct: Product) => void;
   removeProduct: (productId: number) => void;
   updateProduct: (updatedProduct: Product) => void;
   getProductById: (id: number) => Product | undefined;
@@ -21,6 +22,10 @@ export const useProductStore = create<ProductStore>((set, get) => ({
   Product: [],
   selectedProducts: [],
   setProduct: (Product) => set({ Product }),
+  addProductNew: (newProduct) =>
+    set((state) => ({
+      Product: [...state.Product, newProduct],
+    })),
   addProduct: (newProduct) =>
     set((state) => {
       const existingProduct = state.selectedProducts.find(
@@ -36,22 +41,28 @@ export const useProductStore = create<ProductStore>((set, get) => ({
         };
       } else {
         return {
-          selectedProducts: [...state.selectedProducts, { product: newProduct, quantity: 1 }],
+          selectedProducts: [
+            ...state.selectedProducts,
+            { product: newProduct, quantity: 1 },
+          ],
         };
       }
     }),
   removeProduct: (productId) =>
     set((state) => ({
-oduct: [newProduct, ...state.Product],
       selectedProducts: state.selectedProducts.filter(
         (p) => p.product.id_product !== productId
       ),
     })),
   decreaseProductQuantity: (productId) =>
     set((state) => {
-      const updatedProducts = state.selectedProducts.map((p) =>
-        p.product.id_product === productId ? { ...p, quantity: p.quantity - 1 } : p
-      ).filter(p => p.quantity > 0);
+      const updatedProducts = state.selectedProducts
+        .map((p) =>
+          p.product.id_product === productId
+            ? { ...p, quantity: p.quantity - 1 }
+            : p
+        )
+        .filter((p) => p.quantity > 0);
       return { selectedProducts: updatedProducts };
     }),
   updateProduct: (updatedProduct) =>

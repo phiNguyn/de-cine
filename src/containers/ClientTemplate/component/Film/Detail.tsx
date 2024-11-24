@@ -6,20 +6,22 @@ import { CalendarFold, Clock } from "lucide-react";
 import { Blockquote } from "@/components/Typography/blockquote";
 import { cn } from "@/lib/utils";
 import { API_URL } from "../../../../constants/api";
-import { useMovieStore } from "@/store/Showtime";
+import { useTicketStore } from "@/store/intex";
 
 const Detail: FC<{ movie: Movie | undefined; className?: ReactNode }> = ({
   movie,
   className,
 }) => {
-  const { setMovie } = useMovieStore();
-
+  const { setTicketData } = useTicketStore()
   // Sử dụng useEffect để tự động lưu movie khi component được render
   useEffect(() => {
     if (movie) {
-      setMovie(movie.movie_name, movie.image_main); // Lưu tên và ảnh phim
+      setTicketData({
+        movieName: movie.movie_name,
+        movieImage: movie.image_main,
+      }); // Lưu tên và ảnh phim
     }
-  }, [movie, setMovie]); // useEffect chỉ chạy khi movie thay đổi
+  }, [movie, setTicketData]); // useEffect chỉ chạy khi movie thay đổi
 
   return (
     <div className="w-full my-5 h-[100vh] md:h-[70vh] ">

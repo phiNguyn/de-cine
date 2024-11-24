@@ -5,16 +5,12 @@ import Ticket from "../component/Seat/ticket";
 import { Chair } from "@/types/chair";
 import { useNavigate, useParams } from "react-router-dom";
 import ButtonNext from "../component/Seat/button";
-import useShowtimeStore, { useMovieStore } from "@/store/Showtime";
-import { useChairStore } from "@/store/Chair";
+import { useTicketStore } from "@/store/intex";
 
 const SeatSelection = () => {
   const [chair, setChair] = useState<Chair[] | []>([]);
   const { id } = useParams()
-  const { selectedShowDate, selectedShowTime, selectedRoomId } = useShowtimeStore((state) => state);
-  const { movieName, movieImage } = useMovieStore();
-  const { selectedSeats } = useChairStore();
-
+  const {movieName, movieImage,selectedSeats, selectedShowDate, selectedShowTime, selectedRoomId} = useTicketStore()
   const navigate = useNavigate()
   const handleProceed = () => {
     navigate('/products ', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });

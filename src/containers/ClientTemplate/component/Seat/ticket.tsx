@@ -1,24 +1,16 @@
 import { ReactNode } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { useChairStore } from "@/store/Chair";
-import { useProductStore } from "@/store/Products";
-import useShowtimeStore, { useMovieStore } from "@/store/Showtime";
 import { API_URL } from '@/constants/api';
+import { useTicketStore } from '@/store/intex';
+import { Button } from '@/components/ui/button';
 
 interface TicketProps {
   children?: ReactNode;
 }
 
-const Ticket: React.FC<TicketProps> = ({children}) => {
-  // const navigate = useNavigate();
-  const { selectedShowDate, selectedShowTime, selectedRoomId } = useShowtimeStore((state) => state);
-  const { movieName, movieImage } = useMovieStore();
-  const { selectedSeats } = useChairStore();
-  const { selectedProducts } = useProductStore();
+const Ticket: React.FC<TicketProps> = ({ children }) => {
+  const { movieName, movieImage, selectedShowDate, selectedShowTime, selectedRoomId, selectedSeats, selectedProducts } = useTicketStore()
 
-  // const handleProceed = () => {
-  //   navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, selectedProducts } });
-  // };
+
 
   // Tính tổng tiền ghế đã chọn
   const totalSeatsPrice = selectedSeats.reduce((total, seat) => total + seat.price, 0);
@@ -37,7 +29,7 @@ const Ticket: React.FC<TicketProps> = ({children}) => {
           T18
         </span>
       </div>
-      
+
       <img
         src={`${API_URL.baseUrl}/${movieImage}`}
         alt="Poster"
@@ -81,12 +73,12 @@ const Ticket: React.FC<TicketProps> = ({children}) => {
       </p>
 
       <div className="flex justify-between mt-4">
-        <button className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500 transition-colors duration-200">
-          Quay Lại 
-        </button>
+        <Button variant={"trailer"} size={"default"}>
+          Quay Lại
+        </Button>
         {children}
       </div>
-    </div> 
+    </div>
   );
 };
 

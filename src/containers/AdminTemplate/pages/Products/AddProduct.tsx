@@ -33,7 +33,7 @@ export type ProductFormValues = z.infer<typeof formSchema>;
 const AddProduct = () => {
     const [preview, setPreview] = useState<string | null>(null);
 
-    const { addProduct } = useProductStore((state) => state)
+    const { addProductNew } = useProductStore((state) => state)
     const [isLoading, setIsLoading] = useState(false);
 
     const [open, setOpen] = useState(false);
@@ -58,7 +58,7 @@ const AddProduct = () => {
                 toast.success("Đã thêm sản phẩm", {
                     duration: 1000,
                 })
-                addProduct(resp.data.product)
+                addProductNew(resp.data.product)
                 form.reset()
                 setOpen(false)
             }

@@ -49,7 +49,7 @@ const Header: FC = () => {
         {
           id: 2, slug: 'future', tiltle: "Sắp chiếu", link: "Movies", list: movie.filter(movie => {
             return movie.status === "future"
-          })
+          }).splice(0, 4)
         }
       ]
     },

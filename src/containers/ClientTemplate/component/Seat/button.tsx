@@ -1,13 +1,13 @@
+import { Button } from "@/components/ui/button"
 
 const ButtonNext = ({onclick}: {onclick: () => void }) => {
     
   return (
-       <button
-          onClick={onclick}
-          className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500 transition-colors duration-200"
+       <Button
+          onClick={onclick} variant={"primary"} size={"lg"}
         >
           Tiếp tục
-        </button>
+        </Button>
   )
 }
 
