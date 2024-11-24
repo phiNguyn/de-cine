@@ -208,19 +208,19 @@ export default function AddShowTime() {
                                             Chọn các giờ chiếu
                                         </FormDescription>
                                     </div>
-                                    <div className="flex items-center gap-x-2">
-
-                                        {showtimeSlotData.map((item) => (
-                                            <FormField
+                                    {}
+                                    <div className="flex flex-wrap gap-2">
+                                        {showtimeSlotData.map((item, index) => (
+                                            <div
                                                 key={item.id_slot}
-                                                control={form.control}
-                                                name="slots"
-                                                render={({ field }) => {
-                                                    return (
-                                                        <FormItem
-                                                            key={item.id_slot}
-                                                            className="flex flex-row items-start space-x-3 space-y-0"
-                                                        >
+                                                className="flex items-start space-x-3 w-1/7"
+                                            >
+                                                <FormField
+                                                    key={item.id_slot}
+                                                    control={form.control}
+                                                    name="slots"
+                                                    render={({ field }) => (
+                                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                                             <FormControl>
                                                                 <Checkbox
                                                                     checked={field.value?.includes(item.id_slot)}
@@ -228,26 +228,27 @@ export default function AddShowTime() {
                                                                         return checked
                                                                             ? field.onChange([...field.value, item.id_slot])
                                                                             : field.onChange(
-                                                                                field.value?.filter(
-                                                                                    (value) => value !== item.id_slot
-                                                                                )
-                                                                            )
+                                                                                field.value?.filter((value) => value !== item.id_slot)
+                                                                            );
                                                                     }}
                                                                 />
                                                             </FormControl>
                                                             <FormLabel className="text-sm font-normal">
-                                                                {moment.tz(item.slot_time, "HH:mm:ss", 'Asia/Ho_Chi_Minh').format('HH:mm')}
+                                                                {moment
+                                                                    .tz(item.slot_time, "HH:mm:ss", 'Asia/Ho_Chi_Minh')
+                                                                    .format('HH:mm')}
                                                             </FormLabel>
                                                         </FormItem>
-                                                    )
-                                                }}
-                                            />
+                                                    )}
+                                                />
+                                            </div>
                                         ))}
                                     </div>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="date_time" className="text-center">
                                 Ngày chiếu
