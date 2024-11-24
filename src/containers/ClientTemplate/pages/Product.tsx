@@ -1,3 +1,4 @@
+
 import productAPI from "@/apis/product";
 import { useProductStore } from "@/store/Products";
 import { useQuery } from "@tanstack/react-query";
@@ -39,7 +40,6 @@ export default function Product() {
           <h2 className="text-2xl font-semibold mb-6">Chọn Combo</h2>
           <TableProduct products={Product} />
         </div>
-
         <div className="mt-6 md:mt-0">
     <Ticket>
       <ButtonNext onclick={handleProceed}></ButtonNext>

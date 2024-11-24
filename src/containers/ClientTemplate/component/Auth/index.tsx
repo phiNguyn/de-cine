@@ -32,6 +32,7 @@ import { AuthAPI } from "@/apis/auth";
 import { UserLogin } from "@/types/user";
 import toast, { Toaster } from "react-hot-toast";
 import { StorageKeys } from "@/constants/StorageKeys";
+import { useState } from "react";
 
 // Dropdown component from nguyen-home
 const Dropdown = ({ className }: { className?: string }) => {
@@ -76,37 +77,39 @@ const Auth = () => {
 // TabsDemo component from main
 const TabsDemo = () => {
   const { login } = useAuth();
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRegister, setLoadingRegisrer] = useState(false)
   const handleLogin = async (data: UserLogin) => {
     try {
-      const resp = await AuthAPI.login(data);
-         
-        const {user , message} = resp
+      console.log(isLoading);
 
-        console.log(user);
-        
-      if (user.role) {
+      const resp = await AuthAPI.login(data);
+
+      if (resp.status == 200 && resp.user) {
+        const { user, message } = resp;
         toast.success(message);
         login({ role: user.role });
         localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(user));
         setTimeout(() => {
           window.location.href = '/';
-        }, 3000);
-      } 
+        }, 2000);
+      }
     } catch (error) {
-      console.log(error);
-      toast.error("Có lỗi xảy ra khi đăng nhập.");
+      console.error(error);
+      toast.error("Tài khoản hoặc mật khẩu không đúng");
     }
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleRegister = async (data: any) => {
     try {
+      console.log(isRegister);
+
       const resp = await AuthAPI.register(data);
       if (resp) {
         if (resp.status == 201) {
-            toast.success("Đã tạo thài khoản thành công")
-         
+          toast.success("Đã tạo thài khoản thành công")
+
         } else {
           toast.error("Email hoặc user_name đã tồn tại");
         }
@@ -122,23 +125,23 @@ const TabsDemo = () => {
 
   return (
     <>
-    <Tabs defaultValue="login" className="w-[400px]">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="login">Đăng Nhập</TabsTrigger>
-        <TabsTrigger value="signup">Đăng Ký</TabsTrigger>
-      </TabsList>
-      <TabsContent value="login">
-        <Card>
-          <FormLogin onSubmit={handleLogin} />
-        </Card>
-      </TabsContent>
-      <TabsContent value="signup">
-        <Card>
-          <FormRegister onSubmit={handleRegister}  />
-        </Card>
-      </TabsContent>
-    </Tabs>
-    <Toaster/>
+      <Tabs defaultValue="login" className="w-[400px]">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="login">Đăng Nhập</TabsTrigger>
+          <TabsTrigger value="signup">Đăng Ký</TabsTrigger>
+        </TabsList>
+        <TabsContent value="login">
+          <Card>
+            <FormLogin setIsLoading={setIsLoading} onSubmit={handleLogin} />
+          </Card>
+        </TabsContent>
+        <TabsContent value="signup">
+          <Card>
+            <FormRegister setIsLoading={setLoadingRegisrer} onSubmit={handleRegister} />
+          </Card>
+        </TabsContent>
+      </Tabs>
+      <Toaster />
     </>
   );
 };

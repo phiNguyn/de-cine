@@ -3,18 +3,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form"; // FormMessage to show errors
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"; // FormMessage to show errors
 import { Input } from "@/components/ui/input";
 import { CardContent } from "../../../../components/ui/card";
 import { Label } from "@/components/ui/label"; // Label for input fields
 import { UserRegister } from "@/types/user";
+import { useState } from "react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 // Schema validation with Zod
 const formSchema = z.object({
   user_name: z.string().min(1, { message: "Tên đăng nhập là bắt buộc" }),
   email: z.string().email({ message: "Email không hợp lệ" }),
   full_name: z.string().min(1, { message: "Họ tên là bắt buộc" }),
-  phone: z.string().optional(),
+  phone: z
+    .string()
+    .regex(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, { message: "Số điện thoại không hợp lệ" }),
   loyalty_points: z.number().optional(),
   password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
   confirm_password: z.string().min(6, { message: "Vui lòng xác nhận mật khẩu" }),
@@ -26,27 +30,38 @@ const formSchema = z.object({
 // Define form data type based on Zod schema
 type FormSchemaType = z.infer<typeof formSchema>;
 interface FormRegisterProps {
-  onSubmit: (data: UserRegister) => Promise<void>; 
+  onSubmit: (data: UserRegister) => Promise<void>;
+  setIsLoading: (isLoading: boolean) => void; // Hàm setLoading để cập nhật trạng thái loading
+
 }
 
-export function FormRegister({ onSubmit }: FormRegisterProps) {
+export function FormRegister({ onSubmit, setIsLoading }: FormRegisterProps) {
+  const [typePassword, setTypePassword] = useState(false)
+  const [confirm, setConfirm] = useState(false)
+
 
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      user_name: "",
-      email: "",
-      full_name: "",
-      phone: "",
-      loyalty_points: 0,
-      password: "",
-      confirm_password: "",
-    },
+    // defaultValues: {
+    //   user_name: "",
+    //   email: "",
+    //   full_name: "",
+    //   loyalty_points: 0,
+    //   password: "",
+    //   confirm_password: "",
+    // },
   });
 
-    const dataSubmit = async (data:any) => {
-        await onSubmit(data)
+  const dataSubmit = async (data: any) => {
+    setIsLoading(true); // Bắt đầu loading
+    try {
+      await onSubmit(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false); // Kết thúc loading
     }
+  }
 
   return (
     <Form {...form}>
@@ -60,9 +75,7 @@ export function FormRegister({ onSubmit }: FormRegisterProps) {
                 <FormItem>
                   <Label htmlFor="user_name">Tên đăng nhập</Label>
                   <Input id="user_name" {...field} />
-                  {form.formState.errors.user_name && (
-                    <FormMessage>{form.formState.errors.user_name.message}</FormMessage>
-                  )}
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -74,9 +87,7 @@ export function FormRegister({ onSubmit }: FormRegisterProps) {
                 <FormItem>
                   <Label htmlFor="email">Email</Label>
                   <Input id="email" {...field} />
-                  {form.formState.errors.email && (
-                    <FormMessage>{form.formState.errors.email.message}</FormMessage>
-                  )}
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -88,9 +99,7 @@ export function FormRegister({ onSubmit }: FormRegisterProps) {
                 <FormItem>
                   <Label htmlFor="full_name">Họ tên</Label>
                   <Input id="full_name" {...field} />
-                  {form.formState.errors.full_name && (
-                    <FormMessage>{form.formState.errors.full_name.message}</FormMessage>
-                  )}
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -100,11 +109,9 @@ export function FormRegister({ onSubmit }: FormRegisterProps) {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <Label htmlFor="phone">Số điện thoại</Label>
-                  <Input id="phone" {...field} />
-                  {form.formState.errors.phone && (
-                    <FormMessage>{form.formState.errors.phone.message}</FormMessage>
-                  )}
+                  <FormLabel>Số điện thoại</FormLabel>
+                  <Input type="number"  {...field} />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -121,11 +128,20 @@ export function FormRegister({ onSubmit }: FormRegisterProps) {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <Label htmlFor="password">Mật khẩu</Label>
-                  <Input id="password" type="password" {...field} />
-                  {form.formState.errors.password && (
-                    <FormMessage>{form.formState.errors.password.message}</FormMessage>
-                  )}
+                  <Label>Mật khẩu</Label>
+                  <div className='flex items-center justify-between relative'>
+
+                    <FormControl>
+                      <Input type={`${typePassword ? 'text' : 'password'}`} placeholder='********' {...field} />
+                    </FormControl>
+                    <div onClick={() => setTypePassword((prev) => !prev)} className="absolute right-3 cursor-pointer">
+                      {typePassword ?
+                        <Eye />
+                        : <EyeOff />
+                      }
+                    </div>
+                  </div>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -135,13 +151,20 @@ export function FormRegister({ onSubmit }: FormRegisterProps) {
               name="confirm_password"
               render={({ field }) => (
                 <FormItem>
-                  <Label htmlFor="confirm_password">Nhập lại mật khẩu</Label>
-                  <Input id="confirm_password" type="password" {...field} />
-                  {form.formState.errors.confirm_password && (
-                    <FormMessage>
-                      {form.formState.errors.confirm_password.message}
-                    </FormMessage>
-                  )}
+                  <Label>Nhập lại mật khẩu</Label>
+                  <div className='flex items-center justify-between relative'>
+
+                    <FormControl>
+                      <Input type={`${confirm ? 'text' : 'password'}`} placeholder='********' {...field} />
+                    </FormControl>
+                    <div onClick={() => setConfirm((prev) => !prev)} className="absolute right-3 cursor-pointer">
+                      {confirm ?
+                        <Eye />
+                        : <EyeOff />
+                      }
+                    </div>
+                  </div>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -149,7 +172,16 @@ export function FormRegister({ onSubmit }: FormRegisterProps) {
         </CardContent>
 
         <div className="flex justify-center">
-          <Button type="submit">Đăng Ký</Button>
+          <Button disabled={form.formState.isSubmitting} type="submit" size="lg">
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Đang tạo tài khoản
+              </>
+            ) : (
+              'Đăng ký'
+            )}
+          </Button>
         </div>
       </form>
     </Form>

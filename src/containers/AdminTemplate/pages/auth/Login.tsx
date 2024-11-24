@@ -5,29 +5,31 @@ import { useAuth } from '@/hooks';
 import { UserLogin } from '@/types/user';
 import toast, { Toaster } from 'react-hot-toast'
 import Logo from "/img/logoDev.png"
+import { useState } from 'react';
 export default function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { login } = useAuth()
   const handleLogin = async (data: UserLogin) => {
     try {
+      console.log(isLoading);
+
       const resp = await AuthAPI.login(data)
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      const { user, message } = resp
-      if (user.role === 'admin') {
-
-        toast.success(message)
-        login({ role: user.role })
-        localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(user))
+      if (resp.status == 200 && resp.user) {
+        const { user, message } = resp;
+        toast.success(message);
+        login({ role: user.role });
+        localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(user));
         setTimeout(() => {
-
-          window.location.href = '/admin'
-        }, 3000);
-      } else {
-        toast.error("Tài khoản hoặc mật khẩu không đúng")
-
+          window.location.href = '/admin';
+        }, 2000);
       }
 
     } catch (error) {
       console.log(error);
+
+      toast.error("Tài khoản hoặc mật khẩu không đúng");
+
 
     }
   }
@@ -58,7 +60,7 @@ export default function SignIn() {
               <h1 className='text-2xl font-semibold tracking-tight'>Đăng Nhập</h1>
 
             </div>
-            <UserAuthForm onSubmit={handleLogin} />
+            <UserAuthForm setIsLoading={setIsLoading} onSubmit={handleLogin} />
             <Toaster />
           </div>
         </div>

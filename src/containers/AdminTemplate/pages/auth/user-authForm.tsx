@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { UserLogin } from '@/types/user'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, Loader2 } from 'lucide-react'
 
 const formSchema = z.object({
   user_name: z
@@ -25,8 +25,10 @@ const formSchema = z.object({
 })
 interface FormLoginProps {
   onSubmit: (data: UserLogin) => void;
+  setIsLoading: (isLoading: boolean) => void; // Hàm setLoading để cập nhật trạng thái loading
+
 }
-export function UserAuthForm({ onSubmit }: FormLoginProps) {
+export function UserAuthForm({ onSubmit, setIsLoading }: FormLoginProps) {
   const [typePassword, setTypePassword] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,10 +39,15 @@ export function UserAuthForm({ onSubmit }: FormLoginProps) {
   })
 
   const dataSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data)
-    onSubmit(data)
-    setTimeout(() => {
-    }, 3000)
+    setIsLoading(true); // Bắt đầu loading
+    try {
+      await onSubmit(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false); // Kết thúc loading
+    }
+
   }
 
   return (
@@ -83,10 +90,15 @@ export function UserAuthForm({ onSubmit }: FormLoginProps) {
                 </FormItem>
               )}
             />
-            <Button className='mt-2' type='submit'
-            //  loading={isLoading}
-            >
-              Login
+            <Button disabled={form.formState.isSubmitting} type="submit" size="lg">
+              {form.formState.isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Đang đăng nhập
+                </>
+              ) : (
+                'Đăng nhập'
+              )}
             </Button>
           </div>
         </form>
