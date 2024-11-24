@@ -7,6 +7,11 @@ interface ChairStore {
   addChair: (newChair: Chair) => void;
   updateChair: (updatedChair: Chair) => void;
   getChairById: (id: number) => Chair | undefined;
+
+  // Thêm trạng thái và hành động mới
+  selectedSeats: Chair[];
+  addSelectedSeat: (seat: Chair) => void;
+  removeSelectedSeat: (id: number) => void;
 }
 
 export const useChairStore = create<ChairStore>((set, get) => ({
@@ -23,7 +28,17 @@ export const useChairStore = create<ChairStore>((set, get) => ({
       ),
     })),
   getChairById: (id) => {
-    // Sử dụng get() để lấy trạng thái hiện tại
     return get().Chair.find((u) => u.id_chair === id);
-  }
+  },
+
+  // Khởi tạo trạng thái và hành động mới
+  selectedSeats: [],
+  addSelectedSeat: (seat) =>
+    set((state) => ({
+      selectedSeats: [...state.selectedSeats, seat],
+    })),
+  removeSelectedSeat: (id) =>
+    set((state) => ({
+      selectedSeats: state.selectedSeats.filter((seat) => seat.id_chair !== id),
+    })),
 }));

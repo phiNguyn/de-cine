@@ -5,4 +5,5 @@ export interface Chair {
   chair_status: string;
   column: number;
   row:  string;
+  price: number;
 }

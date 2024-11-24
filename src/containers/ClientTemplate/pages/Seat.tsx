@@ -3,12 +3,23 @@ import { useEffect, useState } from "react";
 import Seats from "../component/Seat";
 import Ticket from "../component/Seat/ticket";
 import { Chair } from "@/types/chair";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import ButtonNext from "../component/Seat/button";
+import useShowtimeStore, { useMovieStore } from "@/store/Showtime";
+import { useChairStore } from "@/store/Chair";
 
 const SeatSelection = () => {
   const [chair, setChair] = useState<Chair[] | []>([]);
   const { id } = useParams()
+  const { selectedShowDate, selectedShowTime, selectedRoomId } = useShowtimeStore((state) => state);
+  const { movieName, movieImage } = useMovieStore();
+  const { selectedSeats } = useChairStore();
 
+  const navigate = useNavigate()
+  const handleProceed = () => {
+    navigate('/products ', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
+  };
+  
   useEffect(() => {
     const fetchChairs = async () => {
       try {
@@ -22,6 +33,7 @@ const SeatSelection = () => {
     fetchChairs()
   }, [id])
   return (
+
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white m-2">
       <div className="w-full text-center py-4 bg-red-600 text-white">
         Theo quy định của cục điện ảnh, phim không dành cho trẻ dưới 18 tuổi
@@ -50,8 +62,15 @@ const SeatSelection = () => {
             <Seats showChair={chair} />
           </div>
         </div>
-
-        <Ticket />
+      <div>
+        
+      </div>
+      <div className="w-1/3 "> 
+      <Ticket>
+        <ButtonNext onclick={handleProceed}/>
+      </Ticket>
+       </div>
+       
       </div>
     </div>
   );
