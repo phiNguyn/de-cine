@@ -6,9 +6,22 @@ import MOMO from "/payment/momo.png"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useState } from "react"
 import { Label } from "@/components/ui/label"
-import BookingInfo from "../component/Booking/BookingInfo"
+import useShowtimeStore, { useMovieStore } from "@/store/Showtime"
+import { useChairStore } from "@/store/Chair"
+import { useNavigate } from "react-router-dom"
+import ButtonNext from "../component/Seat/button"
+import Ticket from "../component/Seat/ticket"
 
 const Payment = () => {
+    const { selectedShowDate, selectedShowTime, selectedRoomId } = useShowtimeStore((state) => state);
+  const { movieName, movieImage } = useMovieStore();
+  const { selectedSeats } = useChairStore();
+  const navigate = useNavigate()
+
+    
+    const handleProceed = () => {
+        navigate('/payments ', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
+      };
     const [selectedMethod, setSelectedMethod] = useState("momo")
     return (
         <div>
@@ -97,7 +110,11 @@ const Payment = () => {
                     </div>
                 </div>
                 <div className="col-span-1 xl:pl-4 xl:order-none order-first py-4">
-                    <BookingInfo title="Thanh toán" />
+                    {/* <BookingInfo title="Thanh toán" /> */}  
+                        <Ticket>
+                        <ButtonNext onclick={handleProceed}></ButtonNext>
+
+                        </Ticket>
                 </div>
             </div>
         </div>

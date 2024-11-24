@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useChairStore } from "@/store/Chair";
 import { useProductStore } from "@/store/Products";
 import useShowtimeStore, { useMovieStore } from "@/store/Showtime";
@@ -9,16 +9,16 @@ interface TicketProps {
   children?: ReactNode;
 }
 
-const Ticket: React.FC<TicketProps> = () => {
-  const navigate = useNavigate();
+const Ticket: React.FC<TicketProps> = ({children}) => {
+  // const navigate = useNavigate();
   const { selectedShowDate, selectedShowTime, selectedRoomId } = useShowtimeStore((state) => state);
   const { movieName, movieImage } = useMovieStore();
   const { selectedSeats } = useChairStore();
   const { selectedProducts } = useProductStore();
 
-  const handleProceed = () => {
-    navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, selectedProducts } });
-  };
+  // const handleProceed = () => {
+  //   navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, selectedProducts } });
+  // };
 
   // Tính tổng tiền ghế đã chọn
   const totalSeatsPrice = selectedSeats.reduce((total, seat) => total + seat.price, 0);
@@ -41,7 +41,7 @@ const Ticket: React.FC<TicketProps> = () => {
       <img
         src={`${API_URL.baseUrl}/${movieImage}`}
         alt="Poster"
-        className="mb-4 w-60 rounded-lg shadow-lg"
+        className="mb-4 w-60 rounded-lg shadow-lg "
       />
       <p className="text-sm mb-1">DeCine: <b> Rạp Decine 12 </b></p>
       <p className="text-sm mb-1">Suất: <b>{selectedShowTime}</b> - {selectedShowDate}</p>
@@ -84,12 +84,7 @@ const Ticket: React.FC<TicketProps> = () => {
         <button className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500 transition-colors duration-200">
           Quay Lại 
         </button>
-        <button
-          onClick={handleProceed}
-          className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500 transition-colors duration-200"
-        >
-          Tiếp tục
-        </button>
+        {children}
       </div>
     </div> 
   );
