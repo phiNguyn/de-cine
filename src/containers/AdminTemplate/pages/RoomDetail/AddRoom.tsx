@@ -19,16 +19,17 @@ const formSchema = z.object({
   chair_number: z.number()
     .min(30, { message: "Số ghế ít nhất là 30" })
     .max(120, { message: "Số ghế tối đa là 120" }), // Thêm thông báo cho max
+  price: z.number()
+
 })
-export type RoomFormValues = z.infer<typeof formSchema>;
+export type AddRoomFormValues = z.infer<typeof formSchema>;
 
 const AddRoom = () => {
   const [open, setOpen] = useState(false);
   const add = useRoomStore((state) => state.addRoom)
-  const form = useForm<RoomFormValues>({
+  const form = useForm<AddRoomFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      chair_number: 0,
       room_name: "",
       room_status: "",
       room_type: "",
@@ -36,10 +37,10 @@ const AddRoom = () => {
     },
   });
 
-  async function dataSubmit(data: RoomFormValues) {
+  async function dataSubmit(data: AddRoomFormValues) {
     console.log(data);
-    
-    
+
+
     try {
 
       const resp = await RoomAPI.addRoom(data)
@@ -103,8 +104,28 @@ const AddRoom = () => {
 
                       <FormLabel className="w-[150px]">Số ghế</FormLabel>
                       <FormControl className="min-w-fit">
-                        <Input type="number" placeholder='Nhập số ghế' {...field} 
-                         onChange={(e) => field.onChange(Number(e.target.value))}
+                        <Input placeholder='Nhập số ghế' {...field}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                        />
+                      </FormControl>
+
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='price'
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-1">
+                    <div className="flex items-center gap-x-5 relative">
+
+
+                      <FormLabel className="w-[150px]">Giá ghế</FormLabel>
+                      <FormControl className="min-w-fit">
+                        <Input placeholder='Giá tiền' {...field}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
                         />
                       </FormControl>
 
@@ -172,7 +193,7 @@ const AddRoom = () => {
                 </FormItem>
               )}
             />
-           
+
             <Button className="ml-auto" type='submit'>Thêm phòng</Button>
           </form>
         </Form>

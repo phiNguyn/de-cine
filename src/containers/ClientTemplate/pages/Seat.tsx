@@ -63,7 +63,7 @@ const SeatSelection = () => {
       </div>
       <div className="w-1/3 "> 
       <Ticket>
-        <ButtonNext onclick={handleProceed}/>
+        <ButtonNext onclick={handleProceed} text="Tiếp Tục"/>
       </Ticket>
        </div>
        

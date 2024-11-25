@@ -22,6 +22,7 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
   useEffect(() => {
     if (showDay) {
       setShowSlots(showDay.showtimes);
+
     }
   }, [showDay]);
 
@@ -49,7 +50,7 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
         .tz(selectedShowtime.date_time, "Asia/Ho_Chi_Minh")
         .format("HH:mm");
 
-    
+
       setTicketData({
         selectedRoomId: Number(selectedShowtime.id_room),
         selectedShowDate: selectedDate,
@@ -60,7 +61,12 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
       }
     }
   };
+  if (showSlots.length == 0) {
+    return (
+      <></>
+    )
 
+  }
   return (
     <div className="w-full">
       <Tabs
@@ -100,6 +106,7 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
           </Button>
         </div>
       </Tabs>
+
 
       {/* Hiển thị suất chiếu cho ngày đã chọn */}
       {activeTab !== null && (

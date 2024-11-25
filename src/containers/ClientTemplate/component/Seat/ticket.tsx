@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { API_URL } from '@/constants/api';
 import { useTicketStore } from '@/store/intex';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 interface TicketProps {
   children?: ReactNode;
@@ -10,7 +11,7 @@ interface TicketProps {
 const Ticket: React.FC<TicketProps> = ({ children }) => {
   const { movieName, movieImage, selectedShowDate, selectedShowTime, selectedRoomId, selectedSeats, selectedProducts } = useTicketStore()
 
-
+  const navigate = useNavigate()
 
   // Tính tổng tiền ghế đã chọn
   const totalSeatsPrice = selectedSeats.reduce((total, seat) => total + seat.price, 0);
@@ -73,7 +74,7 @@ const Ticket: React.FC<TicketProps> = ({ children }) => {
       </p>
 
       <div className="flex justify-between mt-4">
-        <Button variant={"trailer"} size={"default"}>
+        <Button variant={"trailer"} size={"default"} onClick={() => navigate('/')}>
           Quay Lại
         </Button>
         {children}

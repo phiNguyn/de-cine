@@ -46,7 +46,7 @@ export default function Product() {
           </div>
           <div className="mt-6 md:mt-0">
             <Ticket>
-              <ButtonNext onclick={handleProceed}></ButtonNext>
+              <ButtonNext onclick={handleProceed} text="Tiếp Tục"/>
             </Ticket>
           </div>
         </div>

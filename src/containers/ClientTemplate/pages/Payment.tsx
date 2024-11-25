@@ -110,7 +110,7 @@ const Payment = () => {
                 <div className="col-span-1 xl:pl-4 xl:order-none order-first py-4">
                     {/* <BookingInfo title="Thanh toán" /> */}
                     <Ticket>
-                        <ButtonNext onclick={handleProceed}></ButtonNext>
+                        <ButtonNext onclick={handleProceed} text="Thanh Toán" />
 
                     </Ticket>
                 </div>

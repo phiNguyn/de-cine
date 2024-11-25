@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button"
 
-const ButtonNext = ({onclick}: {onclick: () => void }) => {
+const ButtonNext = ({onclick, text}: {onclick: () => void ,text? : string}) => {
     
   return (
        <Button
           onClick={onclick} variant={"primary"} size={"lg"}
         >
-          Tiếp tục
+          {text}
         </Button>
   )
 }

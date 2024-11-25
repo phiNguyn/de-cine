@@ -6,10 +6,12 @@ import moviesAPI from "@/apis/movie"
 import { ReactNode, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import Loader from "@/components/loader"
+import { Button } from "@/components/ui/button"
+import { useNavigate } from "react-router-dom"
 
 const ListFilm = ({ className }: { className?: ReactNode }) => {
   const { movie, setMovie } = useMovieStore((state) => state)
-
+  const navigate= useNavigate()
   const { data, isLoading } = useQuery({
     queryKey: ['movie'],
     queryFn: () => moviesAPI.getAllMovie(),
@@ -76,14 +78,17 @@ const ListFilm = ({ className }: { className?: ReactNode }) => {
             <TabsContent key={tab.id} value={tab.slug}>
               {isLoading ? <Loader /> :
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-6 m-10">
-                  {tab.List.map((film) => (
+                  {tab.List.splice(0,8).map((film) => (
                     <FilmItemHover key={film.id_movie} Film={film} />
                   ))}
                 </div>
               }
             </TabsContent>
           ))}
+          <div className="w-full flex justify-center">
 
+    <Button onClick={() => navigate('/movies')} variant={"primary"} size={"default"}>Xem Thêm</Button>
+          </div>
         </Tabs>
 
       </div>
