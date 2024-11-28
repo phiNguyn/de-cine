@@ -15,7 +15,7 @@ export default function Product() {
   const { Product, setProduct } = useProductStore((state) => state);
   const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, clearTicketData } = useTicketStore()
   const navigate = useNavigate()
-  const { data, isLoading } = useQuery({
+  const { data, isLoading,error } = useQuery({
     queryKey: ['productActive'],
     queryFn: () => productAPI.getAllProductActive(true),
     staleTime: 60 * 1000,

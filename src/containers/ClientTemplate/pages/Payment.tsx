@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query"
 import PaymentAPI from "@/apis/payment"
 import BookingAPI from "@/apis/booking"
 import TicketAPI from "@/apis/ticket"
+import { number } from "zod"
 
 const Payment = () => {
 
@@ -32,6 +33,8 @@ const Payment = () => {
     const user = localStorage.getItem('userData')
     if (user) {
         userAccount = JSON.parse(user)
+        console.log(userAccount);
+
     }
 
     const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, selectedProducts } = useTicketStore()
@@ -60,7 +63,7 @@ const Payment = () => {
             const ticketCreate = await TicketAPI.createTicket(ticketData)
             const data = {
                 account_promotion_id: Number(userAccount.id_account),
-                id_product: selectedProducts.map((product) => product.product.id_product),
+                id_product: Number(selectedProducts.map((product) => product.product.id_product)),
                 id_ticket: ticketCreate.id,
                 id_payment: 1,
                 quantity: 1,
@@ -149,8 +152,8 @@ const Payment = () => {
                 </div>
                 <div className="col-span-1 xl:pl-4  py-4">
                     {/* <BookingInfo title="Thanh toán" /> */}
-                    <Ticket >
-                        <ButtonNext onclick={handleProceed} text="Thanh Toán" />
+                    <Ticket handleProceed={handleProceed}>
+                        <ButtonNext onClick={handleProceed} text="Thanh Toán" />
                     </Ticket>
                 </div>
             </div>
