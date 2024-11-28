@@ -1,5 +1,6 @@
 import { Chair } from "@/types/chair";
 import { Product } from "@/types/product";
+import { showTime } from "@/types/showtime";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -7,11 +8,20 @@ interface SelectedProduct {
   product: Product;
   quantity: number;
 }
+
+interface selectMovie {
+  id_movie: number;
+  movie_name: string;
+}
 interface TicketState {
-  movieName: string;
+  movieName: selectMovie | null;
+  setMovieName: (movie: selectMovie) => void; // Hàm để đặt giá trị movie
   movieImage: string;
-  selectedShowDate: string;
   selectedShowTime: string;
+  selectedShowDate: showTime | null; // Chỉ có 1 giá trị showdate
+  getSelectedShowDate: (id: number) => showTime | undefined; // Tìm kiếm trong danh sách hoặc lấy giá trị hiện tại
+  setSelectedShowDate: (showDate: showTime) => void; // Đặt giá trị showdate
+
   selectedRoomId: number;
 
   // Ghế đã chọn
@@ -34,16 +44,34 @@ interface TicketState {
 
 export const useTicketStore = create<TicketState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       // Dữ liệu mặc định
-      movieName: "",
+      movieName: null,
+
       movieImage: "",
-      selectedShowDate: "",
       selectedShowTime: "",
+      selectedShowDate: null,
       selectedRoomId: 0,
       selectedSeats: [],
       selectedProducts: [],
+      // set movie
+      setMovieName: (movie) =>
+        set(() => ({
+          movieName: movie,
+        })),
+      setSelectedShowDate: (showDate) =>
+        set(() => ({
+          selectedShowDate: showDate,
+        })),
 
+      // Hàm lấy giá trị selectedShowDate
+      getSelectedShowDate: (id) => {
+        const currentShowDate = get().selectedShowDate;
+        if (currentShowDate?.id_showtime === id) {
+          return currentShowDate;
+        }
+        return undefined; // Nếu không khớp id
+      },
       // Quản lý ghế đã chọn
       addSelectedSeat: (seat) =>
         set((state) => ({
@@ -116,9 +144,9 @@ export const useTicketStore = create<TicketState>()(
         })),
       clearTicketData: () =>
         set({
-          movieName: "",
+          movieName: null,
           movieImage: "",
-          selectedShowDate: "",
+          selectedShowDate: null,
           selectedShowTime: "",
           selectedRoomId: 0,
           selectedSeats: [],

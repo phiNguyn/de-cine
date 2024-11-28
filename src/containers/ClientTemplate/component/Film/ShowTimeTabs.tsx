@@ -53,7 +53,7 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
 
       setTicketData({
         selectedRoomId: Number(selectedShowtime.id_room),
-        selectedShowDate: selectedDate,
+        selectedShowDate: { date_time: selectedDate, id_showtime: selectedShowtime.id_showtime },
         selectedShowTime: selectedTime
       })
       if (onTabChange) {
