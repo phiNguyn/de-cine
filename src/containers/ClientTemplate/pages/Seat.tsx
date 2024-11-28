@@ -10,31 +10,28 @@ import { useTicketStore } from "@/store/intex";
 const SeatSelection = () => {
   const [chair, setChair] = useState<Chair[] | []>([]);
   const { id } = useParams()
-  const { movieName, movieImage, selectedSeats, selectedShowDate, selectedShowTime, selectedRoomId } = useTicketStore()
-  const navigate = useNavigate()
-  const handleProceed = () => {
-    navigate('/products ', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
-  };
-
+  const { movieName, movieImage, selectedSeats, selectedShowDate, selectedShowTime, selectedRoomId } = useTicketStore();
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchChairs = async () => {
       try {
-        const resp = await ChairAPI.getAllChairByRoomId(Number(id))
-        setChair(resp)
+        const resp = await ChairAPI.getAllChairByRoomId(Number(id));
+        setChair(resp);
       } catch (error) {
         console.log(error);
-
       }
-    }
-    fetchChairs()
-  }, [id])
-  return (
+    };
+    fetchChairs();
+  }, [id]);
 
+  const handleProceed = () => {
+    navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
+  };
+ return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-5">
       <div className="w-full text-center py-4 bg-red-600 text-white">
         Theo quy định của cục điện ảnh, phim không dành cho trẻ dưới 18 tuổi
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-4 mt-10 w-full">
         <div className="w-full col-span-3">
           <div className="flex justify-center mb-4">
@@ -59,11 +56,10 @@ const SeatSelection = () => {
           </div>
         </div>
         <div className="col-span-1">
-          <Ticket>
-            <ButtonNext onclick={handleProceed} text="Tiếp Tục" />
-          </Ticket>
+          <Ticket handleProceed={handleProceed}>
+            <ButtonNext text="Tiếp Tục" onClick={handleProceed} />
+            </Ticket>
         </div>
-
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-
 import productAPI from "@/apis/product";
 import { useProductStore } from "@/store/Products";
 import { useQuery } from "@tanstack/react-query";
@@ -20,23 +19,34 @@ export default function Product() {
     queryKey: ['productActive'],
     queryFn: () => productAPI.getAllProductActive(true),
     staleTime: 60 * 1000,
-
   });
-
-  const handleProceed = () => {
-    navigate('/payments ', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
-  };
-
   useEffect(() => {
-    if (data) {
+    if (data && Array.isArray(data)) {
       setProduct(data);
     }
   }, [data, setProduct]);
 
+  const handleProceed = () => {
+    navigate("/payments", {
+      state: {
+        selectedShowDate,
+        selectedShowTime,
+        selectedRoomId,
+        movieName,
+        movieImage,
+        selectedSeats,
+      },
+    });
+  };
+
   const handleCancle = async () => {
-    await clearTicketData()
-    navigate('/Booking')
+    await clearTicketData();
+    navigate("/Booking");
+  };
+  if (error || !data || data.length === 0) {
+    return <p>Không có sản phẩm nào khả dụng.</p>;
   }
+
   return (
     <>
       <div className="mx-5">
@@ -50,14 +60,14 @@ export default function Product() {
               {isLoading ? <Loader /> : <TableProduct products={Product} />}
             </div>
             <div className="w-full md:col-span-1 items-start mt-5 lg:mt-0">
-              <Ticket>
-                <ButtonNext onclick={handleProceed} text="Tiếp Tục" />
-              </Ticket>
+              <Ticket handleProceed={handleProceed}>
+            <ButtonNext text="Tiếp Tục" onClick={handleProceed} />
+            </Ticket>
             </div>
+
           </div>
         </div>
       </div>
-
     </>
   );
 }

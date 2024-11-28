@@ -151,7 +151,6 @@ const Payment = () => {
                     {/* <BookingInfo title="Thanh toán" /> */}
                     <Ticket >
                         <ButtonNext onclick={handleProceed} text="Thanh Toán" />
-
                     </Ticket>
                 </div>
             </div>

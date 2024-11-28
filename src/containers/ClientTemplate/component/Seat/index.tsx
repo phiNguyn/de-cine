@@ -1,10 +1,12 @@
 import { useTicketStore } from "@/store/intex";
 import { Chair } from "@/types/chair";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Seats: React.FC<{ showChair: Chair[] | null }> = ({ showChair }) => {
+
   const { selectedSeats, addSelectedSeat, removeSelectedSeat } = useTicketStore()
   const alpha = Array.from({ length: Math.floor(Number(showChair?.length) / 10) }, (_, index) => String.fromCharCode(65 + index));
-
   const handleSeatClick = (seat: Chair) => {
     if (seat.chair_status === "sold") return;
 
@@ -18,7 +20,8 @@ const Seats: React.FC<{ showChair: Chair[] | null }> = ({ showChair }) => {
   };
 
   return (
-    <div className="flex flex-col items-center gapx-6 p-4">
+    <div className="flex flex-col items-center gap-x-6 p-4">
+       <ToastContainer />
       {/* Ghế và Nhãn hàng */}
       <div className="grid grid-cols-11  gap-4">
         {/* Ghế */}
@@ -47,9 +50,9 @@ const Seats: React.FC<{ showChair: Chair[] | null }> = ({ showChair }) => {
             </div>
           ))}
         </div>
-
         {/* Nhãn hàng ghế */}
         <div className="flex flex-col  items-center gap-3 col-span-1">
+
           {alpha.map((item, i) => (
             <div
               key={i}
