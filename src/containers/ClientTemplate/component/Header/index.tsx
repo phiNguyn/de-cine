@@ -14,13 +14,13 @@ import ticketBlack from '@/assets/ic-ticket-black.svg'
 import { FC, useEffect } from "react"
 import { Auth } from "@/containers/ClientTemplate/component/Auth/index"
 import RootLayout from "@/components/Layout/RootLayout"
-import SheetDemo from "./mobile"
 import { FilmItem } from "@/containers/ClientTemplate/component/Film"
 import { useQuery } from "@tanstack/react-query"
 import moviesAPI from "@/apis/movie"
 import { useMovieStore } from "@/store/Movie"
 import { UserNav } from "../Auth/UserNav"
 import SearchBar from "./Search"
+import SheetMenu from "./mobile"
 const Header: FC = () => {
   const { movie, setMovie } = useMovieStore((state) => state)
   const userData = localStorage.getItem("user")
@@ -34,7 +34,7 @@ const Header: FC = () => {
     if (data) {
       setMovie(data)
     }
-  }, [data,setMovie])
+  }, [data, setMovie])
 
   const test = [
     {
@@ -103,7 +103,7 @@ const Header: FC = () => {
             ) : (
               <Auth /> // Display authentication component if not logged in
             )}
-            <SheetDemo />
+            <SheetMenu />
           </div>
         </div>
 

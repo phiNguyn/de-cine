@@ -9,25 +9,17 @@ import ButtonNext from "../component/Seat/button";
 import { useNavigate } from "react-router-dom";
 import { useTicketStore } from "@/store/intex";
 import { Button } from "@/components/ui/button";
+import Loader from "@/components/loader";
 
 export default function Product() {
   const { Product, setProduct } = useProductStore((state) => state);
-  const {
-    selectedShowDate,
-    selectedShowTime,
-    selectedRoomId,
-    movieName,
-    movieImage,
-    selectedSeats,
-    clearTicketData,
-  } = useTicketStore();
-  const navigate = useNavigate();
-  
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["productActive"],
+  const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, clearTicketData } = useTicketStore()
+  const navigate = useNavigate()
+  const { data, isLoading } = useQuery({
+    queryKey: ['productActive'],
     queryFn: () => productAPI.getAllProductActive(true),
+    staleTime: 60 * 1000,
   });
-
   useEffect(() => {
     if (data && Array.isArray(data)) {
       setProduct(data);
@@ -51,30 +43,28 @@ export default function Product() {
     await clearTicketData();
     navigate("/Booking");
   };
-
-  if (isLoading) {
-    return <p>Đang tải sản phẩm...</p>;
-  }
-
   if (error || !data || data.length === 0) {
     return <p>Không có sản phẩm nào khả dụng.</p>;
   }
 
   return (
     <>
-      <Button variant="outline" size="default" onClick={handleCancle}>
-        Hủy giao dịch
-      </Button>
-      <div className="container mx-auto p-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="md:col-span-2">
-            <h2 className="text-2xl font-semibold mb-6">Chọn Combo</h2>
-            <TableProduct products={Product} />
-          </div>
-          <div className="mt-6 md:mt-0">
-            <Ticket handleProceed={handleProceed}>
+      <div className="mx-5">
+        <div className="w-full">
+          <Button className="ml-auto" variant={"outline"} size={"default"} onClick={handleCancle}>Hủy giao dịch</Button>
+        </div>
+        <div className="mx-auto sm:px-8 my-5">
+          <h2 className="text-2xl font-semibold mb-6">Chọn Combo</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3  gap-x-10">
+            <div className="md:col-span-2">
+              {isLoading ? <Loader /> : <TableProduct products={Product} />}
+            </div>
+            <div className="w-full md:col-span-1 items-start mt-5 lg:mt-0">
+              <Ticket handleProceed={handleProceed}>
             <ButtonNext text="Tiếp Tục" onClick={handleProceed} />
             </Ticket>
+            </div>
+
           </div>
         </div>
       </div>

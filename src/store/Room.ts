@@ -7,7 +7,7 @@ interface RoomStore {
   addRoom: (newRoom: Room) => void;
   updateRoom: (updatedRoom: Room) => void;
   getRoomById: (id: number) => Room | undefined;
-  RooDetail: Room;// Sử dụng null hoặc một giá trị mặc định
+  RooDetail: Room | null; // Sử dụng null hoặc một giá trị mặc định
   setRooDetail: (room: Room) => void; // Thêm phương thức để cập nhật RooDetail
 }
 

@@ -11,6 +11,7 @@ import { useTheme } from "../../../../components/theme-provider";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -33,7 +34,7 @@ import { UserLogin } from "@/types/user";
 import toast, { Toaster } from "react-hot-toast";
 import { StorageKeys } from "@/constants/StorageKeys";
 import { useState } from "react";
-
+import { motion } from "framer-motion"
 // Dropdown component from nguyen-home
 const Dropdown = ({ className }: { className?: string }) => {
   const { setTheme } = useTheme();
@@ -59,23 +60,33 @@ const Dropdown = ({ className }: { className?: string }) => {
 
 // Auth component from main
 const Auth = () => {
+  const [open, setOpen] = useState(false)
   return (
-    <Dialog>
+
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Đăng Nhập</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[450px]">
+      <DialogContent className="w-96 sm:w-full">
         <DialogHeader>
-          <DialogTitle className="flex justify-center">Đăng Nhập Tài Khoản</DialogTitle>
+          <DialogTitle hidden>Edit profile</DialogTitle>
+          <DialogDescription hidden>
+            Make changes to your profile here. Click save when you're done.
+          </DialogDescription>
         </DialogHeader>
-        <TabsDemo />
+        <DialogHeader>
+          <DialogTitle hidden >Đăng Nhập Tài Khoản</DialogTitle>
+        </DialogHeader>
+        <TabsDemo setOpen={setOpen} />
+        <Toaster />
+
       </DialogContent>
     </Dialog>
   );
 };
 
 // TabsDemo component from main
-const TabsDemo = () => {
+const TabsDemo = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>>; }) => {
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isRegister, setLoadingRegisrer] = useState(false)
@@ -91,6 +102,7 @@ const TabsDemo = () => {
         login({ role: user.role });
         localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(user));
         setTimeout(() => {
+          setOpen(false);
           window.location.href = '/';
         }, 2000);
       }
@@ -109,12 +121,12 @@ const TabsDemo = () => {
       if (resp) {
         if (resp.status == 201) {
           toast.success("Đã tạo thài khoản thành công")
-
+          setOpen(false);
         } else {
-          toast.error("Email hoặc user_name đã tồn tại");
+          toast.error("Email hoặc tài khoản đã tồn tại");
         }
       } else {
-        toast.error("Email hoặc user_name đã tồn tại");
+        toast.error("Email hoặc tài khoản đã tồn tại");
 
       }
     } catch (error) {
@@ -125,23 +137,53 @@ const TabsDemo = () => {
 
   return (
     <>
-      <Tabs defaultValue="login" className="w-[400px]">
+      <Tabs defaultValue="login" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="login">Đăng Nhập</TabsTrigger>
-          <TabsTrigger value="signup">Đăng Ký</TabsTrigger>
+          <TabsTrigger value="login">
+
+            <motion.div
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              Đăng Nhập
+            </motion.div>
+          </TabsTrigger>
+          <TabsTrigger value="signup">
+
+            <motion.div
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              Đăng Ký
+            </motion.div>
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="login">
-          <Card>
-            <FormLogin setIsLoading={setIsLoading} onSubmit={handleLogin} />
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card>
+              <FormLogin setIsLoading={setIsLoading} onSubmit={handleLogin} />
+            </Card>
+          </motion.div>
         </TabsContent>
         <TabsContent value="signup">
-          <Card>
-            <FormRegister setIsLoading={setLoadingRegisrer} onSubmit={handleRegister} />
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+
+            <Card>
+              <FormRegister setIsLoading={setLoadingRegisrer} onSubmit={handleRegister} />
+            </Card>
+          </motion.div>
         </TabsContent>
       </Tabs>
-      <Toaster />
     </>
   );
 };
