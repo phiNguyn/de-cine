@@ -53,7 +53,7 @@ export const sidelinks: SideLink[] = [
   {
     title: 'Mã Khuyến Mãi',
     label: '',
-    href: '/admin/users',
+    href: '/admin/listPromotions',
     icon: <SquarePercent size={18} />,
   },
   {

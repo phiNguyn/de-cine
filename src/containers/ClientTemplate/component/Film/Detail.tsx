@@ -33,7 +33,7 @@ const Detail: FC<{ movie: Movie | undefined; className?: ReactNode }> = ({
       >
         <div
           style={{
-            backgroundImage: `url(${API_URL.baseUrl}/${movie?.poster_url})`,
+            backgroundImage: `url("${API_URL.baseUrl}/${movie?.poster_url}")`,
           }}
           className={
             `absolute hidden w-full h-full my-auto  md:block  bg-cover bg-center bg-no-repeat  overflow-hidden -z-[1] `

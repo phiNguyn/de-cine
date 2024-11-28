@@ -1,6 +1,7 @@
 // import { ROLE } from "@/constants/role"; 
 // import RequireAuth from "@/guards";
 import { ROLE } from "@/constants/role";
+import ListPromotions from "@/containers/AdminTemplate/pages/ListPromotion";
 import RequireAuth from "@/guards";
 import { lazy } from "react";
 const AppShell = lazy(() => import("@/containers/AdminTemplate/components/app-shell"));
@@ -59,6 +60,10 @@ const AdminRoutes = [
       {
         path: "listRoom",
         element: <ListRooms />
+      },
+      {
+        path: "listPromotions",
+        element: <ListPromotions />
       },
       {
         path: 'listGenreMovies',

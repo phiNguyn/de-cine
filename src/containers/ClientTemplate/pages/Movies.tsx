@@ -3,7 +3,7 @@ import Loader from '@/components/loader';
 import { useMovieStore } from '@/store/Movie';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import {  useLocation } from 'react-router-dom';
 import { FilmItemHover } from '../component/Film';
 
 const MoviesPage = () => {
