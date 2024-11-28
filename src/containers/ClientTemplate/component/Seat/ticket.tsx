@@ -3,7 +3,6 @@ import { API_URL } from '@/constants/api';
 import { useTicketStore } from '@/store/intex';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-
 interface TicketProps {
   children?: ReactNode;
 }
@@ -23,27 +22,34 @@ const Ticket: React.FC<TicketProps> = ({ children }) => {
   const totalPrice = totalSeatsPrice + totalProductsPrice;
 
   return (
-    <div className="w-full  p-6 bg-black text-white rounded-lg shadow-lg mx-auto md:ml-8 my-4 md:my-0 border border-gray-700">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-bold text-lg">{movieName}</h3>
-        <span className="bg-yellow-400 text-black px-2 py-1 rounded">
-          T18
-        </span>
+    <div className="w-full  p-4 md:p-6  bg-black text-white rounded-lg shadow-lg mx-auto my-4 md:my-0 border border-gray-700">
+      <div className="flex  mb-4">
+
+        <div >
+          <img
+            src={`${API_URL.baseUrl}/${movieImage}`}
+            alt="Poster"
+            className="mb-4 w-28 rounded-lg shadow-lg "
+          />
+        </div>
+        <div className='flex items-start gap-x-5 pl-2'>
+          <h3 className="font-bold text-sm md:text-md lg:text-lg">{movieName}</h3>
+          <span className="bg-yellow-400 text-black px-2 py-1 rounded">
+            T18
+          </span>
+        </div>
       </div>
 
-      <img
-        src={`${API_URL.baseUrl}/${movieImage}`}
-        alt="Poster"
-        className="mb-4 w-60 rounded-lg shadow-lg "
-      />
-      <p className="text-sm mb-1">DeCine: <b> Rạp Decine 12 </b></p>
       <p className="text-sm mb-1">Suất: <b>{selectedShowTime}</b> - {selectedShowDate}</p>
       <p className="text-sm mb-1">Phòng: <b>{selectedRoomId}</b></p>
 
       <hr className="my-4 border-gray-600" />
       {selectedSeats.length > 0 ? (
-        <div>
-          <p className="text-sm mb-1">Ghế: {selectedSeats.map((seat) => seat.chair_name).join(', ')}</p>
+        <div className='flex items-center justify-between'>
+          <p className="text-sm mb-1">
+             {selectedSeats.length} x Ghế: {selectedSeats.map((seat) => seat.chair_name).join(', ')}</p>
+          <p className="text-sm mb-1">
+              </p>
         </div>
       ) : (
         <p className="text-sm mb-1">Không có ghế nào được chọn</p>
@@ -54,9 +60,9 @@ const Ticket: React.FC<TicketProps> = ({ children }) => {
         <div>
           <p className="font-bold text-lg mb-2">Sản phẩm đã chọn:</p>
           {selectedProducts.map(({ product, quantity }) => (
-            <div key={product.id_product}>
+            <div key={product.id_product} className='flex items-center justify-between'>
               <p className="text-sm mb-1">
-                {quantity} x {product.product_name}
+             {quantity} x {product.product_name}
               </p>
               <p className="font-bold text-lg">
                 {(product.price * quantity).toLocaleString('vi-VN')} đ

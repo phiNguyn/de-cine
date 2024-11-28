@@ -77,7 +77,7 @@ const ListFilm = ({ className }: { className?: ReactNode }) => {
           {updatedTabs.map((tab) => (
             <TabsContent key={tab.id} value={tab.slug}>
               {isLoading ? <Loader /> :
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-6 m-10">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-6 mt-10">
                   {tab.List.splice(0,8).map((film) => (
                     <FilmItemHover key={film.id_movie} Film={film} />
                   ))}

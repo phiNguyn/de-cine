@@ -5,7 +5,6 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"; // FormMessage to show errors
 import { Input } from "@/components/ui/input";
-import { CardContent } from "../../../../components/ui/card";
 import { Label } from "@/components/ui/label"; // Label for input fields
 import { UserRegister } from "@/types/user";
 import { useState } from "react";
@@ -13,15 +12,15 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 // Schema validation with Zod
 const formSchema = z.object({
-  user_name: z.string().min(1, { message: "Tên đăng nhập là bắt buộc" }),
-  email: z.string().email({ message: "Email không hợp lệ" }),
-  full_name: z.string().min(1, { message: "Họ tên là bắt buộc" }),
+  user_name: z.string({ message: "Tên đăng nhập là bắt buộc" }).min(1, { message: "Tên đăng nhập là bắt buộc" }),
+  email: z.string({ message: "Vui lòng không để trống" }).email({ message: "Email không hợp lệ" }),
+  full_name: z.string({ message: "Vui lòng không để trống" }).min(1, { message: "Họ tên là bắt buộc" }),
   phone: z
-    .string()
+    .string({ message: "Vui lòng không để trống" })
     .regex(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, { message: "Số điện thoại không hợp lệ" }),
   loyalty_points: z.number().optional(),
-  password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
-  confirm_password: z.string().min(6, { message: "Vui lòng xác nhận mật khẩu" }),
+  password: z.string({ message: "Vui lòng không để trống" }).min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
+  confirm_password: z.string({ message: "Vui lòng không để trống" }).min(6, { message: "Vui lòng xác nhận mật khẩu" }),
 }).refine((data) => data.password === data.confirm_password, {
   message: "Mật khẩu không khớp",
   path: ["confirm_password"],
@@ -65,113 +64,125 @@ export function FormRegister({ onSubmit, setIsLoading }: FormRegisterProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(dataSubmit)} className="space-y-8">
-        <CardContent className="space-y-2">
-          <div className="grid gap-4 py-4">
-            <FormField
-              control={form.control}
-              name="user_name"
-              render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="user_name">Tên đăng nhập</Label>
-                  <Input id="user_name" {...field} />
+      <form onSubmit={form.handleSubmit(dataSubmit)}>
+        <div className="grid gap-y-4 p-4">
+          <FormField
+            control={form.control}
+            name="user_name"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex gap-x-2 items-center">
+                  <FormLabel>Tên đăng nhập</FormLabel>
                   <FormMessage />
-                </FormItem>
-              )}
-            />
+                </div>
+                <Input id="user_name" {...field} />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" {...field} />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex gap-x-2 items-center">
+                  <FormLabel >Email</FormLabel>
                   <FormMessage />
-                </FormItem>
-              )}
-            />
+                </div>
+                <Input id="email" {...field} />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="full_name"
-              render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="full_name">Họ tên</Label>
-                  <Input id="full_name" {...field} />
+          <FormField
+            control={form.control}
+            name="full_name"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex gap-x-2 items-center">
+                  <FormLabel >Họ tên</FormLabel>
                   <FormMessage />
-                </FormItem>
-              )}
-            />
+                </div>
+                <Input id="full_name" {...field} />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex gap-x-2 items-center">
                   <FormLabel>Số điện thoại</FormLabel>
-                  <Input type="number"  {...field} />
                   <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="loyalty_points"
-              render={({ field }) => (
-                <input type="hidden" {...field} />
-              )}
-            />
+                </div>
+                <Input type="number"  {...field} />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="loyalty_points"
+            render={({ field }) => (
+              <input type="hidden" {...field} />
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex gap-x-2 items-center">
                   <Label>Mật khẩu</Label>
-                  <div className='flex items-center justify-between relative'>
-
-                    <FormControl>
-                      <Input type={`${typePassword ? 'text' : 'password'}`} placeholder='********' {...field} />
-                    </FormControl>
-                    <div onClick={() => setTypePassword((prev) => !prev)} className="absolute right-3 cursor-pointer">
-                      {typePassword ?
-                        <Eye />
-                        : <EyeOff />
-                      }
-                    </div>
-                  </div>
                   <FormMessage />
-                </FormItem>
-              )}
-            />
 
-            <FormField
-              control={form.control}
-              name="confirm_password"
-              render={({ field }) => (
-                <FormItem>
+                </div>
+                <div className='flex items-center justify-between relative'>
+
+                  <FormControl>
+                    <Input type={`${typePassword ? 'text' : 'password'}`} placeholder='********' {...field} />
+                  </FormControl>
+                  <div onClick={() => setTypePassword((prev) => !prev)} className="absolute right-3 cursor-pointer">
+                    {typePassword ?
+                      <Eye />
+                      : <EyeOff />
+                    }
+                  </div>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="confirm_password"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex gap-x-2 items-center">
                   <Label>Nhập lại mật khẩu</Label>
-                  <div className='flex items-center justify-between relative'>
-
-                    <FormControl>
-                      <Input type={`${confirm ? 'text' : 'password'}`} placeholder='********' {...field} />
-                    </FormControl>
-                    <div onClick={() => setConfirm((prev) => !prev)} className="absolute right-3 cursor-pointer">
-                      {confirm ?
-                        <Eye />
-                        : <EyeOff />
-                      }
-                    </div>
-                  </div>
                   <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </CardContent>
 
-        <div className="flex justify-center">
+                </div>
+                <div className='flex items-center justify-between relative'>
+
+                  <FormControl>
+                    <Input type={`${confirm ? 'text' : 'password'}`} placeholder='********' {...field} />
+                  </FormControl>
+                  <div onClick={() => setConfirm((prev) => !prev)} className="absolute right-3 cursor-pointer">
+                    {confirm ?
+                      <Eye />
+                      : <EyeOff />
+                    }
+                  </div>
+                </div>
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex justify-center items-start">
           <Button disabled={form.formState.isSubmitting} type="submit" size="lg">
             {form.formState.isSubmitting ? (
               <>

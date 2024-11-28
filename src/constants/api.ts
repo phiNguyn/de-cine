@@ -14,6 +14,9 @@ export const API_URL = {
   showtimeSlots : 'showtime-slots',
   showtimes : 'showtimes',
   products : 'products',
-  promotions : 'promotions'
+  promotions : 'promotions',
+  tickets : 'tickets',
+  bookings : 'bookings',
+  payments : 'payments'
 
 };

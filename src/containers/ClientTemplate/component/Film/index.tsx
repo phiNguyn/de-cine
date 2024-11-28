@@ -4,6 +4,8 @@ import PopupYoutube from "./PopupYoutube"
 import { Movie } from "@/types/movie"
 import { API_URL } from "@/constants/api"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { ReactNode } from "react"
+import { cn } from "@/lib/utils"
 
 
 
@@ -22,13 +24,13 @@ const FilmItem = ({ Film }: { Film: Movie }) => {
     )
 }
 
-const FilmItemHover = ({ Film }: { Film: Movie }) => {
+const FilmItemHover = ({ Film, className }: { Film: Movie, className?: ReactNode }) => {
     return (
         <>
-            <div key={Film.id_movie} className="relative group w-full h-auto">
+            <div key={Film.id_movie} className={cn("relative group w-fit h-auto", className)}>
                 <div className="w-[185px] h-[275px] lg:w-[290px] lg:h-[435px]">
                     <AspectRatio ratio={2 / 3}>
-                        <img loading="lazy" className="rounded-xl h-full object-cover" src={`${API_URL.baseUrl}/${Film.image_main}`} alt={Film.movie_name} />
+                        <img loading="lazy" className="rounded-xl w-full h-full object-cover" src={`${API_URL.baseUrl}/${Film.image_main}`} alt={Film.movie_name} />
                         <div className="absolute opacity-0 group-hover:opacity-50 top-0 bg-gray-900 w-full h-full group-hover:duration-500"></div>
                         <div className="flex flex-col gap-y-5 absolute left-1/2 top-1/2  transform -translate-x-1/2 -translate-y-1/2  opacity-0   group-hover:top-1/2  group-hover:opacity-100 transition group-hover:duration-700 ease-in-out">
                             <Button variant={"primary"}>
