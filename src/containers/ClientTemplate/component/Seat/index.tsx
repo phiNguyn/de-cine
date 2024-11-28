@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useTicketStore } from "@/store/intex";
 import { Chair } from "@/types/chair";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Seats: React.FC<{ showChair: Chair[] | null }> = ({ showChair }) => {
-  const {selectedSeats, addSelectedSeat,removeSelectedSeat } = useTicketStore()
+  const { selectedSeats, addSelectedSeat, removeSelectedSeat } = useTicketStore();
   const alpha = Array.from({ length: 6 }, (_, index) => String.fromCharCode(65 + index));
 
   const handleSeatClick = (seat: Chair) => {
@@ -20,9 +22,8 @@ const Seats: React.FC<{ showChair: Chair[] | null }> = ({ showChair }) => {
 
   return (
     <div className="flex flex-col items-center gap-6 p-6">
-      {/* Ghế và Nhãn hàng */}
+      <ToastContainer />
       <div className="grid grid-cols-[1fr_auto] gap-4">
-        {/* Ghế */}
         <div className="grid grid-cols-10 gap-3">
           {showChair?.map((seat) => (
             <div key={seat.id_chair} className="group">
@@ -48,8 +49,6 @@ const Seats: React.FC<{ showChair: Chair[] | null }> = ({ showChair }) => {
             </div>
           ))}
         </div>
-
-        {/* Nhãn hàng ghế */}
         <div className="flex flex-col items-center gap-3 ml-5">
           {alpha.map((item, i) => (
             <Button

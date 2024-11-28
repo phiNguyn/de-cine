@@ -10,26 +10,26 @@ import { useTicketStore } from "@/store/intex";
 const SeatSelection = () => {
   const [chair, setChair] = useState<Chair[] | []>([]);
   const { id } = useParams()
-  const {movieName, movieImage,selectedSeats, selectedShowDate, selectedShowTime, selectedRoomId} = useTicketStore()
-  const navigate = useNavigate()
-  const handleProceed = () => {
-    navigate('/products ', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
-  };
+  const { movieName, movieImage, selectedSeats, selectedShowDate, selectedShowTime, selectedRoomId } = useTicketStore();
+  const navigate = useNavigate();
   
   useEffect(() => {
     const fetchChairs = async () => {
       try {
-        const resp = await ChairAPI.getAllChairByRoomId(Number(id))
-        setChair(resp)
+        const resp = await ChairAPI.getAllChairByRoomId(Number(id));
+        setChair(resp);
       } catch (error) {
         console.log(error);
-
       }
-    }
-    fetchChairs()
-  }, [id])
-  return (
+    };
+    fetchChairs();
+  }, [id]);
 
+  const handleProceed = () => {
+    navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
+  };
+
+  return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white m-2">
       <div className="w-full text-center py-4 bg-red-600 text-white">
         Theo quy định của cục điện ảnh, phim không dành cho trẻ dưới 18 tuổi
@@ -54,19 +54,15 @@ const SeatSelection = () => {
             </div>
           </div>
           <img src="/img/ic-screen.png" alt="screen" className="w-auto mt-6" />
-          <div >
+          <div>
             <Seats showChair={chair} />
           </div>
         </div>
-      <div>
-        
-      </div>
-      <div className="w-1/3 "> 
-      <Ticket>
-        <ButtonNext onclick={handleProceed} text="Tiếp Tục"/>
-      </Ticket>
-       </div>
-       
+        <div className="w-1/3">
+        <Ticket handleProceed={handleProceed}>
+            <ButtonNext text="Tiếp Tục" onClick={handleProceed} />
+            </Ticket>
+        </div>
       </div>
     </div>
   );

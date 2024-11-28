@@ -25,6 +25,7 @@ interface TicketState {
   addProduct: (newProduct: Product) => void;
   removeProduct: (productId: number) => void;
   decreaseProductQuantity: (productId: number) => void;
+  clearSelectedProducts: () => void;
 
   // Quản lý dữ liệu ticket
   setTicketData: (data: Partial<TicketState>) => void;
@@ -101,6 +102,11 @@ export const useTicketStore = create<TicketState>()(
             .filter((p) => p.quantity > 0);
           return { selectedProducts: updatedProducts };
         }),
+
+      clearSelectedProducts: () =>
+        set(() => ({
+          selectedProducts: [],
+        })),
 
       // Cập nhật dữ liệu
       setTicketData: (data) =>

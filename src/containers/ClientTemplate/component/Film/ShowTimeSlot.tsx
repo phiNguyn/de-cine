@@ -2,17 +2,17 @@ import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/
 import { ShowtimeSlot } from "@/types/movie";
 import moment from "moment-timezone";
 import { useNavigate } from "react-router-dom";
-import useShowtimeStore from "@/store/Showtime";  // Import hook từ Zustand
+import { useTicketStore } from "@/store/intex";
 
 const ShowTimeSlot: React.FC<{ showSlots: ShowtimeSlot[] | undefined, idRoom?: number }> = ({ showSlots, idRoom }) => {
   const navigate = useNavigate()
+  const setSelectedShowTime = useTicketStore((state) => state.setTicketData)
   // Lấy state từ Zustand
-  const { setSelectedShowTime } = useShowtimeStore((state) => state);
 
   // Hàm xử lý khi người dùng chọn suất chiếu
   const handleSlotSelect = (slotTime: string) => {
     // Cập nhật thời gian suất chiếu vào Zustand
-    setSelectedShowTime(slotTime);
+    setSelectedShowTime({selectedShowTime:slotTime});
     navigate(`/Seat/${idRoom}`)
 
   };

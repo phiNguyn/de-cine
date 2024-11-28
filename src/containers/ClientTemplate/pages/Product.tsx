@@ -1,4 +1,3 @@
-
 import productAPI from "@/apis/product";
 import { useProductStore } from "@/store/Products";
 import { useQuery } from "@tanstack/react-query";
@@ -13,31 +12,59 @@ import { Button } from "@/components/ui/button";
 
 export default function Product() {
   const { Product, setProduct } = useProductStore((state) => state);
-  const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, clearTicketData } = useTicketStore()
-  const navigate = useNavigate()
-
-  const { data } = useQuery({
-    queryKey: ['productActive'],
+  const {
+    selectedShowDate,
+    selectedShowTime,
+    selectedRoomId,
+    movieName,
+    movieImage,
+    selectedSeats,
+    clearTicketData,
+  } = useTicketStore();
+  const navigate = useNavigate();
+  
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["productActive"],
     queryFn: () => productAPI.getAllProductActive(true),
   });
 
-  const handleProceed = () => {
-    navigate('/payments ', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
-  };
-
   useEffect(() => {
-    if (data) {
+    if (data && Array.isArray(data)) {
       setProduct(data);
     }
   }, [data, setProduct]);
 
+  const handleProceed = () => {
+    navigate("/payments", {
+      state: {
+        selectedShowDate,
+        selectedShowTime,
+        selectedRoomId,
+        movieName,
+        movieImage,
+        selectedSeats,
+      },
+    });
+  };
+
   const handleCancle = async () => {
-    await clearTicketData()
-    navigate('/Booking')
+    await clearTicketData();
+    navigate("/Booking");
+  };
+
+  if (isLoading) {
+    return <p>Đang tải sản phẩm...</p>;
   }
+
+  if (error || !data || data.length === 0) {
+    return <p>Không có sản phẩm nào khả dụng.</p>;
+  }
+
   return (
     <>
-      <Button variant={"outline"} size={"default"} onClick={handleCancle}>Hủy giao dịch</Button>
+      <Button variant="outline" size="default" onClick={handleCancle}>
+        Hủy giao dịch
+      </Button>
       <div className="container mx-auto p-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
@@ -45,8 +72,8 @@ export default function Product() {
             <TableProduct products={Product} />
           </div>
           <div className="mt-6 md:mt-0">
-            <Ticket>
-              <ButtonNext onclick={handleProceed} text="Tiếp Tục"/>
+            <Ticket handleProceed={handleProceed}>
+            <ButtonNext text="Tiếp Tục" onClick={handleProceed} />
             </Ticket>
           </div>
         </div>

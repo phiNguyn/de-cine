@@ -1,14 +1,22 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
-const ButtonNext = ({onclick, text}: {onclick: () => void ,text? : string}) => {
-    
-  return (
-       <Button
-          onClick={onclick} variant={"primary"} size={"lg"}
-        >
-          {text}
-        </Button>
-  )
+interface ButtonNextProps {
+  onClick: () => void;
+  text?: string;
+  disabled?: boolean; 
 }
 
-export default ButtonNext
+const ButtonNext: React.FC<ButtonNextProps> = ({ onClick, text, disabled }) => {
+  return (
+    <Button
+      onClick={onClick}
+      variant="primary"
+      size="lg"
+      disabled={disabled} 
+    >
+      {text}
+    </Button>
+  );
+};
+
+export default ButtonNext;
