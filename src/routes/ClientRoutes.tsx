@@ -10,6 +10,8 @@ const SeatSelection = lazy(() => import("@/containers/ClientTemplate/pages/Seat"
 const MoviesPage = lazy(() => import("@/containers/ClientTemplate/pages/Movies"))
 const PaymentsPage = lazy(() => import("@/containers/ClientTemplate/pages/Payment"))
 const ProductsPage = lazy(() => import("@/containers/ClientTemplate/pages/Product"))
+const UserTicketsPage = lazy(() => import("@/containers/ClientTemplate/component/UserProfile/table"))
+const AccountInfoPage = lazy(() => import("@/containers/ClientTemplate/component/UserProfile/index"))
 const ClientRoutes = [
     {
         path: '/',
@@ -35,6 +37,11 @@ const ClientRoutes = [
                 //         <UserProfile/>
                 //     </RequireAuth>
                 //   )
+                , children: [
+                    { path: '', index: true, element: <AccountInfoPage /> },
+
+                    { path: 'tickets', element: <UserTicketsPage /> }
+                ]
             },
             { path: '/Seat/:id', element: <SeatSelection /> },
             { path: '/Booking', element: <Booking /> },

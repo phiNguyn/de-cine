@@ -3,9 +3,9 @@ import { Room } from "./room";
 
 // show time
 export interface ShowTimes {
-  id_showtime: 1;
-  id_movie: 5;
-  id_room: 1;
+  id_showtime: number;
+  id_movie: number;
+  id_room: number;
   date_time: Date;
   start_time: Date;
   end_time: Date;

@@ -32,8 +32,6 @@ const Payment = () => {
     const user = localStorage.getItem('userData')
     if (user) {
         userAccount = JSON.parse(user)
-        console.log(userAccount);
-
     }
 
     const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, selectedProducts } = useTicketStore()
@@ -79,6 +77,7 @@ const Payment = () => {
                 }
                 const VNPAY = await PaymentAPI.createPayment(dataVNPAY)
                 if (VNPAY?.status == 200) {
+
                     window.location.href = VNPAY.data.data
                 }
             }

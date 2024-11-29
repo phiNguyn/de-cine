@@ -10,6 +10,16 @@ const BookingAPI = {
       console.log(error);
     }
   },
+
+  getBookingsByAccountId : async (id: number) => {
+    try {
+    const resp = await axiosClient.get(`/${API_URL.bookingsAccount}/${id}`)
+    return resp.data
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
 };
 
 export default BookingAPI;
