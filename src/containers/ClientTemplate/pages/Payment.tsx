@@ -34,7 +34,7 @@ const Payment = () => {
         userAccount = JSON.parse(user)
     }
 
-    const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, selectedProducts } = useTicketStore()
+    const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, selectedProducts,clearTicketData } = useTicketStore()
 
     const navigate = useNavigate()
 
@@ -76,8 +76,9 @@ const Payment = () => {
                     total_amount: data.total_amount
                 }
                 const VNPAY = await PaymentAPI.createPayment(dataVNPAY)
-                if (VNPAY?.status == 200) {
 
+                if (VNPAY?.status == 200) {
+                    await clearTicketData()
                     window.location.href = VNPAY.data.data
                 }
             }
@@ -93,7 +94,7 @@ const Payment = () => {
                     <div className="p-4">
                         <h3 className="text-l mb-4 font-semibold">Khuyến mãi</h3>
                         <div className="md:mt-4 mt-2">
-                            <div className="mt-4 grid grid-cols-3 gap-4 xl:w-2/3 w-full">
+                            {/* <div className="mt-4 grid grid-cols-3 gap-4 xl:w-2/3 w-full">
                                 <div className="col-span-2">
                                     <label htmlFor="voucher-code" className="inline-block mb-1 text-black-10 text-sm font-bold">Mã khuyến mãi</label>
                                     <Input id="voucher-code" type="text" className="border-primary w-full py-2 px-4" />
@@ -102,10 +103,10 @@ const Payment = () => {
                                     <Button variant={"primary"} type="button" size={"default"}>Áp dụng</Button>
 
                                 </div>
-                            </div>
-                            <p className="text-s text-grey-40 mt-2">
+                            </div> */}
+                            {/* <p className="text-s text-grey-40 mt-2">
                                 Lưu ý: Có thể áp dụng nhiều vouchers vào 1 lần thanh toán
-                            </p>
+                            </p> */}
                             <div className="md:mt-4 mt-2 ">
                                 <div className="xl:w-2/3 w-full flex justify-between items-center cursor-pointer gap-4">
                                     <h4 className="flex mb-4 text-black-10 text-sm font-bold cursor-pointer gap-x-5">

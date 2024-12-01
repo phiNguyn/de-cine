@@ -35,6 +35,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { StorageKeys } from "@/constants/StorageKeys";
 import { useState } from "react";
 import { motion } from "framer-motion"
+import { ForGotPass } from './ForgotPass';
 // Dropdown component from nguyen-home
 const Dropdown = ({ className }: { className?: string }) => {
   const { setTheme } = useTheme();
@@ -60,30 +61,55 @@ const Dropdown = ({ className }: { className?: string }) => {
 
 // Auth component from main
 const Auth = () => {
-  const [open, setOpen] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false)
+  const handleForgotPasswordClick = () => {
+    setShowLoginModal(false)
+    setShowForgotPasswordModal(true)
+  }
   return (
-
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>Đăng Nhập</Button>
-      </DialogTrigger>
-      <DialogContent className="w-96 sm:w-full">
-        <DialogHeader>
-          <DialogTitle hidden>Edit profile</DialogTitle>
-          <DialogDescription hidden>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <DialogHeader>
-          <DialogTitle hidden >Đăng Nhập Tài Khoản</DialogTitle>
-        </DialogHeader>
-        <TabsDemo setOpen={setOpen} />
+    <>
+      <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
+        <DialogTrigger asChild>
+          <Button>Đăng Nhập</Button>
+        </DialogTrigger>
+        <DialogContent className="w-96 sm:w-full">
+          <DialogHeader>
+            <DialogTitle hidden>Edit profile</DialogTitle>
+            <DialogDescription hidden>
+              Make changes to your profile here. Click save when you're done.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogHeader>
+            <DialogTitle hidden >Đăng Nhập Tài Khoản</DialogTitle>
+          </DialogHeader>
+          <TabsDemo setOpen={setShowLoginModal} />
+          <Button onClick={handleForgotPasswordClick} variant={"link"} size={"default"}>Quên mật khẩu</Button>
+        </DialogContent>
         <Toaster />
+      </Dialog>
 
-      </DialogContent>
-    </Dialog>
+      <Dialog open={showForgotPasswordModal} onOpenChange={setShowForgotPasswordModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle hidden>Edit profile</DialogTitle>
+            <DialogDescription hidden>
+              Make changes to your profile here. Click save when you're done.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogHeader>
+            <DialogTitle hidden >Đăng Nhập Tài Khoản</DialogTitle>
+          </DialogHeader>
+          <ForGotPass />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
+
+
+
+
 
 // TabsDemo component from main
 const TabsDemo = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>>; }) => {
@@ -167,6 +193,7 @@ const TabsDemo = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<bo
           >
             <Card>
               <FormLogin setIsLoading={setIsLoading} onSubmit={handleLogin} />
+
             </Card>
           </motion.div>
         </TabsContent>

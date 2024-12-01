@@ -57,6 +57,7 @@ export const columns: ColumnDef<Booking>[] = [
             )
         },
     },
+    
     {
         accessorKey: "ticket",
         header: ({ column }) => {
@@ -101,8 +102,8 @@ export const columns: ColumnDef<Booking>[] = [
 
             return <div className={`text-center px-1 py-2 rounded-lg font-medium 
         ${status === 'success' ? "bg-green-200 text-green-800"
-                    : status === 'pendding' ? "text-yellow-700 bg-yellow-200" : "text-red-700 bg-red-200"} }`}>
-                {status === 'success' ? "Thành công" : status === 'pendding' ? "Đang giao dịch" : "Đã hủy"}</div>
+                    : status === 'pending' ? "text-yellow-700 bg-yellow-200" : "text-red-700 bg-red-200"} }`}>
+                {status === 'success' ? "Thành công" : status === 'pending' ? "Đang giao dịch" : "Đã hủy"}</div>
         },
     },
 

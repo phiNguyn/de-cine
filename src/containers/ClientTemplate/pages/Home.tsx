@@ -5,8 +5,7 @@ import Promotions from "../component/Home/Promotions"
 
 
 const Home: FC = () => {
-
-
+ 
 
   return (
     <div className="w-full  mx-auto">

@@ -12,6 +12,8 @@ const PaymentsPage = lazy(() => import("@/containers/ClientTemplate/pages/Paymen
 const ProductsPage = lazy(() => import("@/containers/ClientTemplate/pages/Product"))
 const UserTicketsPage = lazy(() => import("@/containers/ClientTemplate/component/UserProfile/table"))
 const AccountInfoPage = lazy(() => import("@/containers/ClientTemplate/component/UserProfile/index"))
+const ResetPasswordPage = lazy(() => import("@/containers/ClientTemplate/pages/ResetPassword"))
+const VerifyEmailPage = lazy(() => import("@/containers/ClientTemplate/pages/VerifyEmail"))
 const ClientRoutes = [
     {
         path: '/',
@@ -48,6 +50,8 @@ const ClientRoutes = [
             { path: '/Movies', element: <MoviesPage /> },
             { path: '/Payments', element: <PaymentsPage /> },
             { path: '/products', element: <ProductsPage /> },
+            { path: 'password-reset', element: <ResetPasswordPage /> },
+            { path: 'api/accounts-verify/:code', element: <VerifyEmailPage /> }
 
         ]
     }

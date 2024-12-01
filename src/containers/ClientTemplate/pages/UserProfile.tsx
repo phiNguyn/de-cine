@@ -61,22 +61,19 @@ const UserProfile = () => {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-4 gap-y-10 xl:gap-y-0 gap-x-0 xl:gap-x-10  p-8 rounded-lg shadow-lg m-5">
       {/* Sidebar */}
-      <div className="col-span-1  p-4 bg-primary rounded-lg shadow-md">
-        <div className="flex flex-col items-center">
-          <div className="w-24 h-24 bg-primary rounded-full mb-4"></div>
-          <p className="font-semibold text-lg text-primary-foreground">{user?.phone}</p>
-        </div>
-        <div className="mt-8">
+      <div className="col-span-1 h-fit  p-4 bg-primary rounded-lg shadow-md">
+       
+        <div className="">
           <ul className="space-y-4">
             <li className={isAccountPage ? "font-semibold text-blue-500" : ""}>
               <Link to="" className="text-black">Tài khoản</Link> {/* Link đến trang Vé của bạn */}
             </li>
-            <li className={location.pathname.includes('/profile/tickets') ? "font-semibold text-blue-500" : ""}>
+            <li className={location.pathname.includes('/UserProfile/tickets') ? "font-semibold text-blue-500" : ""}>
               <Link to="tickets" className="text-black">Vé của bạn</Link>
             </li>
-            <li className={location.pathname.includes('/profile/promotions') ? "font-semibold text-blue-500" : ""}>
+            {/* <li className={location.pathname.includes('/profile/promotions') ? "font-semibold text-blue-500" : ""}>
               <Link to="promotions" className="text-black">Ưu đãi của bạn</Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
