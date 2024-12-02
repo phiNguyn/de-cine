@@ -1,33 +1,20 @@
+import moviesAPI from "@/apis/movie";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-
-import { SetStateAction, useState } from "react";
+import { movie } from "@/types/movie";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
 const BookingInformation = () => {
     const active_progress = "after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-yellow-500 after:w-1/2 after:w-full";
-        const active_li = "text-yellow-500";
-
-        const [activeStep, setActiveStep] = useState(0);
-
-        const progress_menu = ["Chọn Phim/Rạp/Suất", "Ghế", "Thức ăn", "Thanh toán", "Xác nhận"];
-
-         const handleStepClick = (index: SetStateAction<number>) => {
-    if (index > activeStep) {
-      setActiveStep(index); 
-    }
-  };
+    const active_li = "text-yellow-500";
+    const [activeStep, setActiveStep] = useState(0);
+    const progress_menu = ["Chọn Phim/Rạp/Suất", "Ghế", "Thức ăn", "Thanh toán", "Xác nhận"];
+    const [Movie, setMovie] = useState([]);
     const Location = ["TP. Hồ Chí Minh", "Hà Nội"];
-
-    const Movie = [
-        { id: "1", name: "Venom Last Dance", image: "https://cdn.galaxycine.vn/media/2024/10/16/venom-sneak-500_1729048419589.jpg" },
-        { id: "2", name: "Cô Dâu Hào Môn", image: "https://cdn.galaxycine.vn/media/2024/10/18/co-dau-hao-mon-500_1729221052856.jpg" },
-        { id: "3", name: "Tee Yod 2", image: "https://cdn.galaxycine.vn/media/2024/10/10/tee-yod-2-500_1728531355521.jpg" }
-    ];
     const showTime = [
         {id:"1" , date: "2024-12-10" , start_time: "20:10" , end_time: "22:00"}, 
         {id:"2" , date: "2024-14-10" , start_time: "22:10" , end_time: "01:00"}, 
@@ -35,13 +22,29 @@ const BookingInformation = () => {
         {id:"4" , date: "2024-21-10" , start_time: "15:10" , end_time: "17:00"}, 
 
     ]
-
-    const handleNextStep = () => {
+      const handleStepClick = (index:number) => {
+        if (index > activeStep) {
+          setActiveStep(index); 
+        }
+      };
+      const handleNextStep = () => {
         setActiveStep((prevStep) => prevStep + 1); 
-    };
-    const handlePrevStep = () => {
+      };
+      const handlePrevStep = () => {
         setActiveStep((prevStep) => (prevStep > 0 ? prevStep - 1 : 0));
-    };    
+      };    
+      useEffect( () => {
+        const listMovie = async () => {
+          try {
+            const listMovie = await moviesAPI.getAllMovie();
+            setMovie(listMovie);
+          } catch (error) {
+            console.error(error);
+          }
+        };
+        listMovie();
+      }, [])
+
     return (
         <>
             <div className="booking__progress-bar flex justify-center items-center flex-nowrap bg-transparent relative md:mb-8 mb-0 w-full overflow-auto">
@@ -69,7 +72,7 @@ const BookingInformation = () => {
           <Accordion type="single" collapsible>
             <AccordionItem value="location">
               <AccordionTrigger>
-                <h2 className="font-bold text-xl">Chọn vị trí</h2>
+                <h2 className="font-bold text-xl" id="locator">Chọn vị trí</h2>
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-row gap-2 flex-wrap">
@@ -89,15 +92,14 @@ const BookingInformation = () => {
           <Accordion type="single" collapsible >
             <AccordionItem value="movie">
               <AccordionTrigger>
-                <h2 className="font-bold text-xl">Chọn phim</h2>
+                <h2 className="font-bold text-xl" id="movie_placeholder">Chọn phim</h2>
               </AccordionTrigger>
               <AccordionContent>
               <Carousel>
   <CarouselContent className="-ml-2 md:-ml-4">
-    {Movie.map((movie) => (
-    <CarouselItem className="pl-2 md:pl-4 basis-1/5">
+    {Movie.map((M) => (
+    <CarouselItem className="pl-2 md:pl-4 basis-1/5" key={M.id_movie || M.movie_name}>
       <div
-      key={movie.id}
       className="relative"
       tabIndex={-1}
       style={{ width: "100%", display: "inline-block" }}
@@ -105,21 +107,21 @@ const BookingInformation = () => {
       <div className="text-sm text-black  transition-all duration-300 cursor-pointer h-full min-h-[350px] max-h-[400px] px-1">
         <div className="activeMovie relative css-jekrqv">
           <img
-            alt="Tee Yod: Quỷ Ăn Tạng Phần 2"
+            alt={M.movie_name}
             loading="lazy"
             width={160}
             height={240}
             decoding="async"
             data-nimg={1}
-            className='w-full h-full rounded object-cover object-cover duration-500 ease-in-out group-hover:opacity-100"
+            className='w-full h-full rounded object-cover duration-500 ease-in-out group-hover:opacity-100"
                         scale-100 blur-0 grayscale-0)'
-            src={movie.image}
+            src={M.image_main}
             style={{ color: "transparent" }}
           />
           <div />
         </div>
         <h3 className="screen375:px-0 screen425:px-4 px-1 text-gray-50 text-base">
-            {movie.name}
+            {M.movie_name}
         </h3>
       </div>
     </div> 

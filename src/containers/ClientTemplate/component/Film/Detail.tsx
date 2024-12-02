@@ -43,7 +43,6 @@ const Detail: FC<{ movie: movie }> = ({ movie }) => {
               <div className="flex justify-between items-center text-white w-fit gap-x-5">
                 <span>Diễn viên: </span> {movie.actor?.map((item, index) => (
                   <span key={index} className="border border-white rounded-md px-2 py-1">{item}</span>
-
                 )
                 )}
               </div>
