@@ -1,7 +1,5 @@
 import "./Booking.css";
-
 import BookingInformation from "./BookingInformation";
-
 const Booking = () => {
   return (
     <>
