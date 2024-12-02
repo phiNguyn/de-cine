@@ -1,4 +1,4 @@
-import { Armchair, Box, ChartColumn, CircleX, Clapperboard, FileLock, Film, GitPullRequest, KeyRound, LayoutDashboard, ListCheck, LogIn, Projector, ScanLine, ServerOff, Settings, ShieldOff, SquarePercent, Ticket, Truck, TvMinimal, Users, Videotape } from "lucide-react"
+import { Armchair, Clapperboard, Film, LayoutDashboard, Settings, SquarePercent, Ticket, TvMinimal, Users, Videotape } from "lucide-react"
 
   export interface NavLink {
     title: string
