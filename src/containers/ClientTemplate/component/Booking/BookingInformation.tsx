@@ -1,19 +1,11 @@
 import moviesAPI from "@/apis/movie";
-<<<<<<< Updated upstream
-=======
 import Loader from "@/components/loader";
->>>>>>> Stashed changes
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-<<<<<<< Updated upstream
-import { movie } from "@/types/movie";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-=======
 import { API_URL } from "@/constants/api";
 import { useMovieStore } from "@/store/Movie";
 import { useQuery } from "@tanstack/react-query";
@@ -24,7 +16,6 @@ import ButtonNext from "../Seat/button";
 import { useTicketStore } from "@/store/intex";
 import { ShowTimeTabs } from "../Film/ShowTimeTabs";
 import { Movie } from "@/types/movie";
->>>>>>> Stashed changes
 const BookingInformation = () => {
     const { movie, setMovie } = useMovieStore((state) => state);
     const navigate = useNavigate();
@@ -44,45 +35,13 @@ const BookingInformation = () => {
     const active_li = "text-yellow-500";
     const [activeStep, setActiveStep] = useState(0);
     const progress_menu = ["Chọn Phim/Rạp/Suất", "Ghế", "Thức ăn", "Thanh toán", "Xác nhận"];
-<<<<<<< Updated upstream
-    const [Movie, setMovie] = useState([]);
-    const Location = ["TP. Hồ Chí Minh", "Hà Nội"];
-    const showTime = [
-        {id:"1" , date: "2024-12-10" , start_time: "20:10" , end_time: "22:00"}, 
-        {id:"2" , date: "2024-14-10" , start_time: "22:10" , end_time: "01:00"}, 
-        {id:"3" , date: "2024-15-10" , start_time: "18:10" , end_time: "20:00"}, 
-        {id:"4" , date: "2024-21-10" , start_time: "15:10" , end_time: "17:00"}, 
-
-    ]
-      const handleStepClick = (index:number) => {
-=======
     // const Location = ["TP. Hồ Chí Minh", "Hà Nội"];
 
     const handleStepClick = (index:number) => {
->>>>>>> Stashed changes
         if (index > activeStep) {
           setActiveStep(index); 
         }
       };
-<<<<<<< Updated upstream
-      const handleNextStep = () => {
-        setActiveStep((prevStep) => prevStep + 1); 
-      };
-      const handlePrevStep = () => {
-        setActiveStep((prevStep) => (prevStep > 0 ? prevStep - 1 : 0));
-      };    
-      useEffect( () => {
-        const listMovie = async () => {
-          try {
-            const listMovie = await moviesAPI.getAllMovie();
-            setMovie(listMovie);
-          } catch (error) {
-            console.error(error);
-          }
-        };
-        listMovie();
-      }, [])
-=======
       // const handleNextStep = () => {
       //   setActiveStep((prevStep) => prevStep + 1); 
       // };
@@ -101,7 +60,6 @@ const BookingInformation = () => {
       const handleProceed = () => {
         navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
       };
->>>>>>> Stashed changes
 
     return (
         <>
@@ -127,29 +85,6 @@ const BookingInformation = () => {
     <div className="md:container md:mx-auto grid xl:grid-cols-3 grid-cols-1">
       <div className="col-span-2 order-[-9999]">
         <div className="booking__select-session">
-<<<<<<< Updated upstream
-          <Accordion type="single" collapsible>
-            <AccordionItem value="location">
-              <AccordionTrigger>
-                <h2 className="font-bold text-xl" id="locator">Chọn vị trí</h2>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-row gap-2 flex-wrap">
-                  {Location.map((location) => (
-                    <button
-                      key={location}
-                      className="py-2 px-4 border rounded text-[14px] font-normal hover:bg-blue-10 transition-all duration-500 ease-in-out hover:bg-yellow-500 text-white-10"
-                    >
-                      {location}
-                    </button>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-
-=======
->>>>>>> Stashed changes
           <Accordion type="single" collapsible >
             <AccordionItem value="movie">
               <AccordionTrigger>
@@ -157,40 +92,6 @@ const BookingInformation = () => {
               </AccordionTrigger>
               <AccordionContent>
               <Carousel>
-<<<<<<< Updated upstream
-  <CarouselContent className="-ml-2 md:-ml-4">
-    {Movie.map((M) => (
-    <CarouselItem className="pl-2 md:pl-4 basis-1/5" key={M.id_movie || M.movie_name}>
-      <div
-      className="relative"
-      tabIndex={-1}
-      style={{ width: "100%", display: "inline-block" }}
-    >
-      <div className="text-sm text-black  transition-all duration-300 cursor-pointer h-full min-h-[350px] max-h-[400px] px-1">
-        <div className="activeMovie relative css-jekrqv">
-          <img
-            alt={M.movie_name}
-            loading="lazy"
-            width={160}
-            height={240}
-            decoding="async"
-            data-nimg={1}
-            className='w-full h-full rounded object-cover duration-500 ease-in-out group-hover:opacity-100"
-                        scale-100 blur-0 grayscale-0)'
-            src={M.image_main}
-            style={{ color: "transparent" }}
-          />
-          <div />
-        </div>
-        <h3 className="screen375:px-0 screen425:px-4 px-1 text-gray-50 text-base">
-            {M.movie_name}
-        </h3>
-      </div>
-    </div> 
-    </CarouselItem>
-     ))}
-  </CarouselContent>
-=======
           <CarouselContent className="-ml-2 md:-ml-4" >
             {isLoading ? <Loader/>  :movie.map((M) => (
             <CarouselItem className="pl-2 md:pl-4 basis-1/5" key={M.id_movie || M.movie_name} 
@@ -224,7 +125,6 @@ const BookingInformation = () => {
             </CarouselItem>
             ))}
           </CarouselContent>
->>>>>>> Stashed changes
 </Carousel>
 
               </AccordionContent>
