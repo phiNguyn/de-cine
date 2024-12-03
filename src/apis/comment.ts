@@ -4,7 +4,7 @@ import axiosClient from "./axiosClient";
 export const commentAPI = { 
     getAllComments: async () => {
         try {
-            const resp = await axiosClient.get(`/${API_URL.comment}`);
+            const resp = await axiosClient.get(`/${API_URL.comments}`);
             return resp.data;
         } catch (error) {
             console.log(error);
@@ -13,7 +13,7 @@ export const commentAPI = {
 
     getCommentByIdMovie: async (id_movie:number) => { 
         try {
-            const resp = await axiosClient.get(`/${API_URL.comment}/comments-movie/${id_movie}`);
+            const resp = await axiosClient.get(`/${API_URL.comments}/comments-movie/${id_movie}`);
             return resp.data;
         } catch (error) {
             console.error(error);
@@ -23,7 +23,7 @@ export const commentAPI = {
 
     CreateComment: async () => {
         try {
-            const resp = await axiosClient.post(`/${API_URL.comment}`,);
+            const resp = await axiosClient.post(`/${API_URL.comments}`,);
             return resp.data;
         } catch (error) {
             console.error(error);
@@ -33,7 +33,7 @@ export const commentAPI = {
 
     DeleteComment: async () => {
         try {
-            const resp = await axiosClient.delete(`/${API_URL.comment}/:id`);
+            const resp = await axiosClient.delete(`/${API_URL.comments}/:id`);
             return resp.data;
         } catch (error) {
             console.error(error);
@@ -43,7 +43,7 @@ export const commentAPI = {
 
     UpdateComment: async () => {
         try {
-            const resp = await axiosClient.put(`/${API_URL.comment}/:id`);
+            const resp = await axiosClient.put(`/${API_URL.comments}/:id`);
             return resp.data;
         } catch (error) {
             console.error(error);

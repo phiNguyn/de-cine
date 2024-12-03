@@ -101,7 +101,7 @@ export default function Comment() {
                 ) : (
                     <div className="w-full mt-4">
                         <textarea
-                            className="w-full p-2 border rounded mb-2"
+                            className="w-full p-2 border rounded mb-2 text-black"
                             rows={3}
                             value={newComment}
                             onChange={(e) => setNewComment(e.target.value)}
