@@ -22,7 +22,6 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
   useEffect(() => {
     if (showDay) {
       setShowSlots(showDay.showtimes);
-
     }
   }, [showDay]);
 

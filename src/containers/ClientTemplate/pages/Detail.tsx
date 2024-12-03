@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import moviesAPI from "@/apis/movie";
 import { Movie } from "@/types/movie";
 import { useQuery } from "@tanstack/react-query";
+import MovieComment from "../component/Comment";
 
 const DetailMoviePage = () => {
   const { id } = useParams();
@@ -35,6 +36,7 @@ useEffect(() => {
          <ShowTimeTabs showDay={movieDetail}  />
         {/* <MovieIsShowing className="hidden md:block" /> */}
       </RootLayout>
+      <MovieComment/>
     </div>
   )
 }
