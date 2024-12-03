@@ -17,7 +17,7 @@ const Detail: FC<{ movie: Movie | undefined; className?: ReactNode }> = ({
   useEffect(() => {
     if (movie) {
       setTicketData({
-        movieName: movie.movie_name,
+        movieName: { movie_name: movie.movie_name, id_movie: movie.id_movie },
         movieImage: movie.image_main,
       }); // Lưu tên và ảnh phim
     }

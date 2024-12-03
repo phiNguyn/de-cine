@@ -10,12 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { useTicketStore } from "@/store/intex";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/loader";
+import { ChairAPI } from "@/apis/chair";
 
 export default function Product() {
   const { Product, setProduct } = useProductStore((state) => state);
   const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, clearTicketData } = useTicketStore()
   const navigate = useNavigate()
-  const { data, isLoading,error } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['productActive'],
     queryFn: () => productAPI.getAllProductActive(true),
     staleTime: 60 * 1000,
@@ -26,17 +27,33 @@ export default function Product() {
     }
   }, [data, setProduct]);
 
-  const handleProceed = () => {
-    navigate("/payments", {
-      state: {
-        selectedShowDate,
-        selectedShowTime,
-        selectedRoomId,
-        movieName,
-        movieImage,
-        selectedSeats,
-      },
+  const handleProceed = async () => {
+    const chairs = selectedSeats.map(item => item.id_chair);
+    const data = {
+      id_room: selectedRoomId,
+      chair_status: 'available',
+    };
+
+    const apiCalls = chairs.map(chair => {
+      return ChairAPI.updateChair(chair, data);
     });
+
+    try {
+      const results = await Promise.all(apiCalls);
+      console.log('Tất cả API đã hoàn thành:', results);
+      navigate("/payments", {
+        state: {
+          selectedShowDate,
+          selectedShowTime,
+          selectedRoomId,
+          movieName,
+          movieImage,
+          selectedSeats,
+        },
+      });
+    } catch (error) {
+      console.error('Lỗi khi gọi API:', error);
+    }
   };
 
   const handleCancle = async () => {
@@ -61,8 +78,8 @@ export default function Product() {
             </div>
             <div className="w-full md:col-span-1 items-start mt-5 lg:mt-0">
               <Ticket handleProceed={handleProceed}>
-            <ButtonNext text="Tiếp Tục" onClick={handleProceed} />
-            </Ticket>
+                <ButtonNext text="Tiếp Tục" onClick={handleProceed} />
+              </Ticket>
             </div>
 
           </div>

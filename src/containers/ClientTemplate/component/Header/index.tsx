@@ -59,7 +59,7 @@ const Header: FC = () => {
   return (
     <>
       <RootLayout>
-        <div className="flex items-center justify-between mt-5 font-bold">
+        <div className="flex 2xl:max-w-screen-xl items-center justify-between mt-5 font-bold mx-auto">
           <Link to={'/'}>
             <img src="/img/logoDecine.png" alt="" className="w-20" />
           </Link>

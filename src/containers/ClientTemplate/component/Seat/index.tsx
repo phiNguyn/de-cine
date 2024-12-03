@@ -8,7 +8,7 @@ const Seats: React.FC<{ showChair: Chair[] | null }> = ({ showChair }) => {
   const { selectedSeats, addSelectedSeat, removeSelectedSeat } = useTicketStore()
   const alpha = Array.from({ length: Math.floor(Number(showChair?.length) / 10) }, (_, index) => String.fromCharCode(65 + index));
   const handleSeatClick = (seat: Chair) => {
-    if (seat.chair_status === "sold") return;
+    if (seat.chair_status === "sold" ||seat.chair_status ==='pending' ) return;
 
     const isSelected = selectedSeats.find(selected => selected.id_chair === seat.id_chair);
 

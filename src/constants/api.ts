@@ -17,7 +17,6 @@ export const API_URL = {
   promotions : 'promotions',
   tickets : 'tickets',
   bookings : 'bookings',
-  payments : 'payments',
-  comment: 'comment',
+  payments : 'payments'
 
 };

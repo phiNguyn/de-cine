@@ -20,6 +20,15 @@ export const ChairAPI = {
             console.log(error);
             
         }
+    },
+    updateChair :  async(id : number, data) => {
+        try {
+            const resp = await axiosClient.put(`${API_URL.chairs}/${id}`, data)
+            return resp.data
+        } catch (error) {
+            console.log(error);
+            
+        }
     }
     
 }

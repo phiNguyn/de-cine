@@ -1,10 +1,10 @@
 export interface Movie {
   id_movie: number;
   movie_name: string;
-  price: number;
   description: string;
   duration: number;
   release_date: string;
+  end_date: string | null;
   country: string;
   producer: string;
   director: string;
@@ -16,7 +16,15 @@ export interface Movie {
   created_at: string;
   updated_at: string;
   genres: GenreMovie[];
-  showtimes: Showtime[];
+  showtimes?: Record<string, newShowtime[]>;
+}
+
+export interface newShowtime {
+  id_showtime: number;
+  id_room: number;
+  start_time: string;
+  end_time: string;
+  slot_time: string;
 }
 
 export interface GenreMovie {
