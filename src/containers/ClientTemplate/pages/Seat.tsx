@@ -25,23 +25,25 @@ const SeatSelection = () => {
   }, [id]);
 
   const handleProceed = async () => {
-    const chairs = selectedSeats.map(item => item.id_chair);
-    const data = {
-      id_room: selectedRoomId,
-      chair_status: 'pending',
-    };
+    navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
 
-    const apiCalls = chairs.map(chair => {
-      return ChairAPI.updateChair(chair, data);
-    });
-    try {
-      const results = await Promise.all(apiCalls);
-      console.log('Tất cả API đã hoàn thành:', results);
-      navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
+    // const chairs = selectedSeats.map(item => item.id_chair);
+    // const data = {
+    //   id_room: selectedRoomId,
+    //   chair_status: 'pending',
+    // };
 
-    } catch (error) {
-      console.error('Lỗi khi gọi API:', error);
-    }
+    // const apiCalls = chairs.map(chair => {
+    //   return ChairAPI.updateChair(chair, data);
+    // });
+    // try {
+    //   const results = await Promise.all(apiCalls);
+    //   console.log('Tất cả API đã hoàn thành:', results);
+    //   navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
+
+    // } catch (error) {
+    //   console.error('Lỗi khi gọi API:', error);
+    // }
   };
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-5">

@@ -32,7 +32,7 @@ const formSchema = z.object({
     date_time: z.union([z.date(), z.literal("")], {
         message: "Đây là trường bắt buộc",
     }),
-    slots: z.array(z.number()).min(1, { message: "Phải chọn ít nhất 1 khung giờ" }),
+    id_slots: z.array(z.number()).min(1, { message: "Phải chọn ít nhất 1 khung giờ" }),
 })
 export type ShowTimeFormValues = z.infer<typeof formSchema>;
 
@@ -75,7 +75,7 @@ export default function AddShowTime() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             date_time: new Date(),
-            slots: []
+            id_slots: []
         }
     });
     const handleMovieChange = async (movieId: string) => {
@@ -199,7 +199,7 @@ export default function AddShowTime() {
 
                         <FormField
                             control={form.control}
-                            name="slots"
+                            name="id_slots"
                             render={() => (
                                 <FormItem>
                                     <div className="mb-4">
@@ -208,7 +208,7 @@ export default function AddShowTime() {
                                             Chọn các giờ chiếu
                                         </FormDescription>
                                     </div>
-                                    {}
+                                    { }
                                     <div className="flex flex-wrap gap-2">
                                         {showtimeSlotData.map((item, index) => (
                                             <div
@@ -218,7 +218,7 @@ export default function AddShowTime() {
                                                 <FormField
                                                     key={item.id_slot}
                                                     control={form.control}
-                                                    name="slots"
+                                                    name="id_slots"
                                                     render={({ field }) => (
                                                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                                             <FormControl>

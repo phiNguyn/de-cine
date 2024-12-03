@@ -22,7 +22,7 @@ interface TicketState {
   getSelectedShowDate: (id: number) => showTime | undefined; // Tìm kiếm trong danh sách hoặc lấy giá trị hiện tại
   setSelectedShowDate: (showDate: showTime) => void; // Đặt giá trị showdate
 
-  selectedRoomId: number;
+  selectedRoomId: number | null;
 
   // Ghế đã chọn
   selectedSeats: Chair[];
