@@ -14,6 +14,7 @@ import {
 import { ThemeProvider } from "@/components/theme-provider";
 import TicketFilter from "./TicketFilter"; // Đổi tên thành TicketFilter
 import TicketTable from "./TicketTable"; // Đổi tên thành TicketTable
+// import BookingAPI from "@/apis/booking";
 
 export interface Ticket {
   id: string;
@@ -92,6 +93,19 @@ export default function ListTickets() {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  // const [showBooking, setShowBooking] = React.useState([]);
+
+//  React.useEffect(()=> { 
+//   const fetchBookings = async () => { 
+//     try {
+//       const resp = await BookingAPI.createTicket();
+//     } catch (error) {
+//       console.error("Fetching bookings failed", error);
+//       setShowBooking(resp)
+//     }
+//   }
+//   fetchBookings();
+//  },[])
 
   const table = useReactTable({
     data,

@@ -1,11 +1,9 @@
 import { Layout } from '@/components/Layout/layout'
-import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { TopNav } from '@/containers/AdminTemplate/components/top-nav'
 import { UserNav } from '@/containers/AdminTemplate/components/user-nav'
 import { Dropdown } from '@/containers/ClientTemplate/component/Auth'
 import { ThemeProvider } from '@/components/theme-provider'
-import { DataTable } from './data-table'
 import { columns } from './colums'
 import { DatePickerWithRange } from '../../components/data-picker'
 import { useUser } from '@/store/Users'
@@ -13,6 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { UserAPI } from '@/apis/user'
 import AddAccount from './component/AddAcount'
+import { DataTable } from '../../components/table/data-table'
 
 export default function Users() {
   const { user, setUser } = useUser((state) => state)
@@ -43,9 +42,10 @@ export default function Users() {
         {/* ===== Main ===== */}
         <Layout.Body>
           <div className='mb-2 flex items-center justify-between space-y-2'>
-            <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
+            <h1 className='text-2xl font-bold tracking-tight'>Tài Khoản</h1>
             <div className='flex w-fit items-center space-x-5'>
-              <DatePickerWithRange className='w-fit' />      <Button>Download</Button>
+              <DatePickerWithRange className='w-fit' />
+              {/* <Button>Download</Button> */}
             </div>
           </div>
           <Tabs
@@ -64,7 +64,7 @@ export default function Users() {
             </div>
             <TabsContent value='overview' className='space-y-4'>
               <div className="container mx-auto ">
-                <DataTable columns={columns} data={user} />
+                <DataTable columns={columns} data={user} name='email' value='email' />
               </div>
             </TabsContent>
           </Tabs>

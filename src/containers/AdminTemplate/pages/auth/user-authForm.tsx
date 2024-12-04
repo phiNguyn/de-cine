@@ -14,21 +14,22 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { UserLogin } from '@/types/user'
+import { Eye, EyeOff, Loader2 } from 'lucide-react'
 
 const formSchema = z.object({
   user_name: z
     .string()
-    .min(1, { message: 'Please enter your email' }),
+    .min(1, { message: 'Nhập tài khoản' }),
   password: z
-    .string({message : 'Please enter your password'})
+    .string().min(1, { message: 'Vui lòng nhập mật khẩu' })
 })
 interface FormLoginProps {
   onSubmit: (data: UserLogin) => void;
-}
-export function UserAuthForm({ onSubmit }: FormLoginProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  console.log(isLoading);
+  setIsLoading: (isLoading: boolean) => void; // Hàm setLoading để cập nhật trạng thái loading
 
+}
+export function UserAuthForm({ onSubmit, setIsLoading }: FormLoginProps) {
+  const [typePassword, setTypePassword] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,12 +39,15 @@ export function UserAuthForm({ onSubmit }: FormLoginProps) {
   })
 
   const dataSubmit = async (data: z.infer<typeof formSchema>) => {
-    setIsLoading(true)
-    console.log(data)
-    onSubmit(data)
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+    setIsLoading(true); // Bắt đầu loading
+    try {
+      await onSubmit(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false); // Kết thúc loading
+    }
+
   }
 
   return (
@@ -56,7 +60,7 @@ export function UserAuthForm({ onSubmit }: FormLoginProps) {
               name='user_name'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>User Name</FormLabel>
+                  <FormLabel>Tài khoản</FormLabel>
                   <FormControl>
                     <Input placeholder='name@example.com' {...field} />
                   </FormControl>
@@ -69,21 +73,32 @@ export function UserAuthForm({ onSubmit }: FormLoginProps) {
               name='password'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <div className='flex items-center justify-between'>
-                    <FormLabel>Password</FormLabel>
+                  <FormLabel>Nhập mật khẩu</FormLabel>
+                  <div className='flex items-center justify-between relative'>
 
+                    <FormControl>
+                      <Input type={`${typePassword ? 'text' : 'password'}`} placeholder='********' {...field} />
+                    </FormControl>
+                    <div onClick={() => setTypePassword((prev) => !prev)} className="absolute right-3 cursor-pointer">
+                      {typePassword ?
+                        <Eye />
+                        : <EyeOff />
+                      }
+                    </div>
                   </div>
-                  <FormControl>
-                    <Input type='password' placeholder='********' {...field} />
-                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className='mt-2' type='submit'
-            //  loading={isLoading}
-            >
-              Login
+            <Button disabled={form.formState.isSubmitting} type="submit" size="lg">
+              {form.formState.isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Đang đăng nhập
+                </>
+              ) : (
+                'Đăng nhập'
+              )}
             </Button>
           </div>
         </form>

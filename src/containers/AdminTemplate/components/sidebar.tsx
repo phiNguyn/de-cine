@@ -38,7 +38,7 @@ export default function Sidebar({
   return (
     <aside
       className={cn(
-        `fixed left-0 right-0 top-0 z-50 w-full border-r-2 border-r-muted transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? 'md:w-14' : 'md:w-64'}`,
+        `fixed left-0 right-0 top-0 z-50 w-full border-r border-r-primary transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? 'md:w-14' : 'md:w-64'}`,
         className
       )}
     >
@@ -55,7 +55,7 @@ export default function Sidebar({
           className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4'
         >
           <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
-            <svg
+            {/* <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 256 256'
               className={`transition-all ${isCollapsed ? 'h-6 w-6' : 'h-8 w-8'}`}
@@ -84,10 +84,10 @@ export default function Sidebar({
                 strokeWidth='16'
               ></line>
               <span className='sr-only'>Website Name</span>
-            </svg>
+            </svg> */}
             <div className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}>
-              <span className='font-medium'>Shadcn Admin</span>
-              <span className='text-xs'>Vite + ShadcnUI</span>
+              <span className='font-medium'>DeCIEN</span>
+              <span className='text-xs'></span>
             </div>
           </div>
 
@@ -119,7 +119,7 @@ export default function Sidebar({
           onClick={toggleSidebar}
           size='icon'
           variant='outline'
-          className='absolute -right-5 top-1/2 z-50 hidden rounded-full md:inline-flex'
+          className='absolute -right-5 top-1/2 z-50 hidden border border-primary rounded-full md:inline-flex'
         >
           <ChevronLeft className={`h-5 w-5 ${isCollapsed ? 'rotate-180' : ''}`} />
         </Button>

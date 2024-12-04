@@ -11,9 +11,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { TopNav } from '@/containers/AdminTemplate/components/top-nav'
 import { UserNav } from '@/containers/AdminTemplate/components/user-nav'
 import { RecentSales } from '@/containers/AdminTemplate/components/recent-sale'
-import { Overview } from '@/containers/AdminTemplate/components/overview'
 import { Dropdown } from '@/containers/ClientTemplate/component/Auth'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Overview } from '../components/overview'
 
 export default function Dashboard() {
   return (
@@ -23,7 +23,7 @@ export default function Dashboard() {
       <Layout>
         {/* ===== Top Heading ===== */}
         <Layout.Header>
-          <TopNav links={topNav} />
+          {/* <TopNav links={topNav} /> */}
           <div className='ml-auto flex items-center space-x-4'>
             <Dropdown className='!mt-0 px-2 cursor-pointer' />
             <UserNav />
@@ -161,10 +161,10 @@ export default function Dashboard() {
                     <CardTitle>Overview</CardTitle>
                   </CardHeader>
                   <CardContent className='pl-2'>
-                    <Overview />
+                    {/* <Overview /> */}
                   </CardContent>
                 </Card>
-                <Card className='col-span-1 lg:col-span-3'>
+                {/* <Card className='col-span-1 lg:col-span-3'>
                   <CardHeader>
                     <CardTitle>Recent Sales</CardTitle>
                     <CardDescription>
@@ -174,7 +174,7 @@ export default function Dashboard() {
                   <CardContent>
                     <RecentSales />
                   </CardContent>
-                </Card>
+                </Card> */}
               </div>
             </TabsContent>
           </Tabs>

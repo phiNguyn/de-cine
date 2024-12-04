@@ -4,12 +4,18 @@ import { UserNav } from '@/containers/AdminTemplate/components/user-nav'
 import { Dropdown } from '@/containers/ClientTemplate/component/Auth'
 import { ThemeProvider } from '@/components/theme-provider'
 import { RoomForm } from './RoomForm'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useRoomStore } from '@/store/Room'
+import { useParams } from 'react-router-dom'
+import { RoomChair } from './RoomChair'
 
 
 
 
 
 const RoomDetail = () => {
+
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Layout>
@@ -20,10 +26,39 @@ const RoomDetail = () => {
             <UserNav />
           </div>
         </Layout.Header>
-        <h1 className='text-2xl font-bold tracking-tight p-3'>Room Detail </h1>
-        <div className="flex flex-col lg:flex-row p-4">
+        <Layout.Body>
+        <Tabs
+            orientation='vertical'
+            defaultValue='overview'
+            className='space-y-4'
+          >
+            <div className='w-full flex justify-between overflow-x-auto pb-2'>
+              <TabsList>
+                <TabsTrigger value='overview'>Chi tiết</TabsTrigger>
+                <TabsTrigger value='analytics'>Doanh thu</TabsTrigger>
+                <TabsTrigger value='reports'>Reports</TabsTrigger>
+                <TabsTrigger value='edit'>Chỉnh sửa</TabsTrigger>
+              </TabsList>
+            </div>
+            <TabsContent value='overview' className='space-y-4'>
+              <div className="container mx-auto ">
+             <RoomChair />
+
+              </div>
+            </TabsContent>
+            <TabsContent value='overview' className='space-y-4'>
+              <div className="container mx-auto ">
+
+              </div>
+            </TabsContent>
+            <TabsContent value='edit' className='space-y-4'>
+              <div className="container mx-auto ">
           <RoomForm />
-        </div>
+
+              </div>
+            </TabsContent>
+          </Tabs>
+        </Layout.Body>
       </Layout>
     </ThemeProvider>
   )

@@ -1,127 +1,82 @@
-/* eslint-disable react-refresh/only-export-components */
-import * as React from "react";
-import {
-  SortingState,
-  VisibilityState,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  useReactTable,
-  ColumnFiltersState,
-  ColumnDef,
-} from "@tanstack/react-table";
+
 import { ThemeProvider } from "@/components/theme-provider";
-import MovieFilter from "./MovieFilter";
-import MovieTable from "./MovieTable";
+import moviesAPI from "@/apis/movie";
+import { useQuery } from "@tanstack/react-query";
+import { columns } from "./columns";
+import { Layout } from "@/components/Layout/layout";
+import { Dropdown } from "@/containers/ClientTemplate/component/Auth";
+import { UserNav } from "@/containers/AdminTemplate/components/user-nav";
+import { DatePickerWithRange } from "../../components/data-picker";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { DataTable } from "../../components/table/data-table";
+import { useEffect } from "react";
+import { useMovieStore } from "@/store/Movie";
+import Loader from "@/components/loader";
 
-export interface Ticket {
-  id: string;
-  tenPhim: string;
-  theLoai: string;
-  thoiLuong: number; 
-  ngaySanXuat: string; 
-}
-
-// Dữ liệu của bạn
-const data: Ticket[] = [
-  {
-    id: "phim001",
-    tenPhim: "Bí Mật Đen Tối",
-    theLoai: "Kinh Dị",
-    thoiLuong: 120,
-    ngaySanXuat: "2022-10-01",
-  },
-  {
-    id: "phim002",
-    tenPhim: "Cuộc Đua Kỳ Thú",
-    theLoai: "Hành Động",
-    thoiLuong: 135,
-    ngaySanXuat: "2021-05-12",
-  },
-  {
-    id: "phim003",
-    tenPhim: "Bên Kia Giấc Mơ",
-    theLoai: "Khoa Học Viễn Tưởng",
-    thoiLuong: 110,
-    ngaySanXuat: "2023-02-20",
-  },
-  {
-    id: "phim004",
-    tenPhim: "Tình Yêu Màu Nắng",
-    theLoai: "Tình Cảm",
-    thoiLuong: 95,
-    ngaySanXuat: "2020-07-15",
-  },
-  {
-    id: "phim005",
-    tenPhim: "Vũ Trụ Lạc Lối",
-    theLoai: "Phiêu Lưu",
-    thoiLuong: 140,
-    ngaySanXuat: "2019-12-03",
-  },
-];
-
-// Định nghĩa các cột
-export const columns: ColumnDef<Ticket>[] = [
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'tenPhim',
-    header: 'Tên Phim',
-    filterFn: 'includesString', // nếu bạn muốn hỗ trợ lọc theo chuỗi
-  },
-  {
-    accessorKey: 'theLoai',
-    header: 'Thể Loại',
-  },
-  {
-    accessorKey: 'thoiLuong',
-    header: 'Thời Lượng (phút)',
-  },
-  {
-    accessorKey: 'ngaySanXuat',
-    header: 'Ngày Sản Xuất',
-  },
-];
 
 export default function ListMovies() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const { movie, setMovie } = useMovieStore((state) => state)
 
-  const table = useReactTable({
-    data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
-  });
-
+  const { data, isLoading } = useQuery({
+    queryKey: ['movie'],
+    queryFn: moviesAPI.getAllMovie,
+    staleTime: 60 * 1000
+  })
+  useEffect(() => {
+    if (data) {
+      setMovie(data)
+    }
+  }, [data, setMovie])
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="w-full p-8">
-        <MovieFilter
-          filterValue={(table.getColumn("tenPhim")?.getFilterValue() as string) ?? ""}
-          onFilterChange={(value) => table.getColumn("tenPhim")?.setFilterValue(value)}
-          columns={table.getAllColumns()}
-        />
-        <MovieTable rows={table.getRowModel().rows} columns={table.getHeaderGroups()} />
-      </div>
+      <Layout>
+        <Layout.Header>
+          <div className='ml-auto flex items-center space-x-4'>
+            <Dropdown className='!mt-0 px-2 cursor-pointer' />
+            <UserNav />
+          </div>
+        </Layout.Header>
+        <Layout.Body>
+          <div className='mb-2 flex items-center justify-between space-y-2'>
+            <h1 className='text-2xl font-bold tracking-tight'>Phim</h1>
+            <div className='flex w-fit items-center space-x-5'>
+              <DatePickerWithRange className='w-fit' />
+              {/* <Button>Download</Button> */}
+            </div>
+          </div>
+          <Tabs
+            orientation='vertical'
+            defaultValue='overview'
+            className='space-y-4'
+          >
+            <div className='w-full flex justify-between overflow-x-auto pb-2'>
+              <TabsList>
+                <TabsTrigger value='overview'>Danh Sách</TabsTrigger>
+                <TabsTrigger value='analytics'>Biểu Đồ</TabsTrigger>
+                <TabsTrigger value='reports'>Reports</TabsTrigger>
+                <TabsTrigger value='add'>Thêm phim mới</TabsTrigger>
+              </TabsList>
+              <Button size={"default"} variant={"default"} ><Link to={'/admin/listMovie/add'}>Thêm phim</Link></Button>
+            </div>
+            <TabsContent value='overview' className='space-y-4'>
+              {
+                isLoading ? <Loader /> :
+
+                  <div className="container mx-auto ">
+                    <DataTable name="tên phim" value="movie_name" columns={columns} data={movie} />
+                  </div>
+              }
+            </TabsContent>
+            {/* <TabsContent value='add' className='space-y-4'>
+              <div className="container mx-auto ">
+                 <AddMoviePage/>
+              </div>
+            </TabsContent> */}
+          </Tabs>
+        </Layout.Body>
+      </Layout>
     </ThemeProvider>
   );
 }

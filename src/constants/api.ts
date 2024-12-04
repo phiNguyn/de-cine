@@ -1,9 +1,23 @@
 export const API_URL = {
   url: "http://127.0.0.1:8000/api",
+  baseUrl : 'http://127.0.0.1:8000',
   users: "users",
-  login: "login",
+  login: "auth/login",
   register: "register",
   movies: "movies",
   genremovie: "genre_movies",
-  accounts : 'accounts'
+  accounts : 'accounts',
+  rooms : 'rooms',
+  showtime: 'showtime',
+  room : 'room',
+  chairs : 'chairs',
+  showtimeSlots : 'showtime-slots',
+  showtimes : 'showtimes',
+  products : 'products',
+  promotions : 'promotions',
+  tickets : 'tickets',
+  bookings : 'bookings',
+  payments : 'payments',
+  vnpay : 'vnpay/payment',
+  bookingsAccount : 'bookings/account'
 };
