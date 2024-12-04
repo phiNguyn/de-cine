@@ -8,8 +8,8 @@ import { Comment as CommentInterface } from "@/types/comment";
 interface TableCommentProps {
   reviews: (CommentInterface & { user: User | null })[];
   user: User | null; // Thêm user hiện tại
-  onEdit: (commentId: number) => void; // Callback khi sửa
-  onDelete: (commentId: number) => void; // Callback khi xóa
+  onEdit: (id_comment: number) => void; // Callback khi sửa
+  onDelete: (id_comment: number) => void; // Callback khi xóa
 }
 
 export default function TableComment({ reviews, user, onEdit, onDelete }: TableCommentProps) {

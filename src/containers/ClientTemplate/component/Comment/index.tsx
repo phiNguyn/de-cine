@@ -63,8 +63,9 @@ export default function MovieComment({ id_movies }: CommentProps) {
       id_account: user.id_account,
       content: newComment.trim(),
       rating,
-      id_comment: 0
+      id_comment: 0,  
     };
+    
 
     try {
       const createdComment = await commentAPI.createComment(newReview);
@@ -105,12 +106,12 @@ export default function MovieComment({ id_movies }: CommentProps) {
   };
   
 
-  const handleDeleteComment = async (id: number) => {
+  const handleDeleteComment = async (id_comment: number) => {
     if (!confirm("Bạn có chắc chắn muốn xóa bình luận này?")) return;
 
     try {
-      await commentAPI.deleteComment(id);
-      setReviews((prev) => prev.filter((review) => review.id_comment !== id));
+      await commentAPI.deleteComment(id_comment);
+      setReviews((prev) => prev.filter((review) => review.id_comment !== id_comment));
     } catch (error) {
       console.error("Failed to delete comment:", error);
     }
@@ -125,7 +126,7 @@ export default function MovieComment({ id_movies }: CommentProps) {
   };
 
   return (
-    <div className="max-w-2xl mr-5 mb-4 pl-32 ">
+    <div className="max-w-2xl mr-5 p-6">
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-2">Bình luận từ người xem</h2>
         <div className="flex items-center gap-2">
@@ -135,66 +136,50 @@ export default function MovieComment({ id_movies }: CommentProps) {
         </div>
       </div>
 
-            {reviews.map((review) => (
-                <Card key={review.id} className="mb-4 p-4">
-                    <div className="flex items-start gap-4">
-                        <Avatar>
-                            <AvatarImage src={review.avatar} />
-                            <AvatarFallback>{review.author[0]}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-semibold">{review.author}</h3>
-                                <span className="text-sm text-gray-500">{review.date}</span>
-                            </div>
-                            <div className="flex items-center gap-1 mb-2">
-                                <Star className="w-4 h-4 fill-yellow-400 stroke-yellow-400" />
-                                <span className="font-medium">{review.rating}/10</span>
-                            </div>
-                            <p className="text-gray-700 mb-4">{review.content}</p>
-                          
-                            <div className="flex gap-2">
-                                <Button variant="outline" size="sm">
-                                    <span className="ml-1 text-gray-500">{review.reactions.calm}</span>
-                                </Button>
-                                <Button variant="outline" size="sm">
-                                    Đồng cảm
-                                    <span className="ml-1 text-gray-500">{review.reactions.empathy}</span>
-                                </Button>
-                                <Button variant="outline" size="sm">
-                                    Nhận văn
-                                    <span className="ml-1 text-gray-500">{review.reactions.literary}</span>
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </Card>
-            ))}
-            <div className="flex justify-end">
-                {!isCommenting ? (
-                    <Button variant="primary" size="sm" onClick={() => setIsCommenting(true)}>
-                        Bình Luận
-                    </Button>
-                ) : (
-                    <div className="w-full mt-4">
-                        <textarea
-                            className="w-full p-2 border rounded mb-2"
-                            rows={3}
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                            placeholder="Viết bình luận của bạn..."
-                        />
-                        <div className="flex justify-end gap-2">
-                            <Button variant="secondary" size="sm" onClick={() => setIsCommenting(false)}>
-                                Hủy
-                            </Button>
-                            <Button variant="primary" size="sm" onClick={handleCommentSubmit}>
-                                Gửi
-                            </Button>
-                        </div>
-                    </div>
-                )}
+      <TableComment
+        reviews={reviews}
+        user={user}
+        onEdit={handleEditComment}
+        onDelete={handleDeleteComment}
+      />
+
+      <div className="flex justify-end">
+        {!isCommenting ? (
+          <Button variant="primary" size="sm" onClick={handleStartCommenting}>
+            Bình Luận
+          </Button>
+        ) : (
+          <div className="w-full mt-4">
+            <textarea
+              className="w-full p-2 border rounded mb-2 text-black"
+              rows={3}
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Viết bình luận của bạn..."
+            />
+            <div className="flex items-center mb-2">
+              <span className="mr-2">Đánh giá:</span>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={`w-6 h-6 cursor-pointer ${
+                    rating >= star ? "fill-yellow-400 stroke-yellow-400" : "fill-gray-300 stroke-gray-300"
+                  }`}
+                  onClick={() => setRating(star)}
+                />
+              ))}
             </div>
-        </div>
-    );
+            <div className="flex justify-end gap-2">
+              <Button variant="secondary" size="sm" onClick={() => setIsCommenting(false)}>
+                Hủy
+              </Button>
+              <Button variant="primary" size="sm" onClick={handleCommentSubmit}>
+                Gửi
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

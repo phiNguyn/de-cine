@@ -18,6 +18,6 @@ export const API_URL = {
   tickets : 'tickets',
   bookings : 'bookings',
   payments : 'payments',
-  comment: 'comment',
+  comment: 'comments',
 
 };

@@ -4,4 +4,7 @@ export interface Comment{
     id_account: number; 
     content: string;
     rating: number;
+    created_at: Date;
+    updated_at: Date;
+
 }

@@ -8,7 +8,7 @@ export const commentAPI = {
      */
     getAllComments: async (): Promise<Comment[] | undefined> => {
         try {
-            const resp = await axiosClient.get(`/${API_URL.comment}`);
+            const resp = await axiosClient.get(`${API_URL.comment}`);
             return resp.data;
         } catch (error) {
             console.error("Error fetching all comments:", error);
@@ -21,7 +21,7 @@ export const commentAPI = {
      */
     getCommentsByMovieId: async (id_movie: number): Promise<Comment[] | undefined> => { 
         try {
-            const resp = await axiosClient.get(`/${API_URL.comment}/comments-movie/${id_movie}`);
+            const resp = await axiosClient.get(`http://127.0.0.1:8000/api/comments-movie/${id_movie}`);
             return resp.data;
         } catch (error) {
             console.error(`Error fetching comments for movie ID ${id_movie}:`, error);
@@ -34,7 +34,7 @@ export const commentAPI = {
      */
     createComment: async (comment: Omit<Comment, 'id' | 'created_at' | 'updated_at'>): Promise<Comment | undefined> => {  
         try {
-            const resp = await axiosClient.post(`/${API_URL.comment}`,);
+            const resp = await axiosClient.post(`${API_URL.comment}`, comment);
             return resp.data;
         } catch (error) {
             console.error("Error creating comment:", error);
@@ -44,13 +44,13 @@ export const commentAPI = {
    
     deleteComment: async (id:number) => {
         try {
-            const resp = await axiosClient.delete(`/${API_URL.comment}/:id`);
-            return resp.data;
+          const resp = await axiosClient.delete(`${API_URL.comment}/${id}`);
+          return resp.data;
         } catch (error) {
           console.log(error);
         }
       },
-
+      
     /**
      * Cập nhật bình luận
      * @param id ID của bình luận cần cập nhật
@@ -58,7 +58,7 @@ export const commentAPI = {
      */
     updateComment: async (id: number, comment: Partial<Omit<Comment, 'id' | 'id_movies' | 'id_account'>>): Promise<Comment | undefined> => {  
         try {
-            const resp = await axiosClient.put(`/${API_URL.comment}/:id`);
+            const resp = await axiosClient.put(`/${API_URL.comment}/${id}`, comment);
             return resp.data;
         } catch (error) {
             console.error(`Error updating comment with ID ${id}:`, error);
