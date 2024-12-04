@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {  cloneElement } from 'react';
+import { cloneElement } from 'react';
 import { API_URL } from '@/constants/api';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -10,10 +10,10 @@ import { Chair } from "@/types/chair"; // Nhập khẩu loại Chair
 
 interface TicketProps {
   handleProceed: () => void;
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
-  const { movieName, movieImage, selectedShowDate, selectedShowTime, selectedRoomId, selectedSeats, selectedProducts,clearSelectedSeats ,clearSelectedProducts} = useTicketStore();
+  const { movieName, movieImage, selectedShowDate, selectedShowTime, selectedRoomId, selectedSeats, selectedProducts, clearSelectedSeats, clearSelectedProducts } = useTicketStore();
 
   const navigate = useNavigate();
 
@@ -36,12 +36,12 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
     }
     handleProceed();
   };
-  
-  const handleBack = () => { 
+
+  const handleBack = () => {
     clearSelectedSeats(); // Clear selected seats
-     clearSelectedProducts(); // Clear selected products 
-     navigate(-1); // Navigate back to the previous page 
-     };
+    clearSelectedProducts(); // Clear selected products 
+    navigate(-1); // Navigate back to the previous page 
+  };
 
   const isValidSelection = (selectedSeats: Chair[]): boolean => {
     for (const seat of selectedSeats) {
@@ -67,7 +67,7 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
   return (
     <div className="w-full  p-4 md:p-6  bg-black text-white rounded-lg shadow-lg mx-auto my-4 md:my-0 border border-gray-700">
       <ToastContainer />
-      
+
       <div className="flex  mb-4">
         <div >
           <img
@@ -77,23 +77,23 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
           />
         </div>
         <div className='flex items-start gap-x-5 pl-2'>
-          <h3 className="font-bold text-sm md:text-md lg:text-lg">{movieName}</h3>
+          <h3 className="font-bold text-sm md:text-md lg:text-lg">{movieName?.movie_name}</h3>
           <span className="bg-yellow-400 text-black px-2 py-1 rounded">
             T18
           </span>
         </div>
       </div>
 
-      <p className="text-sm mb-1">Suất: <b>{selectedShowTime}</b> - {selectedShowDate}</p>
+      <p className="text-sm mb-1">Suất: <b>{selectedShowTime}</b> - {selectedShowDate?.date_time}</p>
       <p className="text-sm mb-1">Phòng: <b>{selectedRoomId}</b></p>
 
       <hr className="my-4 border-gray-600" />
       {selectedSeats.length > 0 ? (
         <div className='flex items-center justify-between'>
           <p className="text-sm mb-1">
-             {selectedSeats.length} x Ghế: {selectedSeats.map((seat) => seat.chair_name).join(', ')}</p>
+            {selectedSeats.length} x Ghế: {selectedSeats.map((seat) => seat.chair_name).join(', ')}</p>
           <p className="text-sm mb-1">
-              </p>
+          </p>
         </div>
       ) : (
         <p className="text-sm mb-1">Không có ghế nào được chọn</p>
@@ -106,7 +106,7 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
           {selectedProducts.map(({ product, quantity }) => (
             <div key={product.id_product} className='flex items-center justify-between'>
               <p className="text-sm mb-1">
-             {quantity} x {product.product_name}
+                {quantity} x {product.product_name}
               </p>
               <p className="font-bold text-lg">
                 {(product.price * quantity).toLocaleString('vi-VN')} đ
@@ -115,7 +115,7 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
           ))}
         </div>
       ) : (
-        <p className="text-sm mb-1">Không có sản phẩm nào được chọn</p>
+        <p className={`text-sm mb-1 ${selectedProducts.length == 0 ? "hidden" : ""}`}>Không có sản phẩm nào được chọn</p>
       )}
 
       <hr className="my-4 border-gray-600" />
@@ -127,7 +127,7 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
         <Button variant={"trailer"} size={"default"} onClick={handleBack}>
           Quay Lại
         </Button>
-        {children && cloneElement(children as React.ReactElement<any>, { onClick: handleContinue ,handleProceed, disabled: isContinueDisabled })}
+        {children && cloneElement(children as React.ReactElement<any>, { onClick: handleContinue, handleProceed, disabled: isContinueDisabled })}
       </div>
     </div>
   );

@@ -24,10 +24,28 @@ const SeatSelection = () => {
     fetchChairs();
   }, [id]);
 
-  const handleProceed = () => {
+  const handleProceed = async () => {
     navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
+
+    // const chairs = selectedSeats.map(item => item.id_chair);
+    // const data = {
+    //   id_room: selectedRoomId,
+    //   chair_status: 'pending',
+    // };
+
+    // const apiCalls = chairs.map(chair => {
+    //   return ChairAPI.updateChair(chair, data);
+    // });
+    // try {
+    //   const results = await Promise.all(apiCalls);
+    //   console.log('Tất cả API đã hoàn thành:', results);
+    //   navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
+
+    // } catch (error) {
+    //   console.error('Lỗi khi gọi API:', error);
+    // }
   };
- return (
+  return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-5">
       <div className="w-full text-center py-4 bg-red-600 text-white">
         Theo quy định của cục điện ảnh, phim không dành cho trẻ dưới 18 tuổi
@@ -58,7 +76,7 @@ const SeatSelection = () => {
         <div className="col-span-1">
           <Ticket handleProceed={handleProceed}>
             <ButtonNext text="Tiếp Tục" onClick={handleProceed} />
-            </Ticket>
+          </Ticket>
         </div>
       </div>
     </div>

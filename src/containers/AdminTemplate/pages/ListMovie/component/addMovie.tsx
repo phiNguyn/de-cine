@@ -258,18 +258,20 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                         )}
                                     />
 
-                                    <FormField
+                                    <FormField 
                                         control={form.control}
                                         name="genres"
                                         render={({ field }) => (
-                                            <FormItem>
+                                            <FormItem className="w-[185px]">
+                                                <FormLabel>Thể Loại</FormLabel>
 
                                                 <Select
-                                                    className="text-background"
+                                                    className="text-background "
                                                     options={genreMovie}
                                                     value={selectdOptions}
                                                     onChange={handleChange}
                                                     isMulti={true}
+                                                    
                                                 />
                                                 <FormMessage />
 

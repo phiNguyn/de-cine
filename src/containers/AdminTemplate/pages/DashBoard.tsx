@@ -23,7 +23,7 @@ export default function Dashboard() {
       <Layout>
         {/* ===== Top Heading ===== */}
         <Layout.Header>
-          <TopNav links={topNav} />
+          {/* <TopNav links={topNav} /> */}
           <div className='ml-auto flex items-center space-x-4'>
             <Dropdown className='!mt-0 px-2 cursor-pointer' />
             <UserNav />
@@ -164,7 +164,7 @@ export default function Dashboard() {
                     {/* <Overview /> */}
                   </CardContent>
                 </Card>
-                <Card className='col-span-1 lg:col-span-3'>
+                {/* <Card className='col-span-1 lg:col-span-3'>
                   <CardHeader>
                     <CardTitle>Recent Sales</CardTitle>
                     <CardDescription>
@@ -174,7 +174,7 @@ export default function Dashboard() {
                   <CardContent>
                     <RecentSales />
                   </CardContent>
-                </Card>
+                </Card> */}
               </div>
             </TabsContent>
           </Tabs>

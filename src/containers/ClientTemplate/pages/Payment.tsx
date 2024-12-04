@@ -15,8 +15,7 @@ import { useQuery } from "@tanstack/react-query"
 import PaymentAPI from "@/apis/payment"
 import BookingAPI from "@/apis/booking"
 import TicketAPI from "@/apis/ticket"
-import { number } from "zod"
-
+import moment from "moment-timezone"
 const Payment = () => {
 
     const { Payment, setPayment } = usePaymentStore((state) => state)
@@ -33,11 +32,9 @@ const Payment = () => {
     const user = localStorage.getItem('userData')
     if (user) {
         userAccount = JSON.parse(user)
-        console.log(userAccount);
-
     }
 
-    const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, selectedProducts } = useTicketStore()
+    const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, selectedProducts,clearTicketData } = useTicketStore()
 
     const navigate = useNavigate()
 
@@ -55,32 +52,40 @@ const Payment = () => {
 
         try {
             const ticketData = {
-                id_showtime: 1,
-                id_chair: 1,
-                status: "ddddd"
+                id_showtime: Number(selectedShowDate?.id_showtime),
+                id_chairs: selectedSeats.map((chair) => chair.id_chair),
+                status: "pendding"
             }
-
             const ticketCreate = await TicketAPI.createTicket(ticketData)
             const data = {
-                account_promotion_id: Number(userAccount.id_account),
-                id_product: Number(selectedProducts.map((product) => product.product.id_product)),
-                id_ticket: ticketCreate.id,
-                id_payment: 1,
-                quantity: 1,
+                account_id: Number(userAccount.id_account),
+                account_promotion_id: null,
+                id_product: selectedProducts.map((product) => product.product.id_product),
+                id_ticket: ticketCreate.id_ticket,
+                id_payment: 3,
                 total_amount: totalPrice,
                 payment_status: "Đang thanh toán",
-                booking_code: "DEVCIEN-" + userAccount.id_account + Date.now(),
+                booking_code: "DEVCIEN" + userAccount.id_account + "_" + Date.now(),
                 transaction_id: "DEVCIEN-" + userAccount.id_account + Date.now(),
-                payment_date: new Date(),
+                payment_date: moment.tz('Asia/Ho_Chi_Minh').format('YYYY/MM/DD HH:mm:ss'),
             }
             const BookingCreate = await BookingAPI.createTicket(data)
+            if (BookingCreate?.status == 201) {
+                const dataVNPAY = {
+                    booking_code: data.booking_code,
+                    total_amount: data.total_amount
+                }
+                const VNPAY = await PaymentAPI.createPayment(dataVNPAY)
+
+                if (VNPAY?.status == 200) {
+                    await clearTicketData()
+                    window.location.href = VNPAY.data.data
+                }
+            }
 
         } catch (error) {
             console.log(error);
-
         }
-
-
     };
     return (
         <div>
@@ -89,8 +94,8 @@ const Payment = () => {
                     <div className="p-4">
                         <h3 className="text-l mb-4 font-semibold">Khuyến mãi</h3>
                         <div className="md:mt-4 mt-2">
-                            <div className="mt-4 grid grid-cols-2 gap-4 xl:w-2/3 w-full">
-                                <div className="col-span-1">
+                            {/* <div className="mt-4 grid grid-cols-3 gap-4 xl:w-2/3 w-full">
+                                <div className="col-span-2">
                                     <label htmlFor="voucher-code" className="inline-block mb-1 text-black-10 text-sm font-bold">Mã khuyến mãi</label>
                                     <Input id="voucher-code" type="text" className="border-primary w-full py-2 px-4" />
                                 </div>
@@ -98,10 +103,10 @@ const Payment = () => {
                                     <Button variant={"primary"} type="button" size={"default"}>Áp dụng</Button>
 
                                 </div>
-                            </div>
-                            <p className="text-s text-grey-40 mt-2">
+                            </div> */}
+                            {/* <p className="text-s text-grey-40 mt-2">
                                 Lưu ý: Có thể áp dụng nhiều vouchers vào 1 lần thanh toán
-                            </p>
+                            </p> */}
                             <div className="md:mt-4 mt-2 ">
                                 <div className="xl:w-2/3 w-full flex justify-between items-center cursor-pointer gap-4">
                                     <h4 className="flex mb-4 text-black-10 text-sm font-bold cursor-pointer gap-x-5">

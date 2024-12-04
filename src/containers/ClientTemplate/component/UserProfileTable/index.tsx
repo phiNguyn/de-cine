@@ -4,7 +4,7 @@ import { User } from '@/types/user';
 interface UserTableProps {
   user: User;
   isEditing: boolean;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const UserTable: React.FC<UserTableProps> = ({ user, isEditing, handleInputChange }) => {
@@ -19,7 +19,7 @@ const UserTable: React.FC<UserTableProps> = ({ user, isEditing, handleInputChang
             value={user.user_name}
             disabled
             className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed "
-            
+
           />
         </div>
 
@@ -31,7 +31,7 @@ const UserTable: React.FC<UserTableProps> = ({ user, isEditing, handleInputChang
             value={user.email}
             disabled
             className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
-            
+
           />
         </div>
       </div>
@@ -44,9 +44,8 @@ const UserTable: React.FC<UserTableProps> = ({ user, isEditing, handleInputChang
           value={user.full_name}
           onChange={handleInputChange}
           disabled={!isEditing}
-          className={`text-black mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-            isEditing ? 'focus:ring-blue-500 border-gray-300' : 'bg-gray-100 cursor-not-allowed'
-          }`}
+          className={`text-black mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${isEditing ? 'focus:ring-blue-500 border-gray-300' : 'bg-gray-100 cursor-not-allowed'
+            }`}
         />
       </div>
 
@@ -58,9 +57,8 @@ const UserTable: React.FC<UserTableProps> = ({ user, isEditing, handleInputChang
           value={user.phone}
           onChange={handleInputChange}
           disabled={!isEditing}
-          className={`text-black mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-            isEditing ? 'focus:ring-blue-500 border-gray-300' : 'bg-gray-100 cursor-not-allowed'
-          }`}
+          className={`text-black mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${isEditing ? 'focus:ring-blue-500 border-gray-300' : 'bg-gray-100 cursor-not-allowed'
+            }`}
         />
       </div>
 
