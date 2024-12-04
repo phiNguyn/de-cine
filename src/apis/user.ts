@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
-import { User } from "@/hooks/useAuth";
 import { UserRegister } from "@/types/user";
 export  const UserAPI = {
-    userDetail : async (id : string | undefined) => {
+    userDetail : async (id : number | undefined) => {
         try {
             const resp = await axiosClient.get(`/${API_URL.accounts}/${id}`)
 
