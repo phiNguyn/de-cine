@@ -2,9 +2,6 @@ import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
 
 export const ChairAPI = {
-
-
-
     getAllChairByRoomId : async (roomId : number) => {
         try {
             const resp = await axiosClient.get(`${API_URL.chairs}/${API_URL.room}/${roomId}`) 
@@ -33,4 +30,5 @@ export const ChairAPI = {
             
         }
     }
+    
 }
