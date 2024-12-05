@@ -63,5 +63,15 @@ export const commentAPI = {
         } catch (error) {
             console.error(`Error updating comment with ID ${id}:`, error);
         }
-    }
+    },
+
+    sumaryCommnet: async (id_movie:number) => {
+        try {
+          const resp = await axiosClient.get(`/${API_URL.comment}/${id_movie}/rating-content`);
+          return resp.data;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+   
 };

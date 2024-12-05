@@ -6,10 +6,10 @@ import { commentAPI } from "@/apis/comment";
 import { UserAPI } from "@/apis/user";
 import { User } from "@/types/user";
 import TableComment from "./TableComments";
+import SumaryComment from "./SumaryComment";
 
 interface CommentProps {
   id_movies: number;
-  user: User | null;
 }
 
 export default function MovieComment({ id_movies }: CommentProps) {
@@ -18,11 +18,15 @@ export default function MovieComment({ id_movies }: CommentProps) {
   const [newComment, setNewComment] = useState("");
   const [rating, setRating] = useState(0);
   const [reviews, setReviews] = useState<(CommentInterface & { user: User | null })[]>([]);
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [editingCommentContent, setEditingCommentContent] = useState<string>("");
 
   useEffect(() => {
+    // Get user data from localStorage
     const storedUser = localStorage.getItem("userData");
     if (storedUser) setUser(JSON.parse(storedUser));
 
+    // Fetch comments and user details
     const fetchCommentsAndUsers = async () => {
       try {
         const comments = await commentAPI.getCommentsByMovieId(id_movies);
@@ -63,9 +67,8 @@ export default function MovieComment({ id_movies }: CommentProps) {
       id_account: user.id_account,
       content: newComment.trim(),
       rating,
-      id_comment: 0,  
+      id_comment: 0,
     };
-    
 
     try {
       const createdComment = await commentAPI.createComment(newReview);
@@ -81,30 +84,39 @@ export default function MovieComment({ id_movies }: CommentProps) {
       setIsCommenting(false);
     } catch (error) {
       console.error("Failed to submit comment:", error);
+      alert("Đã xảy ra lỗi khi gửi bình luận.");
     }
   };
 
-  const handleEditComment = async (commentId: number) => {
-    const updatedContent = prompt("Nhập nội dung mới cho bình luận:");
-    if (!updatedContent) return;
-    
+  const handleEditComment = (commentId: number, content: string) => {
+    setEditingCommentId(commentId);
+    setEditingCommentContent(content);
+  };
+
+  const handleSaveCommentEdit = async () => {
+    if (!editingCommentContent.trim()) {
+      alert("Vui lòng nhập nội dung bình luận!");
+      return;
+    }
+
     try {
-      // Chỉ cần gọi API mà không gán giá trị
-      await commentAPI.updateComment(commentId, {
-        content: updatedContent,
-      });
-  
-      // Cập nhật danh sách bình luận
+      await commentAPI.updateComment(editingCommentId!, { content: editingCommentContent });
+
       setReviews((prev) =>
         prev.map((review) =>
-          review.id_comment === commentId ? { ...review, content: updatedContent } : review
+          review.id_comment === editingCommentId
+            ? { ...review, content: editingCommentContent }
+            : review
         )
       );
+
+      setEditingCommentId(null);
+      setEditingCommentContent("");
     } catch (error) {
       console.error("Failed to update comment:", error);
+      alert("Đã xảy ra lỗi khi cập nhật bình luận.");
     }
   };
-  
 
   const handleDeleteComment = async (id_comment: number) => {
     if (!confirm("Bạn có chắc chắn muốn xóa bình luận này?")) return;
@@ -114,6 +126,7 @@ export default function MovieComment({ id_movies }: CommentProps) {
       setReviews((prev) => prev.filter((review) => review.id_comment !== id_comment));
     } catch (error) {
       console.error("Failed to delete comment:", error);
+      alert("Đã xảy ra lỗi khi xóa bình luận.");
     }
   };
 
@@ -127,14 +140,7 @@ export default function MovieComment({ id_movies }: CommentProps) {
 
   return (
     <div className="max-w-2xl mr-5 p-6">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2">Bình luận từ người xem</h2>
-        <div className="flex items-center gap-2">
-          <Star className="w-6 h-6 fill-yellow-400 stroke-yellow-400" />
-          <span className="text-2xl font-bold">8.8</span>
-          <span className="text-gray-500">/10 · 2.5K đánh giá</span>
-        </div>
-      </div>
+      <SumaryComment id_movie={id_movies} />
 
       <TableComment
         reviews={reviews}
@@ -180,6 +186,27 @@ export default function MovieComment({ id_movies }: CommentProps) {
           </div>
         )}
       </div>
+
+      {/* Hiển thị textarea chỉnh sửa khi sửa bình luận */}
+      {editingCommentId && (
+        <div className="w-full mt-4">
+          <textarea
+            className="w-full p-2 border rounded mb-2 text-black"
+            rows={3}
+            value={editingCommentContent}
+            onChange={(e) => setEditingCommentContent(e.target.value)}
+            placeholder="Chỉnh sửa bình luận của bạn..."
+          />
+          <div className="flex justify-end gap-2">
+            <Button variant="secondary" size="sm" onClick={() => setEditingCommentId(null)}>
+              Hủy
+            </Button>
+            <Button variant="primary" size="sm" onClick={handleSaveCommentEdit}>
+              Lưu
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
