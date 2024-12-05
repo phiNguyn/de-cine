@@ -8,6 +8,8 @@ import { CardContent } from "../../../../components/ui/card";
 import { useState } from "react";
 import { UserLogin } from "@/types/user";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { FaGoogle } from "react-icons/fa";
+import { AuthAPI } from "../../../../apis/auth";
 
 // Schema validation với Zod
 const formSchema = z.object({
@@ -43,7 +45,19 @@ export function FormLogin({ onSubmit, setIsLoading }: FormLoginProps) {
 
   }
 
+  const handleLoginGoogle = async () => {
+    try {
+      const resp = await AuthAPI.signInWithGoogle()
+      if (resp) {
+        console.log(resp);
 
+        window.location.href = resp.url
+      }
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
 
   return (
     <Form {...form}>
@@ -107,7 +121,9 @@ export function FormLogin({ onSubmit, setIsLoading }: FormLoginProps) {
               'Đăng nhập'
             )}
           </Button>
-
+        </div>
+        <div className="flex justify-center">
+          <Button type="button" onClick={handleLoginGoogle}><FaGoogle /></Button>
         </div>
       </form>
     </Form>

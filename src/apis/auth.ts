@@ -5,21 +5,14 @@ import { ForgotPass } from "@/containers/ClientTemplate/component/Auth/ForgotPas
 
 export const AuthAPI = {
   login: async (data: { user_name: string; password: string }) => {
-    try {
-      const resp = await axiosClient.post(`/${API_URL.login}`, data);
-      return resp.data;
-    } catch (error) {
-      console.log(error);
-    }
+    const resp = await axiosClient.post(`/${API_URL.login}`, data);
+    return resp.data;
   },
 
   register: async (data: any) => {
-    try {
       const resp = await axiosClient.post(`/${API_URL.register}`, data);
-      return resp;
-    } catch (error) {
-      console.log(error);
-    }
+      return resp.data;
+    
   },
 
   forgot: async (data: ForgotPass) => {
@@ -45,9 +38,13 @@ export const AuthAPI = {
   },
 
   verifyEmail: async (data: string) => {
+    const resp = await axiosClient.get(`/accounts-verify/${data}`);
+    return resp;
+  },
+  signInWithGoogle: async () => {
     try {
-      const resp = await axiosClient.get(`/accounts-verify/${data}`);
-      return resp;
+      const resp = await axiosClient.get("/google-login");
+      return resp.data;
     } catch (error) {
       console.log(error);
     }
