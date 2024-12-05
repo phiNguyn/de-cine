@@ -1,47 +1,66 @@
+import moviesAPI from "@/apis/movie";
+import Loader from "@/components/loader";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-
-import { SetStateAction, useState } from "react";
-import { Link } from "react-router-dom";
-
+import { API_URL } from "@/constants/api";
+import { useMovieStore } from "@/store/Movie";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Ticket from "../Seat/ticket";
+import ButtonNext from "../Seat/button";
+import { useTicketStore } from "@/store/intex";
+import { ShowTimeTabs } from "../Film/ShowTimeTabs";
+import { Movie } from "@/types/movie";
 const BookingInformation = () => {
+    const { movie, setMovie } = useMovieStore((state) => state);
+    const navigate = useNavigate();
+    const { movieName, movieImage, selectedSeats, selectedShowDate, selectedShowTime, selectedRoomId , setTicketData } = useTicketStore();
+    const { data, isLoading } = useQuery({
+      queryKey: ['movie'],
+      queryFn: moviesAPI.getAllMovie,
+      staleTime: 60 * 1000,
+    });
+    useEffect(() => {
+      if (data) {
+        setMovie(data)
+      }
+    }, [data, setMovie]);
+    const [ MovieDetail , setMovieDetail] = useState<Movie|undefined>(undefined);
     const active_progress = "after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-yellow-500 after:w-1/2 after:w-full";
-        const active_li = "text-yellow-500";
+    const active_li = "text-yellow-500";
+    const [activeStep, setActiveStep] = useState(0);
+    const progress_menu = ["Chọn Phim/Rạp/Suất", "Ghế", "Thức ăn", "Thanh toán", "Xác nhận"];
+    // const Location = ["TP. Hồ Chí Minh", "Hà Nội"];
 
-        const [activeStep, setActiveStep] = useState(0);
+    const handleStepClick = (index:number) => {
+        if (index > activeStep) {
+          setActiveStep(index); 
+        }
+      };
+      // const handleNextStep = () => {
+      //   setActiveStep((prevStep) => prevStep + 1); 
+      // };
+      // const handlePrevStep = () => {
+      //   setActiveStep((prevStep) => (prevStep > 0 ? prevStep - 1 : 0));
+      // };
+      const handleMovieDetail = async  (ID:number) => {
+          const res = await moviesAPI.getMovieById(ID);
+          setTicketData({movieName: { movie_name: res.movie_name,
+            id_movie: res.id_movie },
+           movieImage: res.image_main,})
+          if(res){
+            setMovieDetail(res);
+          };
+      };
+      const handleProceed = () => {
+        navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
+      };
 
-        const progress_menu = ["Chọn Phim/Rạp/Suất", "Ghế", "Thức ăn", "Thanh toán", "Xác nhận"];
-
-         const handleStepClick = (index: SetStateAction<number>) => {
-    if (index > activeStep) {
-      setActiveStep(index); 
-    }
-  };
-    const Location = ["TP. Hồ Chí Minh", "Hà Nội"];
-
-    const Movie = [
-        { id: "1", name: "Venom Last Dance", image: "https://cdn.galaxycine.vn/media/2024/10/16/venom-sneak-500_1729048419589.jpg" },
-        { id: "2", name: "Cô Dâu Hào Môn", image: "https://cdn.galaxycine.vn/media/2024/10/18/co-dau-hao-mon-500_1729221052856.jpg" },
-        { id: "3", name: "Tee Yod 2", image: "https://cdn.galaxycine.vn/media/2024/10/10/tee-yod-2-500_1728531355521.jpg" }
-    ];
-    const showTime = [
-        {id:"1" , date: "2024-12-10" , start_time: "20:10" , end_time: "22:00"}, 
-        {id:"2" , date: "2024-14-10" , start_time: "22:10" , end_time: "01:00"}, 
-        {id:"3" , date: "2024-15-10" , start_time: "18:10" , end_time: "20:00"}, 
-        {id:"4" , date: "2024-21-10" , start_time: "15:10" , end_time: "17:00"}, 
-
-    ]
-
-    const handleNextStep = () => {
-        setActiveStep((prevStep) => prevStep + 1); 
-    };
-    const handlePrevStep = () => {
-        setActiveStep((prevStep) => (prevStep > 0 ? prevStep - 1 : 0));
-    };    
     return (
         <>
             <div className="booking__progress-bar flex justify-center items-center flex-nowrap bg-transparent relative md:mb-8 mb-0 w-full overflow-auto">
@@ -66,66 +85,46 @@ const BookingInformation = () => {
     <div className="md:container md:mx-auto grid xl:grid-cols-3 grid-cols-1">
       <div className="col-span-2 order-[-9999]">
         <div className="booking__select-session">
-          <Accordion type="single" collapsible>
-            <AccordionItem value="location">
-              <AccordionTrigger>
-                <h2 className="font-bold text-xl">Chọn vị trí</h2>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-row gap-2 flex-wrap">
-                  {Location.map((location) => (
-                    <button
-                      key={location}
-                      className="py-2 px-4 border rounded text-[14px] font-normal hover:bg-blue-10 transition-all duration-500 ease-in-out hover:bg-yellow-500 text-white-10"
-                    >
-                      {location}
-                    </button>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-
           <Accordion type="single" collapsible >
             <AccordionItem value="movie">
               <AccordionTrigger>
-                <h2 className="font-bold text-xl">Chọn phim</h2>
+                <h2 className="font-bold text-xl" id="movie_placeholder">Chọn phim</h2>
               </AccordionTrigger>
               <AccordionContent>
               <Carousel>
-  <CarouselContent className="-ml-2 md:-ml-4">
-    {Movie.map((movie) => (
-    <CarouselItem className="pl-2 md:pl-4 basis-1/5">
-      <div
-      key={movie.id}
-      className="relative"
-      tabIndex={-1}
-      style={{ width: "100%", display: "inline-block" }}
-    >
-      <div className="text-sm text-black  transition-all duration-300 cursor-pointer h-full min-h-[350px] max-h-[400px] px-1">
-        <div className="activeMovie relative css-jekrqv">
-          <img
-            alt="Tee Yod: Quỷ Ăn Tạng Phần 2"
-            loading="lazy"
-            width={160}
-            height={240}
-            decoding="async"
-            data-nimg={1}
-            className='w-full h-full rounded object-cover object-cover duration-500 ease-in-out group-hover:opacity-100"
-                        scale-100 blur-0 grayscale-0)'
-            src={movie.image}
-            style={{ color: "transparent" }}
-          />
-          <div />
-        </div>
-        <h3 className="screen375:px-0 screen425:px-4 px-1 text-gray-50 text-base">
-            {movie.name}
-        </h3>
-      </div>
-    </div> 
-    </CarouselItem>
-     ))}
-  </CarouselContent>
+          <CarouselContent className="-ml-2 md:-ml-4" >
+            {isLoading ? <Loader/>  :movie.map((M) => (
+            <CarouselItem className="pl-2 md:pl-4 basis-1/5" key={M.id_movie || M.movie_name} 
+            onClick={() => handleMovieDetail(M.id_movie)}>
+              <div
+              className="relative"
+              tabIndex={-1}
+              style={{ width: "100%", display: "inline-block" }}
+            >
+              <div className="text-sm text-black  transition-all duration-300 cursor-pointer h-full min-h-[350px] max-h-[400px] px-1">
+                <div className="activeMovie relative css-jekrqv">
+                  <img
+                    loading="lazy"
+                    width={160}
+                    height={240}
+                    decoding="async"
+                    data-nimg={1}
+                    className='w-full h-full rounded object-cover duration-500 ease-in-out group-hover:opacity-100"
+                              scale-100 blur-0 grayscale-0)'
+                    src={`${API_URL.baseUrl}/${M.image_main}`} 
+                    alt={M.movie_name}
+                    style={{ color: "transparent" }}
+                  />
+                  <div />
+                </div>
+                <h3 className="screen375:px-0 screen425:px-4 px-1 text-gray-50 text-base">
+                    {M.movie_name}
+                </h3>
+              </div>
+            </div> 
+            </CarouselItem>
+            ))}
+          </CarouselContent>
 </Carousel>
 
               </AccordionContent>
@@ -139,7 +138,7 @@ const BookingInformation = () => {
                 <h2 className="font-bold text-xl">Chọn suất</h2>
               </AccordionTrigger>
               <AccordionContent>
-              <div className="flex flex-row gap-2 flex-wrap">
+              {/* <div className="flex flex-row gap-2 flex-wrap">
                   {showTime.map((showTime) => (
                     <button
                       key={showTime.id}
@@ -148,14 +147,17 @@ const BookingInformation = () => {
                       {showTime.start_time}
                     </button>
                   ))}
-                </div>
+                </div> */}
+                <ShowTimeTabs showDay={MovieDetail}  />
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </div>
       </div>
-
-      <div className="col-span-1 ml-7">
+      <Ticket handleProceed={handleProceed}>
+            <ButtonNext text="Tiếp Tục" onClick={handleProceed} />
+        </Ticket>
+      {/* <div className="col-span-1 ml-7">
         <div className="booking__summary">
           <div className="h-[6px] bg-yellow-500 rounded-t-lg" />
           <div className="bg-transparent p-4 grid grid-cols-3 items-center">
@@ -190,7 +192,7 @@ const BookingInformation = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
         </>
     );
