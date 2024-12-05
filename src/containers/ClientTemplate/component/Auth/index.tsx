@@ -132,9 +132,10 @@ const TabsDemo = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<bo
           window.location.href = '/';
         }, 2000);
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Tài khoản hoặc mật khẩu không đúng");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const { message } = error.response.data
+      toast.error(message);
     }
   };
 
@@ -144,20 +145,22 @@ const TabsDemo = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<bo
       console.log(isRegister);
 
       const resp = await AuthAPI.register(data);
-      if (resp) {
-        if (resp.status == 201) {
-          toast.success("Đã tạo thài khoản thành công")
-          setOpen(false);
-        } else {
-          toast.error("Email hoặc tài khoản đã tồn tại");
-        }
-      } else {
-        toast.error("Email hoặc tài khoản đã tồn tại");
-
+      if (resp?.status == 201) {
+        toast.success(resp.message)
+        setOpen(false);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error("Có lỗi xảy ra khi đăng ký.");
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const { data } = error.response
+      if (data) {
+        if (data.user_name && data.email) {
+          toast.error("Tên đăng nhập và email đã được sử dụng")
+        } else {
+          toast.error(data.user_name ? "Tên đăng nhập đã được sử dụng" : "Email đã được sử dụng")
+        }
+        // toast.error(data.user_name[0])
+      }
     }
   };
 
