@@ -8,3 +8,8 @@ export interface Comment{
     updated_at: Date;
 
 }
+
+export interface SumaryCommentAndStart{ 
+    average_rating: number,
+    total_comments: number,
+}
