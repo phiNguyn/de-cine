@@ -6,6 +6,7 @@ import { commentAPI } from "@/apis/comment";
 import { UserAPI } from "@/apis/user";
 import { User } from "@/types/user";
 import TableComment from "./TableComments";
+import Loader from "@/components/loader";
 import SumaryComment from "./SumaryComment";
 
 interface CommentProps {
@@ -18,6 +19,7 @@ export default function MovieComment({ id_movies }: CommentProps) {
   const [newComment, setNewComment] = useState("");
   const [rating, setRating] = useState(0);
   const [reviews, setReviews] = useState<(CommentInterface & { user: User | null })[]>([]);
+  const [isLoading, setIsLoading] = useState(false)
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editingCommentContent, setEditingCommentContent] = useState<string>("");
 
@@ -28,6 +30,7 @@ export default function MovieComment({ id_movies }: CommentProps) {
 
     // Fetch comments and user details
     const fetchCommentsAndUsers = async () => {
+      setIsLoading(true)
       try {
         const comments = await commentAPI.getCommentsByMovieId(id_movies);
         if (!comments) {
@@ -45,6 +48,9 @@ export default function MovieComment({ id_movies }: CommentProps) {
         setReviews(enrichedComments);
       } catch (error) {
         console.error("Failed to fetch comments and users:", error);
+      } finally {
+        setIsLoading(false)
+
       }
     };
 
@@ -69,7 +75,6 @@ export default function MovieComment({ id_movies }: CommentProps) {
       rating,
       id_comment: 0,
     };
-
     try {
       const createdComment = await commentAPI.createComment(newReview);
       const userDetail = await UserAPI.userDetail(user.id_account);
@@ -88,6 +93,17 @@ export default function MovieComment({ id_movies }: CommentProps) {
     }
   };
 
+  const handleEditComment = async (commentId: number) => {
+    const updatedContent = prompt("Nhập nội dung mới cho bình luận:");
+    if (!updatedContent) return;
+
+    try {
+      // Chỉ cần gọi API mà không gán giá trị
+      await commentAPI.updateComment(commentId, {
+        content: updatedContent,
+      });
+
+      // Cập nhật danh sách bình luận
   const handleEditComment = (commentId: number, content: string) => {
     setEditingCommentId(commentId);
     setEditingCommentContent(content);
@@ -118,6 +134,7 @@ export default function MovieComment({ id_movies }: CommentProps) {
     }
   };
 
+
   const handleDeleteComment = async (id_comment: number) => {
     if (!confirm("Bạn có chắc chắn muốn xóa bình luận này?")) return;
 
@@ -139,16 +156,16 @@ export default function MovieComment({ id_movies }: CommentProps) {
   };
 
   return (
-    <div className="max-w-2xl mr-5 p-6">
+    <div className="w-full max-w-2xl mx-auto py-6 col-span-2">
       <SumaryComment id_movie={id_movies} />
-
-      <TableComment
-        reviews={reviews}
-        user={user}
-        onEdit={handleEditComment}
-        onDelete={handleDeleteComment}
-      />
-
+      {isLoading ? <Loader /> :
+        <TableComment
+          reviews={reviews}
+          user={user}
+          onEdit={handleEditComment}
+          onDelete={handleDeleteComment}
+        />
+      }
       <div className="flex justify-end">
         {!isCommenting ? (
           <Button variant="primary" size="sm" onClick={handleStartCommenting}>
@@ -168,9 +185,8 @@ export default function MovieComment({ id_movies }: CommentProps) {
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
-                  className={`w-6 h-6 cursor-pointer ${
-                    rating >= star ? "fill-yellow-400 stroke-yellow-400" : "fill-gray-300 stroke-gray-300"
-                  }`}
+                  className={`w-6 h-6 cursor-pointer ${rating >= star ? "fill-yellow-400 stroke-yellow-400" : "fill-gray-300 stroke-gray-300"
+                    }`}
                   onClick={() => setRating(star)}
                 />
               ))}

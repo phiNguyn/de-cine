@@ -123,12 +123,14 @@ const TabsDemo = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<bo
       const resp = await AuthAPI.login(data);
 
       if (resp.status == 200 && resp.user) {
-        const { user, message } = resp;
+        const { user, message, access_token, refresh_token } = resp;
         toast.success(message);
         login({ role: user.role });
         localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(user));
+        localStorage.setItem(StorageKeys.ACCESS_TOKEN, access_token)
+        localStorage.setItem(StorageKeys.REFRESH_TOKEN, refresh_token)
+        setOpen(false);
         setTimeout(() => {
-          setOpen(false);
           window.location.href = '/';
         }, 2000);
       }

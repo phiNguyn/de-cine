@@ -3,25 +3,23 @@ import { FilmItem } from "."
 import { cn } from '../../../../lib/utils';
 import moviesAPI from "@/apis/movie";
 import { Movie } from "@/types/movie";
+import { useQuery } from "@tanstack/react-query";
+import Loader from "@/components/loader";
 export interface ClassName {
     className?: string
 }
 const MovieIsShowing: FC<ClassName> = ({ className }) => {
     const [movies, setMovies] = useState<Movie[]>([])
-
+    const { data, isLoading } = useQuery({
+        queryKey: ['moviesActive',],
+        queryFn: () => moviesAPI.getAllMovieActive('active'),
+        staleTime: 60 * 1000,
+    });
     useEffect(() => {
-
-        const fetchMovies = async () => {
-            try {
-                const resp = await moviesAPI.getAllMovie()
-                setMovies(resp)
-            } catch (error) {
-                console.log(error);
-
-            }
+        if (data) {
+            setMovies(data)
         }
-        fetchMovies()
-    }, [])
+    }, [data, setMovies]);
 
 
 
@@ -36,10 +34,14 @@ const MovieIsShowing: FC<ClassName> = ({ className }) => {
                     <span className='border-l-4 border-solid border-yellow-500 mr-2'></span><h1 className="text-2xl ">Phim Đang Chiếu</h1>
                 </div>
                 <div className="grid grid-cols-1 justify-between items-center mt-5 gap-y-5">
-                    {movies.splice(0, 3).map(item => (
-
-                        <FilmItem key={item.id_movie} Film={item} />
-                    ))}
+                    {isLoading ?
+                        <Loader /> :
+                        <>
+                            {movies.splice(0, 3).map(item => (
+                                <FilmItem key={item.id_movie} Film={item} />
+                            ))}
+                        </>
+                    }
                 </div>
             </div>
         </>

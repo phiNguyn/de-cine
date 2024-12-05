@@ -61,12 +61,12 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
     }
   };
 
-  if (Object.keys(showSlots).length === 0) {
-    return <></>;
+  if (showDay?.status !== 'active') {
+    return <><div className="col-span-2"></div></>;
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full col-span-2">
       <Tabs
         value={activeTab ?? undefined}
         onValueChange={handleTabChange}
@@ -83,7 +83,7 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
           </Button>
           <div ref={tabsListRef} className="overflow-x-auto scrollbar-hide mx-8">
             <TabsList className="inline-flex mx-2 gap-x-2 h-10 items-center justify-start rounded-lg bg-muted text-muted-foreground w-max p-2">
-              {Object.entries(showSlots).map(([date, times], index) => (
+              {Object.entries(showSlots).map(([date], index) => (
                 <TabsTrigger
                   key={index}
                   value={date}
@@ -105,12 +105,13 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
         </div>
       </Tabs>
 
-      {activeTab && showSlots[activeTab] && (
-        <ShowTimeSlot
-          showSlots={showSlots[activeTab]} // Truyền danh sách suất chiếu
-          idRoom={showSlots[activeTab]?.[0]?.id_room} // Lấy idRoom từ suất chiếu đầu tiên
-        />
-      )}
+      <ShowTimeSlot
+        showSlots={showSlots[activeTab]} // Truyền danh sách suất chiếu
+        idRoom={showSlots[activeTab]?.[0]?.id_room} // Lấy idRoom từ suất chiếu đầu tiên
+      />
     </div>
   );
 };
+
+
+

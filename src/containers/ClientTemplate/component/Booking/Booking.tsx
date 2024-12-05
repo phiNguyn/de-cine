@@ -4,7 +4,7 @@ const Booking = () => {
   return (
     <>
     <div className="line-default"></div>
-    <div className="booking-wrapper border-gray-600 pb-10">
+    <div className="px-5  pb-10">
         <BookingInformation/>
     </div>
     </>
