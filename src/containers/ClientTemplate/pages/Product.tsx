@@ -28,32 +28,41 @@ export default function Product() {
   }, [data, setProduct]);
 
   const handleProceed = async () => {
-    const chairs = selectedSeats.map(item => item.id_chair);
-    const data = {
-      id_room: selectedRoomId,
-      chair_status: 'available',
-    };
+    // const chairs = selectedSeats.map(item => item.id_chair);
+    // const data = {
+    //   id_room: selectedRoomId,
+    //   chair_status: 'available',
+    // };
 
-    const apiCalls = chairs.map(chair => {
-      return ChairAPI.updateChair(chair, data);
+    // const apiCalls = chairs.map(chair => {
+    //   return ChairAPI.updateChair(chair, data);
+    // });
+    navigate("/payments", {
+      state: {
+        selectedShowDate,
+        selectedShowTime,
+        selectedRoomId,
+        movieName,
+        movieImage,
+        selectedSeats,
+      },
     });
-
-    try {
-      const results = await Promise.all(apiCalls);
-      console.log('Tất cả API đã hoàn thành:', results);
-      navigate("/payments", {
-        state: {
-          selectedShowDate,
-          selectedShowTime,
-          selectedRoomId,
-          movieName,
-          movieImage,
-          selectedSeats,
-        },
-      });
-    } catch (error) {
-      console.error('Lỗi khi gọi API:', error);
-    }
+    // try {
+    //   const results = await Promise.all(apiCalls);
+    //   console.log('Tất cả API đã hoàn thành:', results);
+    //   navigate("/payments", {
+    //     state: {
+    //       selectedShowDate,
+    //       selectedShowTime,
+    //       selectedRoomId,
+    //       movieName,
+    //       movieImage,
+    //       selectedSeats,
+    //     },
+    //   });
+    // } catch (error) {
+    //   console.error('Lỗi khi gọi API:', error);
+    // }
   };
 
   const handleCancle = async () => {
