@@ -7,10 +7,10 @@ import { UserAPI } from "@/apis/user";
 import { User } from "@/types/user";
 import TableComment from "./TableComments";
 import Loader from "@/components/loader";
+import SumaryComment from "./SumaryComment";
 
 interface CommentProps {
   id_movies: number;
-  user: User | null;
 }
 
 export default function MovieComment({ id_movies }: CommentProps) {
@@ -20,10 +20,15 @@ export default function MovieComment({ id_movies }: CommentProps) {
   const [rating, setRating] = useState(0);
   const [reviews, setReviews] = useState<(CommentInterface & { user: User | null })[]>([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [editingCommentContent, setEditingCommentContent] = useState<string>("");
+
   useEffect(() => {
+    // Get user data from localStorage
     const storedUser = localStorage.getItem("userData");
     if (storedUser) setUser(JSON.parse(storedUser));
 
+    // Fetch comments and user details
     const fetchCommentsAndUsers = async () => {
       setIsLoading(true)
       try {
@@ -70,8 +75,6 @@ export default function MovieComment({ id_movies }: CommentProps) {
       rating,
       id_comment: 0,
     };
-
-
     try {
       const createdComment = await commentAPI.createComment(newReview);
       const userDetail = await UserAPI.userDetail(user.id_account);
@@ -86,6 +89,7 @@ export default function MovieComment({ id_movies }: CommentProps) {
       setIsCommenting(false);
     } catch (error) {
       console.error("Failed to submit comment:", error);
+      alert("Đã xảy ra lỗi khi gửi bình luận.");
     }
   };
 
@@ -100,13 +104,33 @@ export default function MovieComment({ id_movies }: CommentProps) {
       });
 
       // Cập nhật danh sách bình luận
+  const handleEditComment = (commentId: number, content: string) => {
+    setEditingCommentId(commentId);
+    setEditingCommentContent(content);
+  };
+
+  const handleSaveCommentEdit = async () => {
+    if (!editingCommentContent.trim()) {
+      alert("Vui lòng nhập nội dung bình luận!");
+      return;
+    }
+
+    try {
+      await commentAPI.updateComment(editingCommentId!, { content: editingCommentContent });
+
       setReviews((prev) =>
         prev.map((review) =>
-          review.id_comment === commentId ? { ...review, content: updatedContent } : review
+          review.id_comment === editingCommentId
+            ? { ...review, content: editingCommentContent }
+            : review
         )
       );
+
+      setEditingCommentId(null);
+      setEditingCommentContent("");
     } catch (error) {
       console.error("Failed to update comment:", error);
+      alert("Đã xảy ra lỗi khi cập nhật bình luận.");
     }
   };
 
@@ -119,6 +143,7 @@ export default function MovieComment({ id_movies }: CommentProps) {
       setReviews((prev) => prev.filter((review) => review.id_comment !== id_comment));
     } catch (error) {
       console.error("Failed to delete comment:", error);
+      alert("Đã xảy ra lỗi khi xóa bình luận.");
     }
   };
 
@@ -132,14 +157,7 @@ export default function MovieComment({ id_movies }: CommentProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto py-6 col-span-2">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2">Bình luận từ người xem</h2>
-        <div className="flex items-center gap-2">
-          <Star className="w-6 h-6 fill-yellow-400 stroke-yellow-400" />
-          <span className="text-2xl font-bold">8.8</span>
-          <span className="text-gray-500">/10 · 2.5K đánh giá</span>
-        </div>
-      </div>
+      <SumaryComment id_movie={id_movies} />
       {isLoading ? <Loader /> :
         <TableComment
           reviews={reviews}
@@ -148,7 +166,6 @@ export default function MovieComment({ id_movies }: CommentProps) {
           onDelete={handleDeleteComment}
         />
       }
-
       <div className="flex justify-end">
         {!isCommenting ? (
           <Button variant="primary" size="sm" onClick={handleStartCommenting}>
@@ -185,6 +202,27 @@ export default function MovieComment({ id_movies }: CommentProps) {
           </div>
         )}
       </div>
+
+      {/* Hiển thị textarea chỉnh sửa khi sửa bình luận */}
+      {editingCommentId && (
+        <div className="w-full mt-4">
+          <textarea
+            className="w-full p-2 border rounded mb-2 text-black"
+            rows={3}
+            value={editingCommentContent}
+            onChange={(e) => setEditingCommentContent(e.target.value)}
+            placeholder="Chỉnh sửa bình luận của bạn..."
+          />
+          <div className="flex justify-end gap-2">
+            <Button variant="secondary" size="sm" onClick={() => setEditingCommentId(null)}>
+              Hủy
+            </Button>
+            <Button variant="primary" size="sm" onClick={handleSaveCommentEdit}>
+              Lưu
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
