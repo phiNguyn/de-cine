@@ -48,9 +48,8 @@ export default function MovieComment({ id_movies }: CommentProps) {
         setReviews(enrichedComments);
       } catch (error) {
         console.error("Failed to fetch comments and users:", error);
-      } finally {
+      }finally{
         setIsLoading(false)
-
       }
     };
 
@@ -75,6 +74,7 @@ export default function MovieComment({ id_movies }: CommentProps) {
       rating,
       id_comment: 0,
     };
+
     try {
       const createdComment = await commentAPI.createComment(newReview);
       const userDetail = await UserAPI.userDetail(user.id_account);
@@ -93,17 +93,6 @@ export default function MovieComment({ id_movies }: CommentProps) {
     }
   };
 
-  const handleEditComment = async (commentId: number) => {
-    const updatedContent = prompt("Nhập nội dung mới cho bình luận:");
-    if (!updatedContent) return;
-
-    try {
-      // Chỉ cần gọi API mà không gán giá trị
-      await commentAPI.updateComment(commentId, {
-        content: updatedContent,
-      });
-
-      // Cập nhật danh sách bình luận
   const handleEditComment = (commentId: number, content: string) => {
     setEditingCommentId(commentId);
     setEditingCommentContent(content);
@@ -133,7 +122,6 @@ export default function MovieComment({ id_movies }: CommentProps) {
       alert("Đã xảy ra lỗi khi cập nhật bình luận.");
     }
   };
-
 
   const handleDeleteComment = async (id_comment: number) => {
     if (!confirm("Bạn có chắc chắn muốn xóa bình luận này?")) return;
