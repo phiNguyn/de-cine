@@ -10,7 +10,8 @@ import SumaryComment from "./SumaryComment";
 
 interface CommentProps {
   id_movies: number;
-  user: User | null;}
+  user: User | null;
+}
 
 export default function MovieComment({ id_movies }: CommentProps) {
   const [isCommenting, setIsCommenting] = useState(false);
@@ -18,8 +19,6 @@ export default function MovieComment({ id_movies }: CommentProps) {
   const [newComment, setNewComment] = useState("");
   const [rating, setRating] = useState(0);
   const [reviews, setReviews] = useState<(CommentInterface & { user: User | null })[]>([]);
-  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const [editingCommentContent, setEditingCommentContent] = useState<string>("");
 
   useEffect(() => {
     // Get user data from localStorage
@@ -88,36 +87,21 @@ export default function MovieComment({ id_movies }: CommentProps) {
     }
   };
 
-  const handleEditComment = (commentId: number, content: string) => {
-    setEditingCommentId(commentId);
-    setEditingCommentContent(content);
-  };
-
-  const handleSaveCommentEdit = async () => {
-    if (!editingCommentContent.trim()) {
-      alert("Vui lòng nhập nội dung bình luận!");
-      return;
-    }
-    
+  const handleEditComment = async (id_comment: number, newContent: string, newRating: number) => {
     try {
-      await commentAPI.updateComment(editingCommentId!, { content: editingCommentContent });
-    
+      await commentAPI.updateComment(id_comment, { content: newContent, rating: newRating });
+
       setReviews((prev) =>
         prev.map((review) =>
-          review.id_comment === editingCommentId
-            ? { ...review, content: editingCommentContent }
+          review.id_comment === id_comment
+            ? { ...review, content: newContent, rating: newRating }
             : review
         )
       );
-    
-      // Đặt lại trạng thái và nội dung
-      setEditingCommentId(null);
-      setEditingCommentContent("");
     } catch (error) {
       console.error("Failed to update comment:", error);
       alert("Đã xảy ra lỗi khi cập nhật bình luận."); 
     }
-    
   };
 
   const handleDeleteComment = async (id_comment: number) => {
@@ -188,32 +172,6 @@ export default function MovieComment({ id_movies }: CommentProps) {
           </div>
         )}
       </div>
-
-      {/* Hiển thị textarea chỉnh sửa khi sửa bình luận */}
-      {editingCommentId &&
-  reviews.map((review) =>
-    editingCommentId === review.id_comment ? (
-      <div className="w-full mt-4" key={review.id_comment}>
-        <textarea
-          className="w-full p-2 border rounded mb-2 text-black"
-          rows={3}
-          value={editingCommentContent}
-          onChange={(e) => setEditingCommentContent(e.target.value)}
-          placeholder="Chỉnh sửa bình luận của bạn..."
-        />
-        <div className="flex justify-end gap-2">
-          <Button variant="secondary" size="sm" onClick={() => setEditingCommentId(null)}>
-            Hủy
-          </Button>
-          <Button variant="primary" size="sm" onClick={handleSaveCommentEdit}>
-            Lưu
-          </Button>
-        </div>
-      </div>
-    ) : null
-  )}
-
-
     </div>
   );
 }

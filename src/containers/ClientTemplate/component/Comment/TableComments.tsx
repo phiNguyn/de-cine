@@ -25,14 +25,22 @@ export default function TableComment({ reviews, user, onEdit, onDelete }: TableC
     setEditedRating(rating);
   };
 
-  const handleSaveEdit = (id_comment: number) => {
-    if (editedContent.trim()) {
-      onEdit(id_comment, editedContent.trim(), editedRating); // Cập nhật cả nội dung và rating
+  const handleSaveEdit = async (id_comment: number) => {
+    if (!editedContent.trim()) {
+      alert("Bình luận không thể để trống!");
+      return;
+    }
+
+    try {
+      // Gọi API để cập nhật bình luận
+      await onEdit(id_comment, editedContent.trim(), editedRating);
+      // Cập nhật danh sách bình luận ngay lập tức
       setEditingCommentId(null);
       setEditedContent("");
       setEditedRating(0);
-    } else {
-      alert("Bình luận không thể để trống!");
+    } catch (error) {
+      alert("Có lỗi xảy ra khi cập nhật bình luận. Vui lòng thử lại.");
+      console.error("Error updating comment:", error);
     }
   };
 
@@ -54,7 +62,6 @@ export default function TableComment({ reviews, user, onEdit, onDelete }: TableC
               <div className="flex items-center gap-1 mb-2">
                 {editingCommentId === review.id_comment ? (
                   <div className="flex items-center gap-2">
-                    {/* Chỉnh sửa rating */}
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star
                         key={star}
@@ -70,8 +77,6 @@ export default function TableComment({ reviews, user, onEdit, onDelete }: TableC
                   </div>
                 )}
               </div>
-
-              {/* Hiển thị textarea nếu đang chỉnh sửa bình luận */}
               {editingCommentId === review.id_comment ? (
                 <div>
                   <textarea
@@ -92,8 +97,6 @@ export default function TableComment({ reviews, user, onEdit, onDelete }: TableC
               ) : (
                 <p className="text-gray-700 mb-4">{review.content}</p>
               )}
-
-              {/* Chỉ hiển thị dropdown khi user hiện tại là chủ sở hữu bình luận */}
               {user && user.id_account === review.id_account && (
                 <div className="flex justify-end">
                   <DropdownMenu>
@@ -126,4 +129,3 @@ export default function TableComment({ reviews, user, onEdit, onDelete }: TableC
     </div>
   );
 }
-  
