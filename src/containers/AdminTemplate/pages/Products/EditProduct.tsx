@@ -205,6 +205,7 @@ const EditProduct = ({ selectedId, onClose }: { selectedId: number, onClose?: ()
                             </FormControl>
                             <FormMessage />
                         </FormItem>
+                        
                     )}
                     />
                     <div className="w-full flex justify-between">

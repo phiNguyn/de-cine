@@ -22,6 +22,7 @@ const productAPI = {
       console.log(error);
     }
   },
+  
   addProduct: async (data: Product) => {
     try {
       const resp = await axiosClient.post(`/${API_URL.products}`, data, {
@@ -32,6 +33,7 @@ const productAPI = {
       console.log(error);
     }
   },
+
   updateProduct: async (id?: number, data: ProductFormValues) => {
     try {
       const resp = await axiosClient.post(`/${API_URL.products}/${id}`, data, {
