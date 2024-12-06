@@ -57,10 +57,6 @@ export function DataTableRowActions<TData>({
                         <EditProduct onClose={handleCloseDialog} selectedId={Product.id_product} />
                     </DialogContent>
                 </Dialog>
-                {/* <DropdownMenuItem>
-          Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-        </DropdownMenuItem> */}
             </DropdownMenuContent>
         </DropdownMenu>
     )

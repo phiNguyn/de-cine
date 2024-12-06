@@ -3,10 +3,13 @@ import moment from "moment-timezone";
 import { useNavigate } from "react-router-dom";
 import { useTicketStore } from "@/store/intex";
 import { newShowtime } from "@/types/movie";
+import { useAuth } from "@/hooks";
+import toast, { Toaster } from "react-hot-toast";
 
 const ShowTimeSlot: React.FC<{ showSlots: newShowtime[] | undefined; idRoom?: number }> = ({ showSlots, idRoom }) => {
   const navigate = useNavigate();
-  const setSelectedShowTime = useTicketStore((state) => state.setTicketData);
+  const { user } = useAuth()
+  const { setTicketData } = useTicketStore();
 
   // Xử lý khi chọn suất chiếu
   const handleSlotSelect = (slotTime: string) => {
@@ -16,10 +19,15 @@ const ShowTimeSlot: React.FC<{ showSlots: newShowtime[] | undefined; idRoom?: nu
     }
 
     // Cập nhật thời gian suất chiếu
-    setSelectedShowTime({ selectedShowTime: slotTime });
+    setTicketData({ selectedShowTime: slotTime });
 
     try {
-      navigate(`/Seat/${idRoom}`);
+      if (!user) {
+        toast.error("Vui lòng đăng nhập để có thể đặt vé")
+      } else {
+
+        navigate(`/Seat/${idRoom}`);
+      }
     } catch (error) {
       console.error("Không thể điều hướng đến trang ghế:", error);
     }
@@ -38,7 +46,7 @@ const ShowTimeSlot: React.FC<{ showSlots: newShowtime[] | undefined; idRoom?: nu
                 <div
                   className="group w-fit cursor-pointer"
                   key={i}
-                onClick={() => handleSlotSelect(slot.slot_time)}
+                  onClick={() => handleSlotSelect(slot.slot_time)}
                 >
                   <CardDescription className="border w-fit border-yellow-500 text-primary rounded-md px-3 py-1.5 group-hover:border-white group-hover:bg-yellow-500">
                     {moment(slot.slot_time, "HH:mm:ss").format("HH:mm")}
@@ -53,6 +61,7 @@ const ShowTimeSlot: React.FC<{ showSlots: newShowtime[] | undefined; idRoom?: nu
           )}
         </CardContent>
       </Card>
+      <Toaster />
     </div>
   );
 };

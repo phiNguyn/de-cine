@@ -141,7 +141,7 @@ export const columns: ColumnDef<Movie>[] = [
       return <div className={`text-center px-1 py-2 rounded-lg font-medium 
         ${status === 'active' ? "bg-green-200 text-green-800"
           : status === 'future' ? "text-yellow-700 bg-yellow-200" : "text-red-700 bg-red-200"} }`}>
-        {status === 'active' ? "Đang Chiếu" : status === 'future' ? "Sắp chiếu" : "Ngừng kinh doanh"}</div>
+        {status === 'active' ? "Đang Chiếu" : status === 'future' ? "Sắp chiếu" : status === 'special' ? "Suất chiếu đặc biệt" : "Ngừng kinh doanh"}</div>
     },
   },
   {

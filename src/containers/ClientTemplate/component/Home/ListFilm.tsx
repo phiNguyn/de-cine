@@ -10,7 +10,7 @@ import Loader from "@/components/loader"
 
 const ListFilm = ({ className }: { className?: ReactNode }) => {
   const { movie, setMovie } = useMovieStore((state) => state)
-  
+
   const { data, isLoading } = useQuery({
     queryKey: ['movie'],
     queryFn: () => moviesAPI.getAllMovie(),
@@ -32,7 +32,7 @@ const ListFilm = ({ className }: { className?: ReactNode }) => {
 
     },
     {
-      id: 3, slug: 'dac-biet', title: 'Suất Chiếu Đặc Biệt'
+      id: 3, slug: 'special', title: 'Suất Chiếu Đặc Biệt'
     }
   ]
   const updatedTabs = fakeTabs.map(tab => {
@@ -44,7 +44,7 @@ const ListFilm = ({ className }: { className?: ReactNode }) => {
       if (tab.slug === 'future') {
         return movie.status === 'future'; // Hoặc điều kiện phù hợp để xác định "Sắp Chiếu"
       }
-      if (tab.slug === 'dac-biet') {
+      if (tab.slug === 'special') {
         return movie.status === 'special'; // Hoặc điều kiện phù hợp để xác định "Suất Chiếu Đặc Biệt"
       }
       return false;

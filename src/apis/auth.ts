@@ -10,9 +10,8 @@ export const AuthAPI = {
   },
 
   register: async (data: any) => {
-      const resp = await axiosClient.post(`/${API_URL.register}`, data);
-      return resp.data;
-    
+    const resp = await axiosClient.post(`/${API_URL.register}`, data);
+    return resp.data;
   },
 
   forgot: async (data: ForgotPass) => {
@@ -29,12 +28,8 @@ export const AuthAPI = {
     password: string;
     password_confirmation: string;
   }) => {
-    try {
-      const resp = await axiosClient.post(`/password-reset`, data);
-      return resp.data;
-    } catch (error) {
-      console.log(error);
-    }
+    const resp = await axiosClient.post(`/password-reset`, data);
+    return resp.data;
   },
 
   verifyEmail: async (data: string) => {

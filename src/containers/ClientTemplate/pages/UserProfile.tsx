@@ -62,14 +62,14 @@ const UserProfile = () => {
     <div className="grid grid-cols-1 xl:grid-cols-4 gap-y-10 xl:gap-y-0 gap-x-0 xl:gap-x-10  p-8 rounded-lg shadow-lg m-5">
       {/* Sidebar */}
       <div className="col-span-1 h-fit  p-4 bg-primary rounded-lg shadow-md">
-       
+
         <div className="">
           <ul className="space-y-4">
-            <li className={isAccountPage ? "font-semibold text-blue-500" : ""}>
-              <Link to="" className="text-black">Tài khoản</Link> {/* Link đến trang Vé của bạn */}
+            <li className={isAccountPage ? "font-black " : ""}>
+              <Link to="" className="text-primary-foreground w-full">Tài khoản</Link> {/* Link đến trang Vé của bạn */}
             </li>
-            <li className={location.pathname.includes('/UserProfile/tickets') ? "font-semibold text-blue-500" : ""}>
-              <Link to="tickets" className="text-black">Vé của bạn</Link>
+            <li className={location.pathname.includes('/UserProfile/tickets') ? "font-black " : ""}>
+              <Link to="tickets" className="text-primary-foreground w-full">Vé của bạn</Link>
             </li>
             {/* <li className={location.pathname.includes('/profile/promotions') ? "font-semibold text-blue-500" : ""}>
               <Link to="promotions" className="text-black">Ưu đãi của bạn</Link>

@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useTheme } from "../../../../components/theme-provider";
+import { useTheme } from "@/components/theme-provider";
 import {
   Dialog,
   DialogContent,
@@ -91,10 +91,10 @@ const Auth = () => {
 
       <Dialog open={showForgotPasswordModal} onOpenChange={setShowForgotPasswordModal}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle hidden>Edit profile</DialogTitle>
-            <DialogDescription hidden>
-              Make changes to your profile here. Click save when you're done.
+          <DialogHeader >
+            <DialogTitle className="text-center" >Quên mật khẩu</DialogTitle>
+            <DialogDescription  className="text-center">
+              Chúng tôi sẽ gửi email cho bạn về việc xác thực đổi mật khẩu
             </DialogDescription>
           </DialogHeader>
           <DialogHeader>

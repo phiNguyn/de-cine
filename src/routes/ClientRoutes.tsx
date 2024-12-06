@@ -12,7 +12,7 @@ const SeatSelection = lazy(() => import("@/containers/ClientTemplate/pages/Seat"
 const MoviesPage = lazy(() => import("@/containers/ClientTemplate/pages/Movies"))
 const PaymentsPage = lazy(() => import("@/containers/ClientTemplate/pages/Payment"))
 const ProductsPage = lazy(() => import("@/containers/ClientTemplate/pages/Product"))
-const UserTicketsPage = lazy(() => import("@/containers/ClientTemplate/component/UserProfile/table"))
+const UserTicketsPage = lazy(() => import("@/containers/ClientTemplate/component/UserProfile/UserTicket"))
 const AccountInfoPage = lazy(() => import("@/containers/ClientTemplate/component/UserProfile/index"))
 const ResetPasswordPage = lazy(() => import("@/containers/ClientTemplate/pages/ResetPassword"))
 const VerifyEmailPage = lazy(() => import("@/containers/ClientTemplate/pages/VerifyEmail"))
