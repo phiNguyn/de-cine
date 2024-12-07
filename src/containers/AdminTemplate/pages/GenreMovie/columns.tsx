@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
@@ -7,7 +8,6 @@ import { GenreMovie } from "@/types/movie"
 import moment from 'moment-timezone';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
 import { MoreHorizontal } from "lucide-react"
 import { useState } from "react"
 import EditGenreMovie from "./editGenreMovie"

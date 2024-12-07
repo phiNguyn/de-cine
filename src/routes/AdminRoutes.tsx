@@ -1,6 +1,7 @@
 // import { ROLE } from "@/constants/role"; 
 // import RequireAuth from "@/guards";
 import { ROLE } from "@/constants/role";
+import ListComment from "@/containers/AdminTemplate/pages/ListComment";
 import ListPromotions from "@/containers/AdminTemplate/pages/ListPromotion";
 import RequireAuth from "@/guards";
 import { lazy } from "react";
@@ -56,6 +57,10 @@ const AdminRoutes = [
       {
         path: "listTicket",
         element: <ListTickets />
+      },
+      {
+        path: "listComment",
+        element: <ListComment />
       },
       {
         path: "listRoom",

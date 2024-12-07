@@ -8,7 +8,6 @@ import { Link } from "react-router-dom"
 import { DataTableColumnHeader } from "../Account/data-table-column-header"
 import { Movie } from "@/types/movie"
 import moment from "moment-timezone"
-import { NavLink } from '../../components/silelinks';
 import { API_URL } from "@/constants/api"
 import PopupYoutube from "@/containers/ClientTemplate/component/Film/PopupYoutube"
 // This type is used to define the shape of our data.
