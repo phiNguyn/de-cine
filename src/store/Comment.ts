@@ -1,3 +1,4 @@
+import { GetCommentFilter } from "@/apis/comment";
 import { Comment } from "@/types/comment"; // Điều chỉnh đường dẫn import
 import { create } from "zustand";
 
@@ -9,6 +10,8 @@ interface CommentStore {
   getCommentById: (id: number) => Comment | undefined; // Đổi 'getRoomById' thành 'getCommentById'
   commentDetail: Comment | null; // Đổi 'RooDetail' thành 'commentDetail'
   setCommentDetail: (comment: Comment) => void; // Đổi 'setRooDetail' thành 'setCommentDetail'
+  filters?: GetCommentFilter;
+  setFilters: (filters: GetCommentFilter) => void;
 }
 
 export const useCommentStore = create<CommentStore>((set, get) => ({
@@ -20,8 +23,8 @@ export const useCommentStore = create<CommentStore>((set, get) => ({
     })),
   updateComment: (updatedComment) =>
     set((state) => ({
-      comments: state.comments.map((u) =>
-        u.id_comment === updatedComment.id_comment ? updatedComment : u // Cập nhật bình luận
+      comments: state.comments.map(
+        (u) => (u.id_comment === updatedComment.id_comment ? updatedComment : u) // Cập nhật bình luận
       ),
     })),
   getCommentById: (id) => {
@@ -29,4 +32,6 @@ export const useCommentStore = create<CommentStore>((set, get) => ({
   },
   commentDetail: null, // Khởi tạo giá trị mặc định là null
   setCommentDetail: (comment) => set({ commentDetail: comment }), // Cập nhật 'commentDetail'
+  filters: undefined,
+  setFilters: (filters) => set({ filters }),
 }));

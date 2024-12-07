@@ -92,7 +92,7 @@ export default function AddShowTime() {
         const { date_time, id_room, id_movie } = data
         const updateData = {
             ...data,
-            date_time: moment.tz(date_time, 'Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss'),
+            date_time: moment.tz(date_time, 'Asia/Ho_Chi_Minh').format('YYYY-MM-DD'),
             id_room: Number(id_room),
             id_movie: Number(id_movie),
             start_time: moment.tz(date_time, 'Asia/Ho_Chi_Minh').format('YYYY-MM-DD')

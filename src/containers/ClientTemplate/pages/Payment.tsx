@@ -62,7 +62,7 @@ const PaymentPage = () => {
                 id_ticket: ticketCreate.id_ticket,
                 id_payment: selectedMethod?.id_payment,
                 total_amount: totalPrice,
-                payment_status: "Đang thanh toán",
+                payment_status: "pendding",
                 booking_code: "DEVCIEN" + userAccount.id_account + "_" + Date.now(),
                 transaction_id: "DEVCIEN-" + userAccount.id_account + Date.now(),
                 payment_date: moment.tz('Asia/Ho_Chi_Minh').format('YYYY/MM/DD HH:mm:ss'),

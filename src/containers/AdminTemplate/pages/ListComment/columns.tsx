@@ -36,7 +36,7 @@ export const columns: ColumnDef<Comment>[] = [
       <DataTableColumnHeader column={column} title="Nội dung" />
     ),
     cell: ({ row }) => {
-      const content = row.getValue("content");
+      const content = row.getValue("content") as string;
       return <div className="text-left font-medium">{content}</div>;
     },
   },
@@ -46,7 +46,7 @@ export const columns: ColumnDef<Comment>[] = [
       <DataTableColumnHeader column={column} title="Đánh giá" />
     ),
     cell: ({ row }) => {
-      const rating = row.getValue("rating");
+      const rating = row.getValue("rating") as number;
       return <div className="text-center font-medium">{rating}</div>;
     },
   },

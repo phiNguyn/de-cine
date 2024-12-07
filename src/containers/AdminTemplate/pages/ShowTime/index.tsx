@@ -15,7 +15,8 @@ export default function ShowTime() {
     const { ShowTimes, setShowTimes } = useShowTimesStore((state) => state)
     const { data, isLoading } = useQuery({
         queryKey: ['showtimes'],
-        queryFn: ShowtimeAPI.getAllShowtimes
+        queryFn: ShowtimeAPI.getAllShowtimes,
+        staleTime : 30 * 1000
     })
 
     useEffect(() => {

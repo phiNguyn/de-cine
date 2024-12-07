@@ -16,6 +16,7 @@ const UserTicketsPage = lazy(() => import("@/containers/ClientTemplate/component
 const AccountInfoPage = lazy(() => import("@/containers/ClientTemplate/component/UserProfile/index"))
 const ResetPasswordPage = lazy(() => import("@/containers/ClientTemplate/pages/ResetPassword"))
 const VerifyEmailPage = lazy(() => import("@/containers/ClientTemplate/pages/VerifyEmail"))
+const GoogleCallbackPage = lazy(() => import("@/containers/ClientTemplate/pages/GoogleCallback"))
 const ClientRoutes = [
     {
         path: '/',
@@ -67,7 +68,8 @@ const ClientRoutes = [
 
             },
             { path: 'password-reset', element: <ResetPasswordPage /> },
-            { path: 'api/accounts-verify/:code', element: <VerifyEmailPage /> }
+            { path: 'api/accounts-verify/:code', element: <VerifyEmailPage /> },
+            { path: 'api/google-callback', element: <GoogleCallbackPage /> }
 
         ]
     }

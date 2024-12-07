@@ -2,28 +2,37 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Layout } from "@/components/Layout/layout";
 import { useCommentStore } from "@/store/Comment";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { Dropdown } from "@/containers/ClientTemplate/component/Auth";
 import { UserNav } from "../../components/user-nav";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "../../components/table/data-table";
 import { columns } from "./columns";
 import { commentAPI } from "@/apis/comment";
+import { DateRange } from "react-day-picker";
+import { DatePickerWithRange } from "../../components/data-picker";
+import moment from "moment-timezone";
 
 // Dữ liệu bình luận
 export default function ListComment() {
-const { comments, setComments } = useCommentStore((state) => state)
+  const { filters, setFilters } = useCommentStore((state) => state)
   const { data } = useQuery({
-    queryKey: ["comment"],
-    queryFn: commentAPI.getAllComments,
+    queryKey: ["commentsfilters", filters],
+    queryFn: () => commentAPI.getAllComments(filters),
     staleTime: 60 * 1000,
+
   });
 
-  useEffect(() => {
-    if (data) {
-      setComments(data);
+  const handleSetFilter = (dateRange: DateRange | undefined) => {
+    if (dateRange && dateRange.from && dateRange.to) {
+      setFilters({
+        ...filters,
+        from: moment(dateRange.from).format('YYYY-MM-DD'),
+        to: moment(dateRange.to).add(1, 'days').format('YYYY-MM-DD'),
+
+      })
     }
-  }, [data]);
+  }
+
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -35,11 +44,13 @@ const { comments, setComments } = useCommentStore((state) => state)
           </div>
         </Layout.Header>
         <Layout.Body>
+          <div className="flex justify-between">
+
           <Tabs
             orientation="vertical"
             defaultValue="overview"
             className="space-y-4"
-          >
+            >
             <div className="w-full flex justify-between overflow-x-auto pb-2">
               <TabsList>
                 <TabsTrigger value="overview">Danh Sách</TabsTrigger>
@@ -50,12 +61,15 @@ const { comments, setComments } = useCommentStore((state) => state)
             </div>
             <TabsContent value="overview" className="space-y-4"></TabsContent>
           </Tabs>
+          <DatePickerWithRange onApply={handleSetFilter} />
+            </div>
+
           <div className="w-full p-8">
             <DataTable
               name="Nội dung bình luận"
-              value="comment_content"
+              value="content"
               columns={columns}
-              data={comments}
+              data={data || []}
             />
           </div>
         </Layout.Body>

@@ -21,8 +21,7 @@ export default function MovieComment({ id_movies }: CommentProps) {
   const [rating, setRating] = useState(0);
   const [reviews, setReviews] = useState<(CommentInterface & { user: User | null })[]>([]);
   const [isLoading, setIsLoading] = useState(false)
-  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const [editingCommentContent, setEditingCommentContent] = useState<string>("");
+ 
 
   useEffect(() => {
     // Get user data from localStorage

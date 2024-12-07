@@ -24,6 +24,11 @@ const BookingAPI = {
     }
   },
 
+  getBookingDetail : async (id: number) => {
+    const resp = await axiosClient.get(`/${API_URL.bookings}/${id}`)
+    return resp.data
+  }
+
  
 };
 
