@@ -1,15 +1,16 @@
 import BookingAPI from '@/apis/booking';
 import { DataTable } from '@/containers/AdminTemplate/components/table/data-table'
-import { useBooking } from '@/store/Booking';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { columns } from './columns';
 import Loader from '@/components/loader';
+import { Booking } from '@/types/Booking';
+import { StorageKeys } from '@/constants/StorageKeys';
 
 const UserInfoBooking = () => {
-    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    const userData = JSON.parse(localStorage.getItem(StorageKeys.USERDATA) || '{}');
     const id = userData.id_account
-    const { Booking, setBooking } = useBooking((state) => state)
+    const [Bookings, setBookings] = useState<Booking[] | []>([])
     const { data, isLoading } = useQuery({
         queryKey: ["BookingAccount", id],
         queryFn: () => BookingAPI.getBookingsByAccountId(id),
@@ -18,14 +19,14 @@ const UserInfoBooking = () => {
     })
     useEffect(() => {
         if (data) {
-            setBooking(data)
+            setBookings(data)
         }
-    }, [data, setBooking])
+    }, [data, setBookings])
 
     if (isLoading) return <Loader />
     return (
         <div className=" w-full col-span-1 xl:col-span-3">
-            <DataTable name="Mã đơn hàng" value="booking_code" columns={columns} data={Booking} />
+            <DataTable name="Mã đơn hàng" value="booking_code" columns={columns} data={Bookings} />
         </div>
 
     )

@@ -1,8 +1,8 @@
 export interface Payment {
     id_payment: number
     name: string,
-    created_at: Date,
-    update_at: Date
+    created_at?: Date,
+    update_at?: Date
 }
 
 import { create } from "zustand";

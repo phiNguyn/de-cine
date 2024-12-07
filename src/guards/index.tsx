@@ -12,7 +12,7 @@ const RequireAuth = ({ children, roles }: RequireAuthProps) => {
 
   // Kiểm tra xem người dùng có đăng nhập không
   if (!auth.user) {
-    return <Navigate to="/admin/login" />;
+    return <Navigate to="/" />;
   }
 
   // Kiểm tra xem vai trò của người dùng có trong danh sách vai trò cho phép không

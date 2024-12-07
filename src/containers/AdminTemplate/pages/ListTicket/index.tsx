@@ -1,141 +1,60 @@
-/* eslint-disable react-refresh/only-export-components */
-import * as React from "react";
-import {
-  SortingState,
-  VisibilityState,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  useReactTable,
-  ColumnFiltersState,
-  ColumnDef,
-} from "@tanstack/react-table";
+
 import { ThemeProvider } from "@/components/theme-provider";
-import TicketFilter from "./TicketFilter"; // Đổi tên thành TicketFilter
-import TicketTable from "./TicketTable"; // Đổi tên thành TicketTable
-// import BookingAPI from "@/apis/booking";
-
-export interface Ticket {
-  id: string;
-  tenVe: string; // Thay đổi thuộc tính theo nhu cầu
-  suKien: string; // Thay đổi thuộc tính theo nhu cầu
-  gia: number; 
-  ngayMua: string; 
-}
-
-// Dữ liệu mẫu
-const data: Ticket[] = [
-  {
-    id: "ve001",
-    tenVe: "Vé Phim Bí Mật Đen Tối",
-    suKien: "Bí Mật Đen Tối",
-    gia: 100000,
-    ngayMua: "2024-10-01",
-  },
-  {
-    id: "ve002",
-    tenVe: "Vé Phim Cuộc Đua Kỳ Thú",
-    suKien: "Cuộc Đua Kỳ Thú",
-    gia: 120000,
-    ngayMua: "2024-10-02",
-  },
-  {
-    id: "ve003",
-    tenVe: "Vé Phim Bên Kia Giấc Mơ",
-    suKien: "Bên Kia Giấc Mơ",
-    gia: 90000,
-    ngayMua: "2024-10-03",
-  },
-  {
-    id: "ve004",
-    tenVe: "Vé Phim Tình Yêu Màu Nắng",
-    suKien: "Tình Yêu Màu Nắng",
-    gia: 80000,
-    ngayMua: "2024-10-04",
-  },
-  {
-    id: "ve005",
-    tenVe: "Vé Phim Vũ Trụ Lạc Lối",
-    suKien: "Vũ Trụ Lạc Lối",
-    gia: 150000,
-    ngayMua: "2024-10-05",
-  },
-];
-
-// Định nghĩa các cột
-export const columns: ColumnDef<Ticket>[] = [
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'tenVe',
-    header: 'Tên Vé',
-    filterFn: 'includesString', // nếu bạn muốn hỗ trợ lọc theo chuỗi
-  },
-  {
-    accessorKey: 'suKien',
-    header: 'Sự Kiện',
-  },
-  {
-    accessorKey: 'gia',
-    header: 'Giá (VND)',
-  },
-  {
-    accessorKey: 'ngayMua',
-    header: 'Ngày Mua',
-  },
-];
-
+import { Layout } from "@/components/Layout/layout";
+import { Dropdown } from "@/containers/ClientTemplate/component/Auth";
+import { UserNav } from "../../components/user-nav";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DataTable } from "@/containers/AdminTemplate/components/table/data-table";
+import { columns } from "./columns";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import BookingAPI from "@/apis/booking";
+import { useBooking } from "@/store/Booking";
 export default function ListTickets() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  // const [showBooking, setShowBooking] = React.useState([]);
-
-//  React.useEffect(()=> { 
-//   const fetchBookings = async () => { 
-//     try {
-//       const resp = await BookingAPI.createTicket();
-//     } catch (error) {
-//       console.error("Fetching bookings failed", error);
-//       setShowBooking(resp)
-//     }
-//   }
-//   fetchBookings();
-//  },[])
-
-  const table = useReactTable({
-    data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
-  });
-
+  const { Booking, setBooking } = useBooking((state) => state)
+  const { data } = useQuery({
+    queryKey: ['Bookings'],
+    queryFn: () => BookingAPI.getAll(),
+    staleTime: 60 * 1000
+  })
+  useEffect(() => {
+    if (data) {
+      setBooking(data)
+    }
+  }, [data, setBooking])
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="w-full p-8">
-        <TicketFilter
-          filterValue={(table.getColumn("tenVe")?.getFilterValue() as string) ?? ""}
-          onFilterChange={(value) => table.getColumn("tenVe")?.setFilterValue(value)}
-          columns={table.getAllColumns()}
-        />
-        <TicketTable rows={table.getRowModel().rows} columns={table.getHeaderGroups()} />
-      </div>
+      <Layout>
+        <Layout.Header>
+          <div className='ml-auto flex items-center space-x-4'>
+            <Dropdown className='!mt-0 px-2 cursor-pointer' />
+            <UserNav />
+          </div>
+        </Layout.Header>
+        <Layout.Body>
+          <Tabs
+            orientation='vertical'
+            defaultValue='overview'
+            className='space-y-4'
+          >
+            <div className='w-full flex justify-between overflow-x-auto pb-2'>
+              <TabsList>
+                <TabsTrigger value='overview'>Danh Sách</TabsTrigger>
+                <TabsTrigger value='analytics'>Biểu Đồ</TabsTrigger>
+                <TabsTrigger value='reports'>Reports</TabsTrigger>
+                <TabsTrigger value='add'>Thêm phim mới</TabsTrigger>
+              </TabsList>
+            </div>
+            <TabsContent value='overview' className='space-y-4'>
+            </TabsContent>
+
+          </Tabs>
+          <div className="w-full p-8 ">
+            <DataTable name="mã vé" value="booking_code" columns={columns} data={Booking} />
+          </div>
+
+        </Layout.Body>
+      </Layout>
     </ThemeProvider>
   );
 }

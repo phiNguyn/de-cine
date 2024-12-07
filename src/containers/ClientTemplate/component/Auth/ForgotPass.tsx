@@ -4,7 +4,6 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"; // Thêm FormMessage để hiển thị lỗi
 import { Input } from "@/components/ui/input";
-import { CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { AuthAPI } from "@/apis/auth";
@@ -51,7 +50,7 @@ export function ForGotPass() {
 
 
     return (
-        
+
         <Form {...form}>
             <form className="space-y-8" onSubmit={form.handleSubmit(dataSubmit)} >
                 {/* Email Field */}
@@ -60,19 +59,15 @@ export function ForGotPass() {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                            <CardContent className="space-y-2">
-                                <div className="flex flex-col mt-2">
-                                    <FormLabel>Nhập email</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            id="user_name"
-                                            className="mt-1"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </div>
-                            </CardContent>
+                            <div className="flex flex-col gap-y-6 ">
+                                <FormLabel>Nhập email</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </div>
                         </FormItem>
                     )}
                 />

@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useTheme } from "../../../../components/theme-provider";
+import { useTheme } from "@/components/theme-provider";
 import {
   Dialog,
   DialogContent,
@@ -91,10 +91,10 @@ const Auth = () => {
 
       <Dialog open={showForgotPasswordModal} onOpenChange={setShowForgotPasswordModal}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle hidden>Edit profile</DialogTitle>
-            <DialogDescription hidden>
-              Make changes to your profile here. Click save when you're done.
+          <DialogHeader >
+            <DialogTitle className="text-center" >Quên mật khẩu</DialogTitle>
+            <DialogDescription  className="text-center">
+              Chúng tôi sẽ gửi email cho bạn về việc xác thực đổi mật khẩu
             </DialogDescription>
           </DialogHeader>
           <DialogHeader>
@@ -123,18 +123,21 @@ const TabsDemo = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<bo
       const resp = await AuthAPI.login(data);
 
       if (resp.status == 200 && resp.user) {
-        const { user, message } = resp;
+        const { user, message, access_token, refresh_token } = resp;
         toast.success(message);
         login({ role: user.role });
         localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(user));
+        localStorage.setItem(StorageKeys.ACCESS_TOKEN, access_token)
+        localStorage.setItem(StorageKeys.REFRESH_TOKEN, refresh_token)
+        setOpen(false);
         setTimeout(() => {
-          setOpen(false);
           window.location.href = '/';
         }, 2000);
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Tài khoản hoặc mật khẩu không đúng");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const { message } = error.response.data
+      toast.error(message);
     }
   };
 
@@ -144,20 +147,22 @@ const TabsDemo = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<bo
       console.log(isRegister);
 
       const resp = await AuthAPI.register(data);
-      if (resp) {
-        if (resp.status == 201) {
-          toast.success("Đã tạo thài khoản thành công")
-          setOpen(false);
-        } else {
-          toast.error("Email hoặc tài khoản đã tồn tại");
-        }
-      } else {
-        toast.error("Email hoặc tài khoản đã tồn tại");
-
+      if (resp?.status == 201) {
+        toast.success(resp.message)
+        setOpen(false);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error("Có lỗi xảy ra khi đăng ký.");
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const { data } = error.response
+      if (data) {
+        if (data.user_name && data.email) {
+          toast.error("Tên đăng nhập và email đã được sử dụng")
+        } else {
+          toast.error(data.user_name ? "Tên đăng nhập đã được sử dụng" : "Email đã được sử dụng")
+        }
+        // toast.error(data.user_name[0])
+      }
     }
   };
 

@@ -36,6 +36,8 @@ export function UserNav() {
     try {
       localStorage.removeItem(StorageKeys.USERDATA)
       localStorage.removeItem(StorageKeys.USER)
+      localStorage.removeItem(StorageKeys.ACCESS_TOKEN)
+      localStorage.removeItem(StorageKeys.REFRESH_TOKEN)
       clearTicketData()
       window.location.href = "/"
     } catch (error) {

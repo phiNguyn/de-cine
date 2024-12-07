@@ -2,6 +2,10 @@ import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
 
 const BookingAPI = {
+  getAll: async () => {
+    const resp = await axiosClient.get(`/${API_URL.bookings}`);
+    return resp.data;
+  },
   createTicket: async (data) => {
     try {
       const resp = await axiosClient.post(`/${API_URL.bookings}`, data);
@@ -11,15 +15,16 @@ const BookingAPI = {
     }
   },
 
-  getBookingsByAccountId : async (id: number) => {
+  getBookingsByAccountId: async (id: number) => {
     try {
-    const resp = await axiosClient.get(`/${API_URL.bookingsAccount}/${id}`)
-    return resp.data
-  } catch (error) {
-    console.log(error);
-    
-  }
-}
+      const resp = await axiosClient.get(`/${API_URL.bookingsAccount}/${id}`);
+      return resp.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+ 
 };
 
 export default BookingAPI;

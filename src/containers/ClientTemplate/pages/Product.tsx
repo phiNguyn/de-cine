@@ -16,7 +16,7 @@ export default function Product() {
   const { Product, setProduct } = useProductStore((state) => state);
   const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, clearTicketData } = useTicketStore()
   const navigate = useNavigate()
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['productActive'],
     queryFn: () => productAPI.getAllProductActive(true),
     staleTime: 60 * 1000,
@@ -28,47 +28,54 @@ export default function Product() {
   }, [data, setProduct]);
 
   const handleProceed = async () => {
-    const chairs = selectedSeats.map(item => item.id_chair);
-    const data = {
-      id_room: selectedRoomId,
-      chair_status: 'available',
-    };
+    // const chairs = selectedSeats.map(item => item.id_chair);
+    // const data = {
+    //   id_room: selectedRoomId,
+    //   chair_status: 'available',
+    // };
 
-    const apiCalls = chairs.map(chair => {
-      return ChairAPI.updateChair(chair, data);
+    // const apiCalls = chairs.map(chair => {
+    //   return ChairAPI.updateChair(chair, data);
+    // });
+    navigate("/payments", {
+      state: {
+        selectedShowDate,
+        selectedShowTime,
+        selectedRoomId,
+        movieName,
+        movieImage,
+        selectedSeats,
+      },
     });
-
-    try {
-      const results = await Promise.all(apiCalls);
-      console.log('Tất cả API đã hoàn thành:', results);
-      navigate("/payments", {
-        state: {
-          selectedShowDate,
-          selectedShowTime,
-          selectedRoomId,
-          movieName,
-          movieImage,
-          selectedSeats,
-        },
-      });
-    } catch (error) {
-      console.error('Lỗi khi gọi API:', error);
-    }
+    // try {
+    //   const results = await Promise.all(apiCalls);
+    //   console.log('Tất cả API đã hoàn thành:', results);
+    //   navigate("/payments", {
+    //     state: {
+    //       selectedShowDate,
+    //       selectedShowTime,
+    //       selectedRoomId,
+    //       movieName,
+    //       movieImage,
+    //       selectedSeats,
+    //     },
+    //   });
+    // } catch (error) {
+    //   console.error('Lỗi khi gọi API:', error);
+    // }
   };
 
   const handleCancle = async () => {
     await clearTicketData();
     navigate("/Booking");
   };
-  if (error || !data || data.length === 0) {
-    return <p>Không có sản phẩm nào khả dụng.</p>;
-  }
+
 
   return (
     <>
       <div className="mx-5">
-        <div className="w-full">
-          <Button className="ml-auto" variant={"outline"} size={"default"} onClick={handleCancle}>Hủy giao dịch</Button>
+        <div className="w-full flex justify-end items-center ">
+          <Button className="" variant={"outline"} size={"default"} onClick={handleCancle}>Hủy giao dịch</Button>
         </div>
         <div className="mx-auto sm:px-8 my-5">
           <h2 className="text-2xl font-semibold mb-6">Chọn Combo</h2>

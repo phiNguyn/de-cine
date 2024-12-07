@@ -81,7 +81,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
             }));
             setGenreMovie(formattedData)
         }
-    }, [data])
+    }, [data, setGenreMovie])
 
 
     const [selectdOptions, setSelectedOptions] = useState([])
@@ -258,7 +258,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                         )}
                                     />
 
-                                    <FormField 
+                                    <FormField
                                         control={form.control}
                                         name="genres"
                                         render={({ field }) => (
@@ -271,7 +271,6 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                                     value={selectdOptions}
                                                     onChange={handleChange}
                                                     isMulti={true}
-                                                    
                                                 />
                                                 <FormMessage />
 
@@ -299,8 +298,8 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                                         <SelectGroup>
                                                             <SelectItem value="active">Đang chiếu</SelectItem>
                                                             <SelectItem value="future">Sắp chiếu</SelectItem>
+                                                            <SelectItem value="special">Suất chiếu đặc biệt</SelectItem>
                                                             <SelectItem value="disable">Ngừng kinh doanh</SelectItem>
-
                                                         </SelectGroup>
                                                     </SelectContent>
                                                 </SelectOne>

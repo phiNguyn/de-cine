@@ -330,8 +330,8 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
                                                             <SelectLabel>Danh Mục</SelectLabel>
                                                             <SelectItem value="active">Đang chiếu</SelectItem>
                                                             <SelectItem value="future">Sắp chiếu</SelectItem>
+                                                            <SelectItem value="special">Suất chiếu đặc biệt</SelectItem>
                                                             <SelectItem value="disable">Ngừng kinh doanh</SelectItem>
-
                                                         </SelectGroup>
                                                     </SelectContent>
                                                 </SelectOne>

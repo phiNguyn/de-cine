@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { CircleArrowDown } from "lucide-react"
 import Vnpay from "/payment/vnpay.png"
 import MOMO from "/payment/momo.png"
@@ -10,14 +8,15 @@ import { useNavigate } from "react-router-dom"
 import ButtonNext from "../component/Seat/button"
 import { useTicketStore } from "@/store/intex"
 import Ticket from "../component/Seat/ticket"
-import { usePaymentStore } from "@/store/Payments"
+import { Payment, usePaymentStore } from "@/store/Payments"
 import { useQuery } from "@tanstack/react-query"
 import PaymentAPI from "@/apis/payment"
 import BookingAPI from "@/apis/booking"
 import TicketAPI from "@/apis/ticket"
 import moment from "moment-timezone"
-const Payment = () => {
+const PaymentPage = () => {
 
+    const [selectedMethod, setSelectedMethod] = useState<Payment | null>(null)
     const { Payment, setPayment } = usePaymentStore((state) => state)
     const { data } = useQuery({
         queryKey: ['payments'],
@@ -34,7 +33,7 @@ const Payment = () => {
         userAccount = JSON.parse(user)
     }
 
-    const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, selectedProducts,clearTicketData } = useTicketStore()
+    const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, selectedProducts, clearTicketData } = useTicketStore()
 
     const navigate = useNavigate()
 
@@ -45,7 +44,6 @@ const Payment = () => {
 
     // Tính tổng tiền
     const totalPrice = totalSeatsPrice + totalProductsPrice;
-    const [selectedMethod, setSelectedMethod] = useState("VNPAY")
     const handleProceed = async () => {
         navigate('/payments ', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
 
@@ -62,7 +60,7 @@ const Payment = () => {
                 account_promotion_id: null,
                 id_product: selectedProducts.map((product) => product.product.id_product),
                 id_ticket: ticketCreate.id_ticket,
-                id_payment: 3,
+                id_payment: selectedMethod?.id_payment,
                 total_amount: totalPrice,
                 payment_status: "Đang thanh toán",
                 booking_code: "DEVCIEN" + userAccount.id_account + "_" + Date.now(),
@@ -124,8 +122,8 @@ const Payment = () => {
                         </h3>
                         <div className="my-4">
                             <RadioGroup
-                                value={selectedMethod}
-                                onValueChange={setSelectedMethod}
+                                value={selectedMethod?.name}
+                                onValueChange={() => setSelectedMethod}
                                 className="space-y-3"
                             >
                                 {Payment.map(payment => (
@@ -133,9 +131,9 @@ const Payment = () => {
                                     <div key={payment.id_payment}
                                         className={`
                                     border  rounded-lg cursor-pointer transition-all
-                                    ${selectedMethod === payment.name ? 'border-yellow-500' : 'hover:border-yellow-500'}
+                                    ${selectedMethod?.name === payment.name ? 'border-yellow-500' : 'hover:border-yellow-500'}
                                   `}
-                                        onClick={() => setSelectedMethod(payment.name)}
+                                        onClick={() => setSelectedMethod({ name: payment.name, id_payment: payment.id_payment })}
                                     >
 
                                         <Label
@@ -166,4 +164,4 @@ const Payment = () => {
     )
 }
 
-export default Payment
+export default PaymentPage

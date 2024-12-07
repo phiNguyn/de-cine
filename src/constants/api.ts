@@ -19,5 +19,6 @@ export const API_URL = {
   bookings : 'bookings',
   payments : 'payments',
   comment: 'comments',
-
+  vnpay : 'vnpay/payment',
+  bookingsAccount : 'bookings/account'
 };

@@ -6,7 +6,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { CardContent } from "@/components/ui/card";
 import { AuthAPI } from "@/apis/auth";
 import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -56,8 +55,13 @@ const ResetPassword = () => {
                     navigate('/')
                 }, 1000);
             }
-        } catch (error) {
-            console.error(error);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            if (error.response?.data?.message) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("An error occurred");
+            }
         } finally {
             setIsLoading(false); // Kết thúc loading
         }
@@ -67,16 +71,16 @@ const ResetPassword = () => {
 
 
     return (
-        <Form {...form}>
-            <form className="space-y-8" onSubmit={form.handleSubmit(dataSubmit)} >
+        <div className="w-full max-w-lg mx-auto p-5 m-10 border border-border">
+            <Form {...form}>
+                <form className="space-y-8" onSubmit={form.handleSubmit(dataSubmit)} >
 
-                {/* Password Field */}
-                <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                        <FormItem>
-                            <CardContent className="space-y-2">
+                    {/* Password Field */}
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
                                 <FormLabel>Nhập mật khẩu</FormLabel>
                                 <div className='flex items-center justify-between relative'>
 
@@ -91,50 +95,50 @@ const ResetPassword = () => {
                                     </div>
                                 </div>
                                 <FormMessage />
-                            </CardContent>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="password_confirmation"
-                    render={({ field }) => (
-                        <FormItem>
-                            <div className="flex gap-x-2 items-center">
-                                <FormLabel>Nhập lại mật khẩu</FormLabel>
-                                <FormMessage />
-
-                            </div>
-                            <div className='flex items-center justify-between relative'>
-
-                                <FormControl>
-                                    <Input type={`${confirm ? 'text' : 'password'}`} placeholder='********' {...field} />
-                                </FormControl>
-                                <div onClick={() => setConfirm((prev) => !prev)} className="absolute right-3 cursor-pointer">
-                                    {confirm ?
-                                        <Eye />
-                                        : <EyeOff />
-                                    }
-                                </div>
-                            </div>
-                        </FormItem>
-                    )}
-                />
-                <div className="flex justify-center">
-                    <Button disabled={isLoading} type="submit" size="lg">
-                        {isLoading ? (
-                            <>
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Đang thực hiện
-                            </>
-                        ) : (
-                            'Cấp lại mật khẩu'
+                            </FormItem>
                         )}
-                    </Button>
+                    />
+                    <FormField
+                        control={form.control}
+                        name="password_confirmation"
+                        render={({ field }) => (
+                            <FormItem>
+                                <div className="flex gap-x-2 items-center">
+                                    <FormLabel>Nhập lại mật khẩu</FormLabel>
+                                    <FormMessage />
 
-                </div>
-            </form>
-        </Form>
+                                </div>
+                                <div className='flex items-center justify-between relative'>
+
+                                    <FormControl>
+                                        <Input type={`${confirm ? 'text' : 'password'}`} placeholder='********' {...field} />
+                                    </FormControl>
+                                    <div onClick={() => setConfirm((prev) => !prev)} className="absolute right-3 cursor-pointer">
+                                        {confirm ?
+                                            <Eye />
+                                            : <EyeOff />
+                                        }
+                                    </div>
+                                </div>
+                            </FormItem>
+                        )}
+                    />
+                    <div className="flex justify-center">
+                        <Button disabled={isLoading} type="submit" size="lg">
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Đang thực hiện
+                                </>
+                            ) : (
+                                'Cấp lại mật khẩu'
+                            )}
+                        </Button>
+
+                    </div>
+                </form>
+            </Form>
+        </div>
     );
 };
 

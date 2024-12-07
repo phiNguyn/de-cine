@@ -15,11 +15,11 @@ axiosClient.interceptors.request.use(
   (config) => {
     // Lấy token từ localStorage hoặc bất kỳ phương pháp lưu trữ nào
     const token = localStorage.getItem("token");
-    
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`; // Thêm token vào header Authorization
     }
-    
+
     return config;
   },
   (error) => {
@@ -36,22 +36,7 @@ axiosClient.interceptors.response.use(
   },
   (error) => {
     // Xử lý response lỗi
-    if (error.response) {
-      const {data} = error.response
-      if(error.response.status == 422) {
-        // console.log(data);
-        
-        return data
-      }
-      // Xử lý lỗi từ phía server (4xx, 5xx)
-      // console.error("API Error: ", error.response.data.message || error.message);
-    } else if (error.request) {
-      // Không nhận được phản hồi từ server
-      console.error("No response from server.");
-    } else {
-      // Lỗi khác khi thiết lập request
-      console.error("Axios error: ", error.message);
-    }
+   
     return Promise.reject(error);
   }
 );

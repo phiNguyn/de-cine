@@ -1,3 +1,4 @@
+import { Product } from "./product";
 import { ShowTime } from "./showtime";
 
 export interface Booking {
@@ -12,10 +13,11 @@ export interface Booking {
   payment_status: string;
   transaction_id: string;
   payment_date: string;
-  status: "pending" | "complete" | "cancel";
+  status: "pending" | "success" | "cancel";
   created_at: Date;
   updated_at: Date;
-  ticket: TicketBooking;
+  ticket?: TicketBooking;
+  products ?: Product[] | null
 }
 
 export interface TicketBooking {
