@@ -31,7 +31,7 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
 
   const handleContinue = () => {
     if (!isValidSelection(selectedSeats)) {
-      toast.error("Không thể chừa một ghế trống giữa các ghế đã chọn.");
+      toast.error("Không thể chừa một ghế trống như vậy.");
       return;
     }
     handleProceed();
@@ -44,26 +44,42 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
   };
 
   const isValidSelection = (selectedSeats: Chair[]): boolean => {
-    for (const seat of selectedSeats) {
-      const row = seat.chair_name[0];
-      const col = parseInt(seat.chair_name.slice(1));
-
-      const leftSeatSelected = selectedSeats.some(s => s.chair_name === `${row}${col - 1}`);
-      const rightSeatSelected = selectedSeats.some(s => s.chair_name === `${row}${col + 1}`);
-      const leftGapSeatSelected = selectedSeats.some(s => s.chair_name === `${row}${col - 2}`);
-      const rightGapSeatSelected = selectedSeats.some(s => s.chair_name === `${row}${col + 2}`);
-
-      if (leftGapSeatSelected && !leftSeatSelected && col - 1 > 0) {
+    const rows = ['A', 'B', 'C', 'D', 'E'];
+  
+    for (const row of rows) {
+      // Lọc các ghế được chọn trong hàng hiện tại
+      const selectedSeatsInRow = selectedSeats
+        .filter((seat) => seat.chair_name.startsWith(row))
+        .map((seat) => parseInt(seat.chair_name.slice(1)))
+        .sort((a, b) => a - b); // Sắp xếp theo thứ tự ghế
+  
+      if (selectedSeatsInRow.length === 0) continue; // Bỏ qua nếu không có ghế nào được chọn trong hàng
+  
+      // Kiểm tra ghế đầu và ghế cuối
+      if (selectedSeatsInRow[0] !== 1 && selectedSeatsInRow[0] - 1 === 1) {
+        console.error(`Ghế ${row}1 không được để trống.`);
         return false;
       }
-
-      if (rightGapSeatSelected && !rightSeatSelected && col + 1 <= 10) {
+      if (selectedSeatsInRow[selectedSeatsInRow.length - 1] !== 10 && selectedSeatsInRow[selectedSeatsInRow.length - 1] + 1 === 10) {
+        console.error(`Ghế ${row}10 không được để trống.`);
         return false;
+      }
+  
+      // Kiểm tra khoảng trống giữa các ghế đã chọn
+      for (let i = 0; i < selectedSeatsInRow.length - 1; i++) {
+        if (selectedSeatsInRow[i + 1] - selectedSeatsInRow[i] > 1) {
+          console.error(
+            `Không được để trống giữa ghế ${row}${selectedSeatsInRow[i]} và ghế ${row}${selectedSeatsInRow[i + 1]}.`
+          );
+          return false;
+        }
       }
     }
-    return true;
+  
+    return true; 
   };
-
+  
+  
   return (
     <div className="w-full  p-4 md:p-6  bg-black text-white rounded-lg shadow-lg mx-auto my-4 md:my-0 border border-gray-700">
       <ToastContainer />
