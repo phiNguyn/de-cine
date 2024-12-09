@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { DataTableColumnHeader } from "../Account/data-table-column-header";
 import { Comment } from "@/types/comment"; // Import Comment interface
 import { formatDate } from '../GenreMovie/columns';
+import UserNameCell from "./component/UserNameCell";
+import MovieNameCell from "./component/MovieNameCell";
 
 export const columns: ColumnDef<Comment>[] = [
   {
@@ -16,20 +18,32 @@ export const columns: ColumnDef<Comment>[] = [
       );
     },
   },
+
+
   {
     accessorKey: "id_movies",
-    header: ({ column }) => {
-      return (
-        <DataTableColumnHeader column={column} title="ID Phim" />
-      );
+    header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="  Phim" />
+    ),
+    cell: ({ row }) => {
+      const idMovies = row.getValue("id_movies") as string;
+      return <MovieNameCell idMovie={idMovies}/>
     },
+
   },
+
+
   {
     accessorKey: "id_account",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID Tài khoản" />
+      <DataTableColumnHeader column={column} title="Tài khoản" />
     ),
+    cell: ({ row }) => {
+      const idAccount = row.getValue("id_account") as string;
+      return <UserNameCell idAccount={idAccount} />;
+    },
   },
+  
   {
     accessorKey: "content",
     header: ({ column }) => (
@@ -58,7 +72,7 @@ export const columns: ColumnDef<Comment>[] = [
         />
       ));
   
-      return <div className="flex justify-center">{stars}</div>;
+      return <div className="flex justify-start">{stars}</div>;
     },
   },
   {
