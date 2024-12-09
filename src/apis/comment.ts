@@ -5,7 +5,7 @@ export interface GetCommentFilter {
   from?: string;
   to?: string;
   rating?: number;
-  id_movie?: number;
+  id_movie?: number | string;
 }
 export const commentAPI = {
   /**
@@ -21,9 +21,9 @@ export const commentAPI = {
         if (filters.to !== undefined)
           params.append("to", filters.to.toString());
         if (filters.rating !== undefined)
-          params.append("to", filters.rating.toString());
-        if (filters.id_movie !== undefined)
-          params.append("to", filters.id_movie.toString());
+          params.append("rating", filters.rating.toString());
+        if (filters.id_movie !== undefined )
+          params.append("id_movie", filters.id_movie.toString());
       }
       const resp = await axiosClient.get(
         `${API_URL.comment}?${params.toString()}`

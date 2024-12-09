@@ -12,10 +12,12 @@ import { commentAPI } from "@/apis/comment";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "../../components/data-picker";
 import moment from "moment-timezone";
+import MovieFillter from "./component/MovieFillter";
 
 // Dữ liệu bình luận
 export default function ListComment() {
   const { filters, setFilters } = useCommentStore((state) => state)
+
   const { data } = useQuery({
     queryKey: ["comment"],
     queryFn: commentAPI.getAllComments,
@@ -27,7 +29,9 @@ export default function ListComment() {
       setComments(data);
     }
   }
-
+const handleMovieFillter = (id_movie?:number | string) => { 
+  setFilters({...filters, id_movie})
+}
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
