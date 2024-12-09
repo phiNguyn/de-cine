@@ -4,7 +4,7 @@ import { Comment } from "@/types/comment"; // Import interface Comment
 export interface GetCommentFilter {
   from?: string;
   to?: string;
-  rating?: number;
+  rating?: number | string;
   id_movie?: number | string;
 }
 export const commentAPI = {
