@@ -9,11 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Star } from "lucide-react"; // Import biểu tượng Star từ lucide-react
+
 interface MovieComment {
   onFilterChange: (rating?: number | string) => void;
 }
 
-const StartFilter = ({onFilterChange}: MovieComment ) => {
+const StartFilter = ({ onFilterChange }: MovieComment) => {
   const [ratings, setRatings] = useState<number[]>([]); // Lưu các mức đánh giá
 
   useEffect(() => {
@@ -49,11 +51,25 @@ const StartFilter = ({onFilterChange}: MovieComment ) => {
           <SelectGroup>
             <SelectLabel>Mức đánh giá</SelectLabel>
             {ratings.map((rating) => (
-              <SelectItem key={rating} value={String(rating)}>
-                {rating} Sao
+              <SelectItem
+                key={rating}
+                value={String(rating)}
+                className="flex items-center space-x-2"
+              >
+                <div className="flex items-center space-x-1">
+                  {Array.from({ length: rating }, (_, index) => (
+                    <Star
+                      key={index}
+                      className="text-yellow-500 w-5 h-5"
+                      fill="currentColor"
+                    />
+                  ))}
+                </div>
               </SelectItem>
             ))}
-            <SelectItem value="undefined">Bỏ chọn</SelectItem>
+            <SelectItem value="undefined" className="flex items-center">
+              <span>Bỏ chọn</span>
+            </SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>
