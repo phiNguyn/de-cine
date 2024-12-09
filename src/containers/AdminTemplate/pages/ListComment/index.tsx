@@ -9,10 +9,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "../../components/table/data-table";
 import { columns } from "./columns";
 import { commentAPI } from "@/apis/comment";
+import { DateRange } from "react-day-picker";
+import { DatePickerWithRange } from "../../components/data-picker";
+import moment from "moment-timezone";
 
 // Dữ liệu bình luận
 export default function ListComment() {
-const { comments, setComments } = useCommentStore((state) => state)
+  const { filters, setFilters } = useCommentStore((state) => state)
   const { data } = useQuery({
     queryKey: ["comment"],
     queryFn: commentAPI.getAllComments,
@@ -23,7 +26,8 @@ const { comments, setComments } = useCommentStore((state) => state)
     if (data) {
       setComments(data);
     }
-  }, [data]);
+  }
+
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -51,6 +55,9 @@ const { comments, setComments } = useCommentStore((state) => state)
             <TabsContent value="overview" className="space-y-4"></TabsContent>
           </Tabs>
           <div className="w-full p-8">
+
+            <MovieFillter onFilterChange={handleMovieFillter}/> 
+
             <DataTable
               name="Nội dung bình luận"
               value="comment_content"

@@ -1,19 +1,40 @@
 import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
 import { Comment } from "@/types/comment"; // Import interface Comment
+export interface GetCommentFilter {
+  from?: string;
+  to?: string;
+  rating?: number;
+  id_movie?: number;
+}
+export const commentAPI = {
+  /**
+   * Lấy tất cả các bình luận
+   */
 
-export const commentAPI = { 
-    /**
-     * Lấy tất cả các bình luận
-     */
-    getAllComments: async (): Promise<Comment[] | undefined> => {
-        try {
-            const resp = await axiosClient.get(`${API_URL.comment}`);
-            return resp.data;
-        } catch (error) {
-            console.error("Error fetching all comments:", error);
-        }
-    },
+  getAllComments: async (filters?: GetCommentFilter) => {
+    try {
+      const params = new URLSearchParams();
+      if (filters) {
+        if (filters.from !== undefined)
+          params.append("from", filters.from.toString());
+        if (filters.to !== undefined)
+          params.append("to", filters.to.toString());
+        if (filters.rating !== undefined)
+          params.append("to", filters.rating.toString());
+        if (filters.id_movie !== undefined)
+          params.append("to", filters.id_movie.toString());
+      }
+      const resp = await axiosClient.get(
+        `${API_URL.comment}?${params.toString()}`
+      );
+      console.log(resp.data);
+
+      return resp.data as Comment[];
+    } catch (error) {
+      console.error("Error fetching all comments:", error);
+    }
+  },
 
     /**
      * Lấy tất cả bình luận theo ID phim
