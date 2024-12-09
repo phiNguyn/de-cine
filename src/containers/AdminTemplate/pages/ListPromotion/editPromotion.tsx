@@ -70,7 +70,7 @@ const EditPromotion = ({ selectedId, onClose }: { selectedId: number; onClose?: 
                 <form onSubmit={form.handleSubmit(dataSubmit)} className="space-y-8">
                     <div className="grid grid-cols-1 gap-y-5">
 
-                        <div className="flex">
+                        <div className="flex gap-14">
                             <FormField
                                 control={form.control}
                                 name="promotion_name"
@@ -103,7 +103,7 @@ const EditPromotion = ({ selectedId, onClose }: { selectedId: number; onClose?: 
                                 )}
                             />
                         </div>
-                        <div className="flex">
+                        <div className="flex gap-32 ">
                             <FormField
                                 control={form.control}
                                 name="discount_type"
@@ -113,7 +113,7 @@ const EditPromotion = ({ selectedId, onClose }: { selectedId: number; onClose?: 
                                         <FormControl>
                                             <select
                                                 {...field}
-                                                className="border border-gray-300 rounded-md p-2 text-black"
+                                                className=" flex flex-col border border-gray-300 rounded-md p-2 text-black"
                                             >
                                                 <option value="percent">Phần trăm</option>
                                                 <option value="price">Giá trị</option>
@@ -142,7 +142,7 @@ const EditPromotion = ({ selectedId, onClose }: { selectedId: number; onClose?: 
                                 )}
                             />
                         </div>
-                        <div className="flex">
+                        <div className="flex gap-24">
                             <FormField
                                 control={form.control}
                                 name="start_date"
@@ -170,7 +170,7 @@ const EditPromotion = ({ selectedId, onClose }: { selectedId: number; onClose?: 
                                 )}
                             />
                         </div>
-                        <div className="flex">
+                        <div className="flex gap-14">
                             <FormField
                                 control={form.control}
                                 name="min_purchase_amount"
@@ -229,7 +229,7 @@ const EditPromotion = ({ selectedId, onClose }: { selectedId: number; onClose?: 
                             />
                         </div>
 
-                       
+
                     </div>
                     <div className="flex justify-between">
                         <Button disabled={isLoading} type="submit">

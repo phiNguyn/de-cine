@@ -7,7 +7,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Switch } from "@/components/ui/switch";
 import promotionAPI from "@/apis/promotion";
 import { Loader2 } from "lucide-react";
 import { usePromotionStore } from "@/store/Promotion";

@@ -24,7 +24,7 @@ export const columns: ColumnDef<Promotion>[] = [
         },
     },
     {
-        accessorKey: "discount_percent",
+        accessorKey: "discount_value",
         header: ({ column }) => {
             return (
                 <DataTableColumnHeader column={column} title="Phần trăm giảm giá (%)" />
