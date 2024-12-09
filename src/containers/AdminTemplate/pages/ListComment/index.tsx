@@ -11,10 +11,13 @@ import { commentAPI } from "@/apis/comment";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "../../components/data-picker";
 import moment from "moment-timezone";
+import MovieFillter from "./component/MovieFilter";
+import StartFilter from "./component/StartFilter";
 
 // Dữ liệu bình luận
 export default function ListComment() {
   const { filters, setFilters } = useCommentStore((state) => state)
+
   const { data } = useQuery({
     queryKey: ["commentsfilters", filters],
     queryFn: () => commentAPI.getAllComments(filters),
@@ -32,7 +35,12 @@ export default function ListComment() {
       })
     }
   }
-
+const handleMovieFillter = (id_movie?:number | string) => { 
+  setFilters({...filters, id_movie})
+}
+const handleStartFillter = (rating?:number | string) => {
+  setFilters({...filters, rating})
+}
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -65,6 +73,13 @@ export default function ListComment() {
             </div>
 
           <div className="w-full p-8">
+              <div className="w-60 pb-4">
+            <MovieFillter  onFilterChange={handleMovieFillter}/> 
+              </div>
+              <div className="w-60">
+            <StartFilter onFilterChange={handleStartFillter} />
+              </div>
+
             <DataTable
               name="Nội dung bình luận"
               value="content"

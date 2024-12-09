@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { DataTableColumnHeader } from "../Account/data-table-column-header";
 import { Comment } from "@/types/comment"; // Import Comment interface
@@ -47,7 +47,18 @@ export const columns: ColumnDef<Comment>[] = [
     ),
     cell: ({ row }) => {
       const rating = row.getValue("rating") as number;
-      return <div className="text-center font-medium">{rating}</div>;
+      const stars = Array.from({ length: 5 }, (_, index) => (
+        <Star 
+          key={index} 
+          className={`h-4 w-4  ${
+            index < rating ? "text-yellow-500" : "text-gray-300"
+          }`} 
+          fill={index < rating ? "currentColor" : "none"} 
+          stroke="currentColor" 
+        />
+      ));
+  
+      return <div className="flex justify-center">{stars}</div>;
     },
   },
   {
