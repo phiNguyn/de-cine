@@ -1,5 +1,7 @@
 import { ROLE } from '@/constants/role'
 import Booking from '@/containers/ClientTemplate/component/Booking/Booking'
+import PromotionDetailPage from '@/containers/ClientTemplate/pages/DetailPromotion'
+import PromotionPage from '@/containers/ClientTemplate/pages/Promotion'
 import RequireAuth from '@/guards'
 import { lazy } from 'react'
 
@@ -53,6 +55,8 @@ const ClientRoutes = [
                 )
             },
             { path: '/Booking', element: <Booking /> },
+            { path: '/Promotions', element: <PromotionPage /> },
+            { path: '/Promotions/:id', element: <PromotionDetailPage /> },
             { path: '/Movies', element: <MoviesPage /> },
             {
                 path: '/Payments', element:

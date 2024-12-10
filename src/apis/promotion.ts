@@ -40,6 +40,15 @@ const PromotionAPI = {
       console.log(error);
     }
   },
+  getPromotionById: async (id: number) => {
+  try {
+    const resp = await axiosClient.get(`${API_URL.promotions}/${id}`);
+    return resp.data;
+  } catch (error) {
+    console.log(error);
+  
+  }
+  }
 };
 
 export default PromotionAPI;
