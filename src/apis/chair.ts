@@ -21,7 +21,8 @@ export const ChairAPI = {
             
         }
     },
-    updateChair :  async(id : number, data) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    updateChair :  async(id : number, data : any) => {
         try {
             const resp = await axiosClient.put(`${API_URL.chairs}/${id}`, data)
             return resp.data

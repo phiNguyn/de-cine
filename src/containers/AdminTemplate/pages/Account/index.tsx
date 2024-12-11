@@ -25,7 +25,7 @@ export default function Users() {
     if (data) {
       setUser(data)
     }
-  }, [data])
+  }, [data,setUser])
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -44,7 +44,7 @@ export default function Users() {
           <div className='mb-2 flex items-center justify-between space-y-2'>
             <h1 className='text-2xl font-bold tracking-tight'>Tài Khoản</h1>
             <div className='flex w-fit items-center space-x-5'>
-              <DatePickerWithRange className='w-fit' />
+              <DatePickerWithRange  />
               {/* <Button>Download</Button> */}
             </div>
           </div>

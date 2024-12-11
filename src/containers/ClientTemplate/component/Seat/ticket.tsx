@@ -3,10 +3,10 @@ import { cloneElement } from 'react';
 import { API_URL } from '@/constants/api';
 import { Button } from '@/components/ui/button';
 import { useTicketStore } from '@/store/intex';
-import { ToastContainer, toast } from "react-toastify";
+// import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Chair } from "@/types/chair"; // Nhập khẩu loại Chair
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface TicketProps {
   handleProceed?: () => void;
@@ -76,7 +76,7 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children, handleBack }) 
 
   return (
     <div className="w-full  p-4 md:p-6  bg-black text-white rounded-lg shadow-lg mx-auto my-4 md:my-0 border border-gray-700">
-      <ToastContainer />
+      {/* <ToastContainer /> */}
 
       <div className="flex  mb-4">
         <div >
