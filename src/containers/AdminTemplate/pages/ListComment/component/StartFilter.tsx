@@ -15,7 +15,7 @@ interface MovieComment {
 
 const StartFilter = ({onFilterChange}: MovieComment ) => {
   const [ratings, setRatings] = useState<number[]>([]); // Lưu các mức đánh giá
-
+  
   useEffect(() => {
     const fetchRatings = async () => {
       try {

@@ -48,8 +48,8 @@ export function DataTableRowActions<TData>({
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Sản phẩm</DialogTitle>
-              <DialogDescription>
+              <DialogTitle hidden>Sản phẩm</DialogTitle>
+              <DialogDescription hidden>
                 Sản phẩm {Booking.booking_code}
               </DialogDescription>
             </DialogHeader>

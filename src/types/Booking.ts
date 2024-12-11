@@ -1,23 +1,19 @@
-import { Product } from "./product";
+import { ChairBooking } from "./chair";
+import { ProductItem } from "./product";
 import { ShowTime } from "./showtime";
 
 export interface Booking {
   id_booking: number;
-  account_promotion_id: number | null;
-  account_id: number;
-  id_payment: number;
-  id_ticket: number;
   booking_code: string;
   booking_date: string;
   total_amount: number;
   payment_status: string;
-  transaction_id: string;
-  payment_date: string;
-  status: "pending" | "success" | "cancel";
-  created_at: Date;
-  updated_at: Date;
-  ticket?: TicketBooking;
-  products ?: Product[] | null
+  status: string;
+  account: Account;
+  products?: ProductItem[] | null;
+  chairs: ChairBooking[];
+  showtime: showtimeBooking;
+  movie_name: string;
 }
 
 export interface TicketBooking {
@@ -63,4 +59,18 @@ export interface TicketShowtimeMovie {
   status: string;
   created_at: string;
   updated_at: string;
+}
+
+interface Account {
+  id: number;
+  user_name: string;
+  email: string;
+  full_name: string;
+  avatar: string;
+}
+
+interface showtimeBooking {
+  date_time: string;
+  start_time: string;
+  end_time: string;
 }

@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button"
 import { ColumnDef } from "@tanstack/react-table"
 import moment from "moment-timezone"
 import { DataTableColumnHeader } from "@/containers/AdminTemplate/pages/Account/data-table-column-header"
-import { Booking, TicketBooking } from "@/types/Booking"
+import { Booking } from "@/types/Booking"
+import { ChairBooking } from "@/types/chair"
+import { ProductItem } from "@/types/product"
 
 export const columns: ColumnDef<Booking>[] = [
     // {
@@ -38,16 +40,13 @@ export const columns: ColumnDef<Booking>[] = [
         },
     },
     {
-        accessorKey: "ticket",
+        accessorKey: "movie_name",
         header: ({ column }) => {
             return (
                 <DataTableColumnHeader column={column} title="Tên Phim" />
             )
         },
-        cell: ({ row }) => {
-            const movie = row.getValue('ticket') as TicketBooking
-            return <div className="text-left font-medium">{movie.showtime.movie.movie_name}</div>
-        },
+
     },
     {
         accessorKey: "booking_date",
@@ -57,9 +56,9 @@ export const columns: ColumnDef<Booking>[] = [
             )
         },
     },
-    
+
     {
-        accessorKey: "ticket",
+        accessorKey: "chairs",
         header: ({ column }) => {
             return (
                 <DataTableColumnHeader column={column} title="Ghế đặt" />
@@ -67,9 +66,24 @@ export const columns: ColumnDef<Booking>[] = [
         },
 
         cell: ({ row }) => {
-            const chairs = row.getValue("ticket") as TicketBooking; // Lấy URL của ảnh
-            return <div className="flex gap-x-2"> {chairs.chairs.map(item => (
+            const chairs = row.getValue("chairs") as ChairBooking[]; // Lấy URL của ảnh
+            return <div className="flex gap-x-2"> {chairs.map(item => (
                 <Button key={item.id_chair} variant={"primary"} size={"icon"}>{item.chair_name}</Button>
+            ))} </div>
+        },
+    },
+    {
+        accessorKey: "products",
+        header: ({ column }) => {
+            return (
+                <DataTableColumnHeader column={column} title="Ghế đặt" />
+            )
+        },
+
+        cell: ({ row }) => {
+            const products = row.getValue("products") as ProductItem[]; // Lấy URL của ảnh
+            return <div className="flex w-fit flex-col gap-y-1"> {products.map(item => (
+                <div className="" key={item.id_product} >{item.product_name} x {item.quantity}</div>
             ))} </div>
         },
     },
@@ -80,25 +94,25 @@ export const columns: ColumnDef<Booking>[] = [
         ),
 
     },
-    {
-        accessorKey: "account_promotion_id",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title='Giảm giá' />
-        ),
-        cell: ({ row }) => {
-            return <div className="text-left font-medium">{row.getValue('account_promotion_id') != null ? row.getValue('account_promotion_id') : 0}</div>
-        },
-    },
+    // {
+    //     accessorKey: "account_promotion_id",
+    //     header: ({ column }) => (
+    //         <DataTableColumnHeader column={column} title='Giảm giá' />
+    //     ),
+    //     cell: ({ row }) => {
+    //         return <div className="text-left font-medium">{row.getValue('account_promotion_id') != null ? row.getValue('account_promotion_id') : 0}</div>
+    //     },
+    // },
 
     {
-        accessorKey: "status",
+        accessorKey: "payment_status",
         header: ({ column }) => {
             return (
                 <DataTableColumnHeader column={column} title="Trạng thái" />
             )
         },
         cell: ({ row }) => {
-            const status = row.getValue("status");
+            const status = row.getValue("payment_status");
 
             return <div className={`text-center px-1 py-2 rounded-lg font-medium 
         ${status === 'success' ? "bg-green-200 text-green-800"

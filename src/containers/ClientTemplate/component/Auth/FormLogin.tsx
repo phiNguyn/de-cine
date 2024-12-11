@@ -24,6 +24,7 @@ interface FormLoginProps {
 }
 
 export function FormLogin({ onSubmit, setIsLoading }: FormLoginProps) {
+  const [ggIsLoading, setGGIsLoading] = useState(false)
   const [typePassword, setTypePassword] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,16 +47,18 @@ export function FormLogin({ onSubmit, setIsLoading }: FormLoginProps) {
   }
 
   const handleLoginGoogle = async () => {
+    setGGIsLoading(true)
     try {
       const resp = await AuthAPI.signInWithGoogle()
       if (resp) {
         console.log(resp);
-
         window.location.href = resp.url
       }
     } catch (error) {
       console.log(error);
 
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -123,7 +126,7 @@ export function FormLogin({ onSubmit, setIsLoading }: FormLoginProps) {
           </Button>
         </div>
         <div className="flex justify-center">
-          <Button type="button" onClick={handleLoginGoogle}><FaGoogle /></Button>
+          <Button disabled={ggIsLoading} type="button" onClick={handleLoginGoogle}><FaGoogle /></Button>
         </div>
       </form>
     </Form>

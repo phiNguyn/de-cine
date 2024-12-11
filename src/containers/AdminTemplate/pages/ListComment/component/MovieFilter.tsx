@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Movie } from "@/types/movie";
+import { useQuery } from "@tanstack/react-query";
 
 interface MovieComment {
   onFilterChange: (id?: number | string) => void;
@@ -18,18 +19,17 @@ interface MovieComment {
 const MovieFillter = ({ onFilterChange }: MovieComment) => {
   const [movieFillter, setMovieFillter] = useState<Movie[] | []>([]);
 
-  useEffect(() => {
-    const fetchMovieFillter = async () => {
-      try {
-        const resp = await moviesAPI.getAllMovieActive("active");
-        setMovieFillter(resp);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchMovieFillter();
-  }, []);
 
+  const { data } = useQuery({
+    queryKey: ['MovieActive'],
+    queryFn: () => moviesAPI.getAllMovieActive("active"),
+    staleTime: 60 * 1000
+  })
+  useEffect(() => {
+    if (data) {
+      setMovieFillter(data)
+    }
+  }, [data, setMovieFillter])
   const handleMovieChange = (value: string) => {
     const movieId = value === "undefined" ? undefined : Number(value);
     onFilterChange(movieId);

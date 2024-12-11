@@ -29,14 +29,7 @@ export const columns: ColumnDef<Booking>[] = [
     //   enableSorting: false,
     //   enableHiding: false,
     // },
-    {
-        accessorKey: "id_booking",
-        header: ({ column }) => {
-            return (
-                <DataTableColumnHeader column={column} title="ID" />
-            )
-        },
-    },
+
     {
         accessorKey: "booking_code",
         header: ({ column }) => {
@@ -45,7 +38,15 @@ export const columns: ColumnDef<Booking>[] = [
             )
         },
     },
+    {
+        accessorKey: "movie_name",
+        header: ({ column }) => {
+            return (
+                <DataTableColumnHeader column={column} title="Tên Phim" />
+            )
+        },
 
+    },
     {
         accessorKey: "booking_date",
         header: ({ column }) => (
@@ -53,7 +54,7 @@ export const columns: ColumnDef<Booking>[] = [
         ),
         cell: ({ row }) => {
 
-            return <div className="text-left font-medium">{formatDate(row.getValue("booking_date"))}</div>
+            return <div className="text-left font-medium">{row.getValue('booking_date')}</div>
 
         },
     },
@@ -84,24 +85,6 @@ export const columns: ColumnDef<Booking>[] = [
             // switch ()
             const total_amount = row.getValue("total_amount") as number
             return <div className={`text-left px-1 py-2 rounded-lg font-medium  }`}>{total_amount.toLocaleString()}</div>
-        },
-    },
-    {
-        accessorKey: "created_at",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title='Ngày tạo' />
-        ),
-        cell: ({ row }) => {
-            return <div className="text-left font-medium">{formatDate(row.getValue("created_at"))}</div>
-        },
-    },
-    {
-        accessorKey: "updated_at",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title='Ngày ' />
-        ),
-        cell: ({ row }) => {
-            return <div className="text-left font-medium">{formatDate(row.getValue("updated_at"))}</div>
         },
     },
 

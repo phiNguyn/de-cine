@@ -26,7 +26,7 @@ export default function ListMovies() {
         if (data) {
             setProduct(data)
         }
-    }, [data])
+    }, [data, setProduct])
     return (
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
             <Layout>
@@ -40,7 +40,7 @@ export default function ListMovies() {
                     <div className='mb-2 flex items-center justify-between space-y-2'>
                         <h1 className='text-2xl font-bold tracking-tight'>Phim</h1>
                         <div className='flex w-fit items-center space-x-5'>
-                            <DatePickerWithRange className='w-fit' />
+                            <DatePickerWithRange />
                             {/* <Button>Download</Button> */}
                         </div>
                     </div>
