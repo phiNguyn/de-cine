@@ -40,6 +40,7 @@ const PromotionAPI = {
       console.log(error);
     }
   },
+  
   getPromotionById: async (id: number) => {
   try {
     const resp = await axiosClient.get(`${API_URL.promotions}/${id}`);
@@ -48,6 +49,16 @@ const PromotionAPI = {
     console.log(error);
   
   }
+  },
+
+  redeemDiscount: async (promotion_id:number,id_account:number) => { 
+    try {
+      const resp = await axiosClient.post(`${API_URL.redeem_discount}`, {promotion_id,id_account});
+      return resp;
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 };
 

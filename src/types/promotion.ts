@@ -1,4 +1,5 @@
 export interface Promotion {
+  required_points: number;
   id_promotion : number
   promotion_name: string;
   promotion_point: number;

@@ -20,5 +20,6 @@ export const API_URL = {
   payments : 'payments',
   comment: 'comments',
   vnpay : 'vnpay/payment',
-  bookingsAccount : 'bookings/account'
+  bookingsAccount : 'bookings/account',
+  redeem_discount: 'redeem-discount'
 };

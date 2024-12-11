@@ -1,19 +1,88 @@
-import { Promotion } from "@/types/promotion"
+"use client";
 
-interface RedeemSectionProps {
-  promotion: Promotion
+import { useState } from "react";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Promotion } from "@/types/promotion";
+import { useNavigate } from "react-router-dom";
+
+interface BookingDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  promotion: Promotion;
+  onBooking?: () => void;
 }
 
-const RedeemSection = ({ promotion }: RedeemSectionProps) => {
+export function BookingDialog({
+  open,
+  onOpenChange,
+  onBooking,
+}: BookingDialogProps) {
+  const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCheckboxChange = (checked: boolean) => {
+    setIsChecked(checked);
+  };
+
+  const handleBookingClick = async () => {
+    try {
+      if (onBooking) {
+        await onBooking();
+      }
+      // Sử dụng useNavigate để chuyển hướng về trang Promotions
+      navigate("/promotions");
+    } catch (error) {
+      console.error("Thanh toán thất bại", error);
+      alert("Thanh toán thất bại. Vui lòng thử lại sau.");
+    }
+  };
+
   return (
-    <div className="mt-6 p-4 bg-gray-900 rounded-lg text-white shadow-lg">
-      <h4 className="text-xl font-bold">Đổi mã khuyến mãi</h4>
-      <p className="mt-2">
-        Bạn có thể đổi mã khuyến mãi <b>{promotion.promotion_name}</b> bằng cách nhập số điểm bên dưới.
-      </p>
-      {/* Thêm form hoặc logic đổi mã tại đây */}
-    </div>
-  )
-}
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md p-0 gap-0">
+        <DialogHeader className="p-6 pb-3">
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-xl font-medium">
+              THÔNG TIN KHUYẾN MÃI
+            </DialogTitle>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6"
+              onClick={() => onOpenChange(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </DialogHeader>
 
-export default RedeemSection
+        <div className="p-6 pt-2 space-y-6">
+          {/* Checkbox xác nhận thông tin */}
+          <div className="flex items-center gap-2">
+            <Checkbox id="confirm" checked={isChecked} onCheckedChange={handleCheckboxChange} />
+            <label htmlFor="confirm" className="text-sm">
+              Tôi xác nhận các thông tin khuyến mãi đã chính xác
+            </label>
+          </div>
+
+          {/* Nút Thanh toán */}
+          <Button
+            className={`w-full mt-4 ${isChecked ? "bg-orange-500" : "bg-gray-400"}`}
+            disabled={!isChecked}
+            onClick={handleBookingClick}
+          >
+            Thanh Toán
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

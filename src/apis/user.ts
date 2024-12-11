@@ -6,11 +6,9 @@ export  const UserAPI = {
     userDetail : async (id : number | undefined) => {
         try {
             const resp = await axiosClient.get(`/${API_URL.accounts}/${id}`)
-
             return resp.data
         } catch (error) {
-            console.log(error);
-            
+            console.log(error); 
         }
     },
     getAllUsers : async () => {
