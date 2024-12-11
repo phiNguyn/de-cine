@@ -20,7 +20,6 @@ export const UserAPI = {
       console.log(error);
     }
   },
-
   updateUser: async (id: number, data: any) => {
     try {
       const resp = await axiosClient.put(`/${API_URL.accounts}/${id}`, data);

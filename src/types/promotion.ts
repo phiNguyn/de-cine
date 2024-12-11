@@ -1,7 +1,9 @@
 export interface Promotion {
+  required_points: number;
   id_promotion : number
   promotion_name: string;
   promotion_point: number;
+  promotion_image: string;
   discount_type:  "percent" | "price";
   discount_value: number;
   start_date: Date;
