@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMovieStore } from "@/store/Movie";
 import { useParams } from "react-router-dom";
 import { API_URL } from '../../../../../constants/api';
+import { GenreMovie } from "@/types/movie";
 const movieFormSchema = z.object({
     movie_name: z.string().min(1, { message: "Tên phim không được để trống" }),
     description: z.string().min(1, { message: "Tên phim không được để trống" }),
@@ -79,7 +80,7 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
     const { getMovieById } = useMovieStore((state) => state)
     const movie = getMovieById(Number(id))
     const { genreMovie, setGenreMovie } = useGenreMovieStore()
-    const [selectdOptions, setSelectedOptions] = useState([])
+    const [selectdOptions, setSelectedOptions] = useState<GenreMovie[]>([])
 
     const { data } = useQuery({
         queryKey: ['genreMovie'],
@@ -118,17 +119,17 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
             }));
             setGenreMovie(formattedData);
         }
-    }, [data]);
+    }, [data, setGenreMovie]);
 
     useEffect(() => {
         if (movie && genreMovie.length) {
             const defaultOptions = genreMovie.filter((genre) =>
-                movie.genres.some((g: { id_genre: number }) => g.id_genre === genre.value)
+                movie.genres.some((g: { id_genre: number }) => g.id_genre === genre.id_genre)
             );
             setSelectedOptions(defaultOptions);
-            form.setValue("genres", defaultOptions.map(option => option.value));
+            form.setValue("genres", defaultOptions.map(option => option.id_genre));
         }
-    }, [movie, genreMovie]);
+    }, [movie, genreMovie, form]);
     const handleChange = (options) => {
         setSelectedOptions(options);
         form.setValue("genres", options.map((option) => option.value));

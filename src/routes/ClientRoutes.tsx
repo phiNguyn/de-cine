@@ -14,11 +14,12 @@ const SeatSelection = lazy(() => import("@/containers/ClientTemplate/pages/Seat"
 const MoviesPage = lazy(() => import("@/containers/ClientTemplate/pages/Movies"))
 const PaymentsPage = lazy(() => import("@/containers/ClientTemplate/pages/Payment"))
 const ProductsPage = lazy(() => import("@/containers/ClientTemplate/pages/Product"))
-const UserTicketsPage = lazy(() => import("@/containers/ClientTemplate/component/UserProfile/UserTicket"))
+const UserTicketsPage = lazy(() => import("@/containers/ClientTemplate/component/UserProfile/table"))
 const AccountInfoPage = lazy(() => import("@/containers/ClientTemplate/component/UserProfile/index"))
 const ResetPasswordPage = lazy(() => import("@/containers/ClientTemplate/pages/ResetPassword"))
 const VerifyEmailPage = lazy(() => import("@/containers/ClientTemplate/pages/VerifyEmail"))
 const GoogleCallbackPage = lazy(() => import("@/containers/ClientTemplate/pages/GoogleCallback"))
+const PaymentResultPage = lazy(() => import("@/containers/ClientTemplate/pages/PaymentResult"))
 const ClientRoutes = [
     {
         path: '/',
@@ -73,7 +74,8 @@ const ClientRoutes = [
             },
             { path: 'password-reset', element: <ResetPasswordPage /> },
             { path: 'api/accounts-verify/:code', element: <VerifyEmailPage /> },
-            { path: 'api/google-callback', element: <GoogleCallbackPage /> }
+            { path: 'api/google-callback', element: <GoogleCallbackPage /> },
+            { path: 'payment-result', element: <PaymentResultPage /> }
 
         ]
     }

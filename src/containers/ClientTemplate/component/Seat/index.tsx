@@ -3,12 +3,12 @@ import { Chair } from "@/types/chair";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Seats: React.FC<{ showChair: Chair[] | null }> = ({ showChair }) => {
+const Seats: React.FC<{ showChair?: Chair[] }> = ({ showChair }) => {
 
   const { selectedSeats, addSelectedSeat, removeSelectedSeat } = useTicketStore()
   const alpha = Array.from({ length: Math.floor(Number(showChair?.length) / 10) }, (_, index) => String.fromCharCode(65 + index));
   const handleSeatClick = (seat: Chair) => {
-    if (seat.chair_status === "sold" ||seat.chair_status ==='pending' ) return;
+    if (seat.chair_status === "sold" || seat.chair_status === 'booked') return;
 
     const isSelected = selectedSeats.find(selected => selected.id_chair === seat.id_chair);
 
@@ -21,7 +21,7 @@ const Seats: React.FC<{ showChair: Chair[] | null }> = ({ showChair }) => {
 
   return (
     <div className="flex flex-col items-center gap-x-6 p-4">
-       <ToastContainer />
+      <ToastContainer />
       {/* Ghế và Nhãn hàng */}
       <div className="grid grid-cols-11  gap-4">
         {/* Ghế */}
@@ -39,9 +39,9 @@ const Seats: React.FC<{ showChair: Chair[] | null }> = ({ showChair }) => {
                   ${selectedSeats.some(selected => selected.id_chair === seat.id_chair)
                     ? "bg-yellow-300 text-black"
                     : seat.chair_status === "sold"
-                      ? "bg-blue-500 text-white cursor-not-allowed"
-                      : seat.chair_status === "pending"
-                        ? "bg-yellow-300 text-black"
+                      ? "bg-slate-500 text-primary cursor-not-allowed"
+                      : seat.chair_status === "booked"
+                        ? "bg-blue-500 text-primary"
                         : "bg-gray-300 text-gray-900 group-hover:bg-yellow-400"
                   }`}
               >

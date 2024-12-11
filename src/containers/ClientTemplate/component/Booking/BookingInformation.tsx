@@ -19,7 +19,7 @@ import { Movie } from "@/types/movie";
 const BookingInformation = () => {
   const { movie, setMovie } = useMovieStore((state) => state);
   const navigate = useNavigate();
-  const { movieName, movieImage, selectedSeats, selectedShowDate, selectedShowTime, selectedRoomId, setTicketData } = useTicketStore();
+  const { movieName, movieImage, selectedSeats, selectedShowDate, selectedShowTime, selectedRoomId, setTicketData, clearTicketData } = useTicketStore();
   const { data, isLoading } = useQuery({
     queryKey: ['moviesActive',],
     queryFn: () => moviesAPI.getAllMovieActive('active'),
@@ -30,6 +30,10 @@ const BookingInformation = () => {
       setMovie(data)
     }
   }, [data, setMovie]);
+
+  useEffect(() => {
+    clearTicketData()
+  }, [])
   const [MovieDetail, setMovieDetail] = useState<Movie | undefined>(undefined);
   const active_progress = "after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-yellow-500 after:w-1/2 after:w-full";
   const active_li = "text-yellow-500";

@@ -17,7 +17,7 @@ const formSchema = z.object({
     price: z.number(),
     description: z.string().optional(),
     is_active: z.boolean(),
-    imgOld: z.string().optional(), // Thêm trường imgOld
+    imgOld: z.string().nullable(), // Thêm trường imgOld
     image_product: z.any().refine(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (arg: any) => {
@@ -205,7 +205,7 @@ const EditProduct = ({ selectedId, onClose }: { selectedId: number, onClose?: ()
                             </FormControl>
                             <FormMessage />
                         </FormItem>
-                        
+
                     )}
                     />
                     <div className="w-full flex justify-between">

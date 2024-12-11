@@ -1,6 +1,9 @@
+import BookingAPI from "@/apis/booking";
 import MovieTicketConfirmation from "@/components/BookingDetail";
+import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { useBooking } from "@/store/Booking"
+import { useQuery } from "@tanstack/react-query";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { useForm } from "react-hook-form"
 // import { z } from "zod"
@@ -21,14 +24,21 @@ import { useBooking } from "@/store/Booking"
 // export type BookingFormValues = z.infer<typeof formSchema>;
 
 const EditTicket = ({ selectedId, onClose }: { selectedId: number, onClose?: () => void }) => {
-    const { getBookingById } = useBooking((state) => state)
-    const Booking = getBookingById(selectedId)
+    const { data, isLoading } = useQuery({
+        queryKey: ['BookingDetail', selectedId],
+        queryFn: () => BookingAPI.getBookingDetail(selectedId),
+        staleTime: 30 * 1000
+    })
     return (
         <div>
-            <MovieTicketConfirmation booking={Booking} />
-            <div className="flex justify-between">
-                <Button variant={"outline"} onClick={onClose}>Đóng</Button>
-            </div>
+            {isLoading ? <Loader /> :
+                <>
+                    <MovieTicketConfirmation booking={data} />
+                    <div className="flex justify-between">
+                        <Button variant={"outline"} onClick={onClose}>Đóng</Button>
+                    </div>
+                </>
+            }
         </div>
     )
 }

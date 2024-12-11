@@ -28,7 +28,7 @@ export interface ShowTime {
 }
 
 export interface ShowTimeSlot {
-  id_slot: string;
+  id_slot: number;
   slot_time: string;
   created_at: Date;
   updated_at: Date;

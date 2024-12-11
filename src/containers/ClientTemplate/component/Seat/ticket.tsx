@@ -2,21 +2,19 @@
 import { cloneElement } from 'react';
 import { API_URL } from '@/constants/api';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
 import { useTicketStore } from '@/store/intex';
-import { ToastContainer, toast } from "react-toastify";
+// import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Chair } from "@/types/chair"; // Nhập khẩu loại Chair
+import toast, { Toaster } from 'react-hot-toast';
 
 interface TicketProps {
-  handleProceed: () => void;
-  children: React.ReactNode;
+  handleProceed?: () => void;
+  children?: React.ReactNode;
+  handleBack?: () => void
 }
-const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
-  const { movieName, movieImage, selectedShowDate, selectedShowTime, selectedRoomId, selectedSeats, selectedProducts, clearSelectedSeats, clearSelectedProducts } = useTicketStore();
-
-  const navigate = useNavigate();
-
+const Ticket: React.FC<TicketProps> = ({ handleProceed, children, handleBack }) => {
+  const { movieName, movieImage, selectedShowDate, selectedShowTime, selectedRoomId, selectedSeats, selectedProducts } = useTicketStore();
   // Tính tổng tiền ghế đã chọn
   const totalSeatsPrice = selectedSeats.reduce((total, seat) => total + seat.price, 0);
 
@@ -34,27 +32,23 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
       toast.error("Không thể chừa một ghế trống như vậy.");
       return;
     }
-    handleProceed();
+    handleProceed?.();
   };
 
-  const handleBack = () => {
-    clearSelectedSeats(); // Clear selected seats
-    clearSelectedProducts(); // Clear selected products 
-    navigate(-1); // Navigate back to the previous page 
-  };
+
 
   const isValidSelection = (selectedSeats: Chair[]): boolean => {
     const rows = ['A', 'B', 'C', 'D', 'E'];
-  
+
     for (const row of rows) {
       // Lọc các ghế được chọn trong hàng hiện tại
       const selectedSeatsInRow = selectedSeats
         .filter((seat) => seat.chair_name.startsWith(row))
         .map((seat) => parseInt(seat.chair_name.slice(1)))
         .sort((a, b) => a - b); // Sắp xếp theo thứ tự ghế
-  
+
       if (selectedSeatsInRow.length === 0) continue; // Bỏ qua nếu không có ghế nào được chọn trong hàng
-  
+
       // Kiểm tra ghế đầu và ghế cuối
       if (selectedSeatsInRow[0] !== 1 && selectedSeatsInRow[0] - 1 === 1) {
         console.error(`Ghế ${row}1 không được để trống.`);
@@ -64,7 +58,7 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
         console.error(`Ghế ${row}10 không được để trống.`);
         return false;
       }
-  
+
       // Kiểm tra khoảng trống giữa các ghế đã chọn
       for (let i = 0; i < selectedSeatsInRow.length - 1; i++) {
         if (selectedSeatsInRow[i + 1] - selectedSeatsInRow[i] > 1) {
@@ -75,14 +69,14 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
         }
       }
     }
-  
-    return true; 
+
+    return true;
   };
-  
-  
+
+
   return (
     <div className="w-full  p-4 md:p-6  bg-black text-white rounded-lg shadow-lg mx-auto my-4 md:my-0 border border-gray-700">
-      <ToastContainer />
+      {/* <ToastContainer /> */}
 
       <div className="flex  mb-4">
         <div >
@@ -145,6 +139,7 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children }) => {
         </Button>
         {children && cloneElement(children as React.ReactElement<any>, { onClick: handleContinue, handleProceed, disabled: isContinueDisabled })}
       </div>
+      <Toaster />
     </div>
   );
 };

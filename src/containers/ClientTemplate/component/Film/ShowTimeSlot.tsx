@@ -6,14 +6,14 @@ import { newShowtime } from "@/types/movie";
 import { useAuth } from "@/hooks";
 import toast, { Toaster } from "react-hot-toast";
 
-const ShowTimeSlot: React.FC<{ showSlots: newShowtime[] | undefined; idRoom?: number }> = ({ showSlots, idRoom }) => {
+const ShowTimeSlot: React.FC<{ showSlots: newShowtime[] | undefined }> = ({ showSlots }) => {
   const navigate = useNavigate();
   const { user } = useAuth()
   const { setTicketData } = useTicketStore();
 
   // Xử lý khi chọn suất chiếu
-  const handleSlotSelect = (slotTime: string) => {
-    if (!idRoom) {
+  const handleSlotSelect = (slotTime: string, id_showtime: number) => {
+    if (!id_showtime) {
       console.error("ID phòng không hợp lệ.");
       return;
     }
@@ -26,7 +26,9 @@ const ShowTimeSlot: React.FC<{ showSlots: newShowtime[] | undefined; idRoom?: nu
         toast.error("Vui lòng đăng nhập để có thể đặt vé")
       } else {
 
-        navigate(`/Seat/${idRoom}`);
+        navigate(`/Seat/${id_showtime}`);
+        console.log(idRoom);
+
       }
     } catch (error) {
       console.error("Không thể điều hướng đến trang ghế:", error);
@@ -46,7 +48,7 @@ const ShowTimeSlot: React.FC<{ showSlots: newShowtime[] | undefined; idRoom?: nu
                 <div
                   className="group w-fit cursor-pointer"
                   key={i}
-                  onClick={() => handleSlotSelect(slot.slot_time)}
+                  onClick={() => handleSlotSelect(slot.slot_time, slot.id_showtime)}
                 >
                   <CardDescription className="border w-fit border-yellow-500 text-primary rounded-md px-3 py-1.5 group-hover:border-white group-hover:bg-yellow-500">
                     {moment(slot.slot_time, "HH:mm:ss").format("HH:mm")}

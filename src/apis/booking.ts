@@ -6,7 +6,8 @@ const BookingAPI = {
     const resp = await axiosClient.get(`/${API_URL.bookings}`);
     return resp.data;
   },
-  createTicket: async (data) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  createTicket: async (data : any) => {
     try {
       const resp = await axiosClient.post(`/${API_URL.bookings}`, data);
       return resp;

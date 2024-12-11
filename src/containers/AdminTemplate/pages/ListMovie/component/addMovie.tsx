@@ -85,10 +85,12 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
 
 
     const [selectdOptions, setSelectedOptions] = useState([])
-    const handleChange = (options) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleChange = (options: any) => {
         setSelectedOptions(options);
         // Cập nhật trường 'genres' với các giá trị number
-        form.setValue("genres", options.map(option => option.value));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        form.setValue("genres", options.map((option: { value: any; }) => option.value));
     };
     const form = useForm<MovieFormValues>({
         resolver: zodResolver(movieFormSchema),
