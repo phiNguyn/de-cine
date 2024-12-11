@@ -37,11 +37,7 @@ export const AuthAPI = {
     return resp;
   },
   signInWithGoogle: async () => {
-    try {
-      const resp = await axiosClient.get("/google-login");
-      return resp.data;
-    } catch (error) {
-      console.log(error);
-    }
+    const resp = await axiosClient.get("/google-login");
+    return resp.data;
   },
 };

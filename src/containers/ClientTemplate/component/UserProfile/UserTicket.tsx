@@ -64,7 +64,7 @@ export default function UserTabs() {
                                     <div className="grid grid-cols-1 gap-y-1 justify-between" >
                                         {item.products?.map(item => (
                                             <div key={item.id_product} className=" bg-yellow-500 px-2 py-1 rounded-md text-primary">
-                                               {item.product_name}
+                                               {item.product_name} x {}
                                             </div>
                                         ))}
                                     </div>

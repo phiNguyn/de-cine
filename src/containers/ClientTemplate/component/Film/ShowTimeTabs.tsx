@@ -22,8 +22,7 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
 
   useEffect(() => {
     if (showDay) {
-      setShowSlots(showDay.showtimes);
-
+      setShowSlots(showDay.showtimes || []);
     }
   }, [showDay]);
 
@@ -52,7 +51,7 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
       setTicketData({
         selectedRoomId: firstSlot ? Number(firstSlot.id_room) : null,
         selectedShowDate: { date_time: selectedDate, id_showtime: firstSlot.id_showtime },
-        selectedShowTime: selectedTime || "",
+        selectedShowTime: selectedTime,
       });
 
       if (onTabChange) {
@@ -107,7 +106,6 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
 
       <ShowTimeSlot
         showSlots={showSlots[activeTab]} // Truyền danh sách suất chiếu
-        idRoom={showSlots[activeTab]?.[0]?.id_room} // Lấy idRoom từ suất chiếu đầu tiên
       />
     </div>
   );

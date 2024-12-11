@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRoomStore } from "@/store/Room";
 import RoomAPI from "@/apis/room";
 import { useQuery } from "@tanstack/react-query";
-import { useMovieStore } from "@/store/Movie";
+// import { useMovieStore } from "@/store/Movie";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
@@ -23,7 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import moment from "moment-timezone";
 import { Label } from "@/components/ui/label";
 import { useShowTimesStore } from "@/store/Showtime";
-import { NextShowtime } from "@/types/movie";
+import { Movie, NextShowtime } from "@/types/movie";
 const removePointerEvents = "!pointer-events-auto"
 
 const formSchema = z.object({
@@ -38,7 +38,7 @@ export type ShowTimeFormValues = z.infer<typeof formSchema>;
 
 export default function AddShowTime() {
     const [open, setOpen] = useState(false);
-    const { movie, setMovie } = useMovieStore((state) => state)
+    const [movie, setMovie] = useState<Movie[] | []>([])
     const { Room, setRoom } = useRoomStore((state) => state)
     const [showtimeSlotData, setShowtimeSlot] = useState<ShowTimeSlot[]>([])
     const addShowtime = useShowTimesStore((state) => state.addShowTimes)
@@ -49,6 +49,17 @@ export default function AddShowTime() {
         staleTime: 60 * 1000,
 
     })
+    const { data: dataMovie } = useQuery({
+        queryKey: ['MovieActive'],
+        queryFn: () => moviesAPI.getAllMovieActive("active"),
+        staleTime: 60 * 1000
+    })
+
+    const { data: dataShowtimeSlot } = useQuery({
+        queryKey: ['showtimeSlot'],
+        queryFn: ShowtimeAPI.getShowtimeSlot,
+        staleTime: 60 * 1000
+    })
 
     useEffect(() => {
         if (data) {
@@ -57,20 +68,17 @@ export default function AddShowTime() {
     }, [data, setRoom])
 
     useEffect(() => {
-        const fetchMovie = async () => {
-            try {
-                const resp = await moviesAPI.getAllMovieActive('active')
-                const showtimeSlot = await ShowtimeAPI.getShowtimeSlot()
-
-                setMovie(resp)
-                setShowtimeSlot(showtimeSlot)
-            } catch (error) {
-                console.log(error);
-
-            }
+        if (dataMovie) {
+            setMovie(dataMovie)
         }
-        fetchMovie()
-    }, [])
+    }, [dataMovie, setMovie])
+
+    useEffect(() => {
+        if (dataShowtimeSlot) {
+            setShowtimeSlot(dataShowtimeSlot)
+        }
+    }, [dataShowtimeSlot, setShowtimeSlot])
+
     const form = useForm<ShowTimeFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -210,7 +218,7 @@ export default function AddShowTime() {
                                     </div>
                                     { }
                                     <div className="flex flex-wrap gap-2">
-                                        {showtimeSlotData.map((item, index) => (
+                                        {showtimeSlotData.map((item) => (
                                             <div
                                                 key={item.id_slot}
                                                 className="flex items-start space-x-3 w-1/7"

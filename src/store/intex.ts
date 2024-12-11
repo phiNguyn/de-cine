@@ -13,7 +13,7 @@ interface selectMovie {
   id_movie: number;
   movie_name: string;
 }
-interface TicketState {
+export interface TicketState {
   movieName: selectMovie | null;
   setMovieName: (movie: selectMovie) => void; // Hàm để đặt giá trị movie
   movieImage: string;

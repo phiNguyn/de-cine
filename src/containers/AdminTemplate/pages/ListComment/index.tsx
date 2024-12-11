@@ -72,14 +72,13 @@ const handleStartFillter = (rating?:number | string) => {
           <DatePickerWithRange onApply={handleSetFilter} />
             </div>
 
-          <div className="w-full p-8">
-              <div className="w-60 pb-4">
+          <div className="w-full">
+              <div className=" gap-x-5 flex">
             <MovieFillter  onFilterChange={handleMovieFillter}/> 
-              </div>
-              <div className="w-60">
             <StartFilter onFilterChange={handleStartFillter} />
-              </div>
 
+              </div>
+            
             <DataTable
               name="Nội dung bình luận"
               value="content"

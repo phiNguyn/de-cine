@@ -26,7 +26,7 @@ const UserInfoBooking = () => {
     if (isLoading) return <Loader />
     return (
         <div className=" w-full col-span-1 xl:col-span-3">
-            <DataTable name="Mã đơn hàng" value="booking_code" columns={columns} data={Bookings} />
+            <DataTable name="Mã đơn hàng" value="booking_code" columns={columns} data={Bookings || []} />
         </div>
 
     )

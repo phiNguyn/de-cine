@@ -1,9 +1,15 @@
-export interface Chair {
-  id_chair: number;
-  id_room: number;
-  chair_name: string;
+export interface ChairByShowtime extends ChairBooking {
   chair_status: string;
   column: number;
-  row:  string;
+  row: string;
+}
+
+export interface Chair extends ChairByShowtime {
+  id_room?: number;
+}
+
+export interface ChairBooking {
+  id_chair: number;
+  chair_name: string;
   price: number;
 }

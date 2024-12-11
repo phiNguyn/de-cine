@@ -4,17 +4,18 @@ import { StorageKeys } from "@/constants/StorageKeys";
 import { useAuth } from "@/hooks";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 
 const GoogleCallback = () => {
     const { login } = useAuth()
     const [isLoading, setIsLoading] = useState(false);
-
+    const navigate = useNavigate()
+    // Lấy mã xác thực từ URL
+    const queryParams = new URLSearchParams(window.location.search);
+    const code = queryParams.get('code');
     useEffect(() => {
-        // Lấy mã xác thực từ URL
-        const queryParams = new URLSearchParams(window.location.search);
-        const code = queryParams.get('code');
-        const fetchTokens = async () => {
+        const fetchTokens = async (code: string) => {
             setIsLoading(true);
             try {
                 // Gửi mã xác thực đến backend để nhận token
@@ -25,9 +26,10 @@ const GoogleCallback = () => {
                     login({ role: data.role });
                     toast.success(status);
                     setTimeout(() => {
-                        window.location.href = '/'; // Hoặc URL bạn muốn chuyển hướng đến
+                        navigate('/')
                     }, 2000);
                 }
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {
                 console.error('Error fetching tokens:', error);
                 toast.error(error.response?.data?.status || 'Đã xảy ra lỗi!');
@@ -36,9 +38,9 @@ const GoogleCallback = () => {
             }
         };
         if (code) {
-            fetchTokens();
+            fetchTokens(code);
         }
-    }, []); // Chỉ chạy khi isFetched thay đổi
+    }, [code]); // Chỉ chạy khi isFetched thay đổi
 
     return (
         <>
