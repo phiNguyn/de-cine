@@ -1,4 +1,3 @@
-import { CircleArrowDown } from "lucide-react"
 import Vnpay from "/payment/vnpay.png"
 import MOMO from "/payment/momo.png"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -15,8 +14,9 @@ import TicketAPI from "@/apis/ticket"
 import moment from "moment-timezone"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
-import { BookingDialog } from "../component/Payment"
+import { BookingDialog } from "../component/Payments/Payment"
 import Loader from "@/components/loader"
+import PaymentPromotion from "../component/Payments/PaymentPromiont"
 const PaymentPage = () => {
     const [open, setOpen] = useState(false)
     const navigate = useNavigate()
@@ -116,19 +116,9 @@ const PaymentPage = () => {
         <div>
             <div className=" md:mx-auto  lg:max-w-7xl md:max-w-4xl px-10 md:px-10  grid lg:grid-cols-3 grid-cols-1">
                 <div className="col-span-2  xl:h-full h-full overflow-hidden xl:overflow-auto xl:pb-10">
-                    <div className="p-4">
-                        <h3 className="text-l mb-4 font-semibold">Khuyến mãi</h3>
-                        <div className="md:mt-4 mt-2">
-                            <div className="md:mt-4 mt-2 ">
-                                <div className="xl:w-2/3 w-full flex justify-between items-center cursor-pointer gap-4">
-                                    <h4 className="flex mb-4 text-black-10 text-sm font-bold cursor-pointer gap-x-5">
-                                        Khuyến mãi của bạn
-                                        <CircleArrowDown />
-                                    </h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                    <PaymentPromotion id={userAccount.id_account}/>    
+
                     <div className="p-4 mt-8">
                         <h3 className="text-l mb-4 font-semibold">
                             Phương thức thanh toán
