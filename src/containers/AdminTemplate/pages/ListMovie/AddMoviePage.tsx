@@ -10,7 +10,8 @@ import { useMovieStore } from "@/store/Movie";
 const AddMoviePage = () => {
     const { addMovie } = useMovieStore((state) => state)
 
-    const handleAdd = async (data) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleAdd = async (data: any) => {
         const formData = new FormData();
         formData.append('movie_name', data.movie_name);
         formData.append('price', data.price);

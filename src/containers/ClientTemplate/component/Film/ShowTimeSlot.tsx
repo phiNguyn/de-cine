@@ -25,10 +25,7 @@ const ShowTimeSlot: React.FC<{ showSlots: newShowtime[] | undefined }> = ({ show
       if (!user) {
         toast.error("Vui lòng đăng nhập để có thể đặt vé")
       } else {
-
         navigate(`/Seat/${id_showtime}`);
-        console.log(idRoom);
-
       }
     } catch (error) {
       console.error("Không thể điều hướng đến trang ghế:", error);

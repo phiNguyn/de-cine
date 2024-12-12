@@ -72,7 +72,7 @@ const EditProduct = ({ selectedId, onClose }: { selectedId: number, onClose?: ()
                 ...(image_product && { image_product: image_product[0] })
 
             }
-            const resp = await productAPI.updateProduct(product?.id_product, submitProduct)
+            const resp = await productAPI.updateProduct(selectedId, submitProduct)
             if (resp?.status === 200) {
                 updateProduct(resp.data)
                 onClose?.()

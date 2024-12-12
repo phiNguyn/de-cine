@@ -41,7 +41,7 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
-    const selectedShowtime = showDay?.showtimes[value];
+    const selectedShowtime = showDay?.showtimes?.[value];
     if (selectedShowtime) {
       const firstSlot = selectedShowtime[0];
       const selectedDate = moment.tz(value, "Asia/Ho_Chi_Minh").format("DD/MM/YYYY");
@@ -103,9 +103,8 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
           </Button>
         </div>
       </Tabs>
-
       <ShowTimeSlot
-        showSlots={showSlots[activeTab]} // Truyền danh sách suất chiếu
+        showSlots={Array.isArray(showSlots) ? [] : showSlots[activeTab ?? '']} // Truyền danh sách suất chiếu
       />
     </div>
   );

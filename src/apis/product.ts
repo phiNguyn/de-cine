@@ -1,7 +1,5 @@
 import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
-import { ProductFormValues } from "@/containers/AdminTemplate/pages/Products/AddProduct";
-import { Product } from "@/types/product";
 
 const productAPI = {
   getProducts: async () => {
@@ -22,8 +20,9 @@ const productAPI = {
       console.log(error);
     }
   },
-  
-  addProduct: async (data: Product) => {
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  addProduct: async (data: any) => {
     try {
       const resp = await axiosClient.post(`/${API_URL.products}`, data, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -34,7 +33,8 @@ const productAPI = {
     }
   },
 
-  updateProduct: async (id?: number, data: ProductFormValues) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateProduct: async (id: number, data: any) => {
     try {
       const resp = await axiosClient.post(`/${API_URL.products}/${id}`, data, {
         headers: {

@@ -124,10 +124,10 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
     useEffect(() => {
         if (movie && genreMovie.length) {
             const defaultOptions = genreMovie.filter((genre) =>
-                movie.genres.some((g: { id_genre: number }) => g.id_genre === genre.id_genre)
+                movie.genres.some((g: { id_genre: number }) => g.id_genre === genre.value)
             );
             setSelectedOptions(defaultOptions);
-            form.setValue("genres", defaultOptions.map(option => option.id_genre));
+            form.setValue("genres", defaultOptions.map(option => option.value));
         }
     }, [movie, genreMovie, form]);
     const handleChange = (options) => {

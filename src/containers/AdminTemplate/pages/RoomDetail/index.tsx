@@ -5,8 +5,6 @@ import { Dropdown } from '@/containers/ClientTemplate/component/Auth'
 import { ThemeProvider } from '@/components/theme-provider'
 import { RoomForm } from './RoomForm'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useRoomStore } from '@/store/Room'
-import { useParams } from 'react-router-dom'
 import { RoomChair } from './RoomChair'
 
 

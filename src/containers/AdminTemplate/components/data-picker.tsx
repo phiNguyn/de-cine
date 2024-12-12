@@ -15,7 +15,7 @@ import {
 import dayjs from "dayjs"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 interface DatePickerProp {
-  className?: React.HTMLAttributes<HTMLDivElement>,
+  className?: React.ReactNode,
   onApply?: (dateRange: DateRange | undefined) => void;
 }
 export function DatePickerWithRange({
