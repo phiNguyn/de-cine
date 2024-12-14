@@ -5,25 +5,17 @@ import { Button } from '@/components/ui/button';
 import { useTicketStore } from '@/store/intex';
 // import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Chair } from "@/types/chair"; // Nhập khẩu loại Chair
+import { ChairByShowtime } from "@/types/chair"; // Nhập khẩu loại Chair
 import toast, { Toaster } from 'react-hot-toast';
 
 interface TicketProps {
   handleProceed?: () => void;
   children?: React.ReactNode;
-  handleBack?: () => void
+  handleBack?: () => void,
 }
 const Ticket: React.FC<TicketProps> = ({ handleProceed, children, handleBack }) => {
-  const { movieName, movieImage, selectedShowDate, selectedShowTime, selectedRoomId, selectedSeats, selectedProducts } = useTicketStore();
+  const { getTotalPrice, movieName, movieImage, selectedShowDate, selectedShowTime, selectedRoomId, selectedSeats, selectedProducts } = useTicketStore();
   // Tính tổng tiền ghế đã chọn
-  const totalSeatsPrice = selectedSeats.reduce((total, seat) => total + seat.price, 0);
-
-  // Tính tổng tiền sản phẩm đã chọn
-  const totalProductsPrice = selectedProducts.reduce((total, { product, quantity }) => total + product.price * quantity, 0);
-
-  // Tính tổng tiền
-  const totalPrice = totalSeatsPrice + totalProductsPrice;
-
   // Kiểm tra số lượng ghế đã chọn
   const isContinueDisabled = selectedSeats.length === 0;
 
@@ -37,7 +29,7 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children, handleBack }) 
 
 
 
-  const isValidSelection = (selectedSeats: Chair[]): boolean => {
+  const isValidSelection = (selectedSeats: ChairByShowtime[]): boolean => {
     const rows = ['A', 'B', 'C', 'D', 'E'];
 
     for (const row of rows) {
@@ -130,7 +122,7 @@ const Ticket: React.FC<TicketProps> = ({ handleProceed, children, handleBack }) 
 
       <hr className="my-4 border-gray-600" />
       <p className="font-bold text-xl mt-4">
-        Tổng cộng: {totalPrice.toLocaleString('vi-VN')} đ
+        Tổng cộng: {getTotalPrice().toLocaleString()} đ
       </p>
 
       <div className="flex justify-between mt-4">

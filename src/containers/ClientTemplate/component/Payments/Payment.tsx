@@ -19,14 +19,11 @@ interface BookingDialogProps {
 }
 
 export function BookingDialog({ open, onOpenChange, onBooking }: BookingDialogProps) {
-    const { selectedShowDate, selectedShowTime, selectedProducts, movieName, selectedRoomId, selectedSeats } = useTicketStore()
-    const totalSeatsPrice = selectedSeats.reduce((total, seat) => total + seat.price, 0);
+    const { getTotalPrice, selectedShowDate, selectedShowTime, selectedProducts, movieName, selectedRoomId, selectedSeats } = useTicketStore()
 
     // Tính tổng tiền sản phẩm đã chọn
-    const totalProductsPrice = selectedProducts.reduce((total, { product, quantity }) => total + product.price * quantity, 0);
 
     // Tính tổng tiền
-    const totalPrice = totalSeatsPrice + totalProductsPrice;
     const [isChecked, setIsChecked] = useState(false)
     const handleCheckboxChange = (checked: boolean) => {
         setIsChecked(checked)
@@ -71,7 +68,7 @@ export function BookingDialog({ open, onOpenChange, onBooking }: BookingDialogPr
                     </div>
                     <div className="flex items-center justify-between py-2 border-t">
                         <div className="font-medium">Tổng</div>
-                        <div className="text-lg font-bold text-blue-600">{totalPrice.toLocaleString()} VNĐ</div>
+                        <div className="text-lg font-bold text-blue-600">{getTotalPrice().toLocaleString()} đ</div>
                     </div>
                     <div className="flex items-start gap-2">
                         <Checkbox id="terms" className="mt-1" checked={isChecked}

@@ -20,7 +20,7 @@ const SeatSelection = () => {
     staleTime: 30 * 1000
   })
   const chairs = selectedSeats.map(item => ({
-    id_chair: item.id_chair,
+    id_chair: item.id,
     chair_status: 'booked',
   }));
   const handleProceed = async () => {
@@ -40,7 +40,7 @@ const SeatSelection = () => {
       if (selectedSeats.length > 0) {
 
         await ShowtimeAPI.updateChairByShowtime(Number(selectedShowDate?.id_showtime), selectedSeats.map(item => ({
-          id_chair: item.id_chair,
+          id_chair: item.id,
           chair_status: 'available',
         })));
       }
@@ -60,7 +60,7 @@ const SeatSelection = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 mt-10 w-full">
         <div className="w-full col-span-3">
           <div className="flex justify-center mb-4">
-            <div className="flex items-center gap-6 ">
+            <div className="grid grid-cols-3 lg:grid-cols-6 items-center gap-6 ">
               <div className="flex items-center">
                 <div className="size-4 md:size-6 bg-slate-500 mr-2"></div>
                 <span className="text-sm md:text-lg">Ghế đã bán</span>

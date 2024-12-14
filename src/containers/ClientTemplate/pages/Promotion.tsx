@@ -4,21 +4,22 @@ import { Promotion } from "@/types/promotion"
 import { useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { API_URL } from "@/constants/api"
+import { useQuery } from "@tanstack/react-query"
 
 const PromotionPage = () => {
   const [promotions, setPromotions] = useState<Promotion[] | []>([])
+  const { data } = useQuery({
+    queryKey: ['promotionsClient'],
+    queryFn: PromotionAPI.getAllPromotion,
+    staleTime: 60 * 1000
+  })
 
   useEffect(() => {
-    const fetchPromotions = async () => {
-      try {
-        const resp = await PromotionAPI.getAllPromotion()
-        setPromotions(resp)
-      } catch (error) {
-        console.error("Failed to fetch promotions:", error)
-      }
+    if (data) {
+      setPromotions(data)
     }
-    fetchPromotions()
-  }, [])
+  }, [data, setPromotions])
+
 
   return (
     <div className="container mx-auto px-4 py-8">
