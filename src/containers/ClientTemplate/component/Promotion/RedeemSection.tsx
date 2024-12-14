@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -53,14 +52,7 @@ export function BookingDialog({
             <DialogTitle className="text-xl font-medium">
               THÔNG TIN KHUYẾN MÃI
             </DialogTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6"
-              onClick={() => onOpenChange(false)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
+
           </div>
         </DialogHeader>
 

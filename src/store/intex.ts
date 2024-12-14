@@ -1,5 +1,6 @@
-import { Chair } from "@/types/chair";
+import { ChairByShowtime } from "@/types/chair";
 import { Product } from "@/types/product";
+import { Promotion } from "@/types/promotion";
 import { showTime } from "@/types/showtime";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -25,11 +26,14 @@ export interface TicketState {
   selectedRoomId: number | null;
 
   // Ghế đã chọn
-  selectedSeats: Chair[];
-  addSelectedSeat: (seat: Chair) => void;
+  selectedSeats: ChairByShowtime[];
+  addSelectedSeat: (seat: ChairByShowtime) => void;
   removeSelectedSeat: (id: number) => void;
   clearSelectedSeats: () => void;
 
+  // promotions
+  selectedPromotion: Promotion | null;
+  setSelectedPromotion: (promotion: Promotion | null) => void;
   // Sản phẩm đã chọn
   selectedProducts: SelectedProduct[];
   addProduct: (newProduct: Product) => void;
@@ -37,6 +41,8 @@ export interface TicketState {
   decreaseProductQuantity: (productId: number) => void;
   clearSelectedProducts: () => void;
 
+  // Tính tổng
+  getTotalPrice: () => number; // Thêm phương thức để tính tổng giá
   // Quản lý dữ liệu ticket
   setTicketData: (data: Partial<TicketState>) => void;
   clearTicketData: () => void;
@@ -54,6 +60,8 @@ export const useTicketStore = create<TicketState>()(
       selectedRoomId: 0,
       selectedSeats: [],
       selectedProducts: [],
+      selectedPromotion: null,
+      setSelectedPromotion: (promotion) => set({ selectedPromotion: promotion }),
       // set movie
       setMovieName: (movie) =>
         set(() => ({
@@ -79,9 +87,7 @@ export const useTicketStore = create<TicketState>()(
         })),
       removeSelectedSeat: (id) =>
         set((state) => ({
-          selectedSeats: state.selectedSeats.filter(
-            (seat) => seat.id_chair !== id
-          ),
+          selectedSeats: state.selectedSeats.filter((seat) => seat.id !== id),
         })),
       clearSelectedSeats: () =>
         set(() => ({
@@ -136,6 +142,35 @@ export const useTicketStore = create<TicketState>()(
           selectedProducts: [],
         })),
 
+      // Tổng
+      getTotalPrice: () => {
+        const totalSeatsPrice = get().selectedSeats.reduce(
+          (total, seat) => total + seat.price,
+          0
+        );
+        const totalProductsPrice = get().selectedProducts.reduce(
+          (total, { product, quantity }) => total + product.price * quantity,
+          0
+        );
+
+        const promotion = get().selectedPromotion;
+        let totalPromotionPrice = 0;
+
+        if (promotion && promotion.discount_value >= 0) {
+          if (promotion.discount_type === "percentage") {
+            totalPromotionPrice =
+              (totalSeatsPrice + totalProductsPrice) *
+              (promotion.discount_value / 100);
+          } else {
+            totalPromotionPrice = promotion.discount_value;
+          }
+        }
+
+        return Math.max(
+          0,
+          totalSeatsPrice + totalProductsPrice - totalPromotionPrice
+        );
+      },
       // Cập nhật dữ liệu
       setTicketData: (data) =>
         set((state) => ({
@@ -151,6 +186,7 @@ export const useTicketStore = create<TicketState>()(
           selectedRoomId: 0,
           selectedSeats: [],
           selectedProducts: [],
+          selectedPromotion: null
         }),
     }),
     { name: "ticket-storage" } // Tên được lưu trong localStorage

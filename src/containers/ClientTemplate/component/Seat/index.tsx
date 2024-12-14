@@ -1,19 +1,19 @@
 import { useTicketStore } from "@/store/intex";
-import { Chair } from "@/types/chair";
+import { ChairByShowtime } from "@/types/chair";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Seats: React.FC<{ showChair?: Chair[] }> = ({ showChair }) => {
+const Seats: React.FC<{ showChair?: ChairByShowtime[] }> = ({ showChair }) => {
 
   const { selectedSeats, addSelectedSeat, removeSelectedSeat } = useTicketStore()
   const alpha = Array.from({ length: Math.floor(Number(showChair?.length) / 10) }, (_, index) => String.fromCharCode(65 + index));
-  const handleSeatClick = (seat: Chair) => {
+  const handleSeatClick = (seat: ChairByShowtime) => {
     if (seat.chair_status === "sold" || seat.chair_status === 'booked') return;
 
-    const isSelected = selectedSeats.find(selected => selected.id_chair === seat.id_chair);
+    const isSelected = selectedSeats.find(selected => selected.id === seat.id);
 
     if (isSelected) {
-      removeSelectedSeat(seat.id_chair);
+      removeSelectedSeat(seat.id);
     } else {
       addSelectedSeat(seat);
     }
@@ -27,7 +27,7 @@ const Seats: React.FC<{ showChair?: Chair[] }> = ({ showChair }) => {
         {/* Ghế */}
         <div className="w-full grid grid-cols-10 gap-1 md:gap-2 justify-center mx-auto col-span-10">
           {showChair?.map((seat) => (
-            <div key={seat.id_chair} className="group">
+            <div key={seat.id} className="group">
               <button
                 onClick={() => handleSeatClick(seat)}
                 className={`
@@ -36,7 +36,7 @@ const Seats: React.FC<{ showChair?: Chair[] }> = ({ showChair }) => {
                   text-xs md:text-lg 
                   flex items-center justify-center 
                   transition-colors duration-200 
-                  ${selectedSeats.some(selected => selected.id_chair === seat.id_chair)
+                  ${selectedSeats.some(selected => selected.id === seat.id)
                     ? "bg-yellow-300 text-black"
                     : seat.chair_status === "sold"
                       ? "bg-slate-500 text-primary cursor-not-allowed"

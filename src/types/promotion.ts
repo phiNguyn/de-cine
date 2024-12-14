@@ -4,7 +4,7 @@ export interface Promotion {
   promotion_name: string;
   promotion_point: number;
   promotion_image: string;
-  discount_type:  "percent" | "price";
+  discount_type:  "percentage" | "fixed";
   discount_value: number;
   start_date: Date;
   end_date: Date;
@@ -14,6 +14,4 @@ export interface Promotion {
   created_at: Date;
   updated_at: Date;
   is_active: boolean;
-
-  
 }

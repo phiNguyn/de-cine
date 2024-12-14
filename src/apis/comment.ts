@@ -45,7 +45,7 @@ export const commentAPI = {
   ): Promise<Comment[] | undefined> => {
     try {
       const resp = await axiosClient.get(
-        `http://127.0.0.1:8000/api/comments-movie/${id_movie}`
+        `/comments-movie/${id_movie}`
       );
       return resp.data;
     } catch (error) {

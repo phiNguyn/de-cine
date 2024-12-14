@@ -1,6 +1,6 @@
 import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
-import { Chair } from "@/types/chair";
+import { Chair, ChairByShowtime } from "@/types/chair";
 
 const ShowtimeAPI = {
   getShowtimeSlot: async () => {
@@ -34,13 +34,19 @@ const ShowtimeAPI = {
 
   getChairsByShowtime: async (id: number) => {
     const resp = await axiosClient.get(`/${API_URL.showtimes}/${id}/chairs`);
-    return resp.data as Chair[];
+    return resp.data as ChairByShowtime[];
   },
 
-  updateChairByShowtime : async(id_showtime: number, chairs: { id_chair: number; chair_status: string }[]) => {
-    const resp = await axiosClient.put(`/${API_URL.showtimes}/${id_showtime}/chairs`,{chairs})
-    return resp.data
-  }
+  updateChairByShowtime: async (
+    id_showtime: number,
+    chairs: { id_chair: number; chair_status: string }[]
+  ) => {
+    const resp = await axiosClient.put(
+      `/${API_URL.showtimes}/${id_showtime}/chairs`,
+      { chairs }
+    );
+    return resp.data;
+  },
 };
 
 export default ShowtimeAPI;

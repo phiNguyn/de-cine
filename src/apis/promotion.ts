@@ -50,6 +50,15 @@ const PromotionAPI = {
   
   }
   },
+  getPromotionByIdAccount: async (id: number) => {
+    try {
+      const resp = await axiosClient.get(`${API_URL.promotions}/${id}/account`);
+      return resp.data.data;
+    } catch (error) {
+      console.log(error);
+    
+    }
+    },
 
   redeemDiscount: async (promotion_id:number,id_account:number) => { 
     try {

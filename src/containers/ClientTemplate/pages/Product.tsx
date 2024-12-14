@@ -50,7 +50,7 @@ export default function Product() {
     setCancelLoading(true)
     try {
       await ShowtimeAPI.updateChairByShowtime(Number(selectedShowDate?.id_showtime), selectedSeats.map(item => ({
-        id_chair: item.id_chair,
+        id_chair: item.id,
         chair_status: 'available',
       })));
       await clearTicketData();
@@ -67,7 +67,7 @@ export default function Product() {
     setCancelLoading(true)
     try {
       await ShowtimeAPI.updateChairByShowtime(Number(selectedShowDate?.id_showtime), selectedSeats.map(item => ({
-        id_chair: item.id_chair,
+        id_chair: item.id,
         chair_status: 'available',
       })));
       navigate(`/seat/${selectedShowDate?.id_showtime}`)
