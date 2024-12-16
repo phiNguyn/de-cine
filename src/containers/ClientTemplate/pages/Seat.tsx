@@ -28,7 +28,7 @@ const SeatSelection = () => {
     setNextLoading(true)
     try {
       await ShowtimeAPI.updateChairByShowtime(Number(id), chairs);
-      const expirationTime = new Date(Date.now() + Number(import.meta.env.VITE_EXPIRES) * 60 * 1000).toISOString(); // 15 phút từ hiện tại
+      const expirationTime = new Date(Date.now() + 6 * 60 * 1000).toISOString(); // 15 phút từ hiện tại
       setExpiredAt(expirationTime);
       navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
     } catch (error) {
