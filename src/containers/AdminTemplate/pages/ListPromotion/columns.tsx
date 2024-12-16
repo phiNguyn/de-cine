@@ -5,6 +5,7 @@ import { DataTableColumnHeader } from "../Account/data-table-column-header"
 import { Promotion } from "@/types/promotion"
 import { formatDate } from "../GenreMovie/columns"
 import { DataTableRowActions } from "./PromotionAction"
+import { API_URL } from "@/constants/api"
 
 export const columns: ColumnDef<Promotion>[] = [
     {
@@ -23,6 +24,31 @@ export const columns: ColumnDef<Promotion>[] = [
             )
         },
     },
+    {
+           accessorKey: "promotion_image",
+           header: ({ column }) => {
+               return (
+                   <DataTableColumnHeader column={column} title="Ảnh" />
+               )
+           },
+           cell: ({ row }) => {
+               const promotion_image = row.getValue("promotion_image"); // Lấy URL của ảnh
+               return (
+                   <div className="text-left">
+                       {promotion_image ? (
+                           <img
+                               loading="lazy"
+                               src={`${API_URL.baseUrl}/${promotion_image}`}
+                               alt="Ảnh banner"
+                               style={{ width: '100px', height: 'auto', borderRadius: '4px' }} // Tùy chỉnh kích thước ảnh
+                           />
+                       ) : (
+                           "Không có ảnh"
+                       )}
+                   </div>
+               );
+           },
+       },
     {
         accessorKey: "discount_value",
         header: ({ column }) => {

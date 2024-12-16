@@ -25,7 +25,10 @@ const PromotionAPI = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   addPromotion: async (data: any) => {
     try {
-      const resp = await axiosClient.post(`/${API_URL.promotions}`, data);
+      const resp = await axiosClient.post(`${API_URL.promotions}`, data,{
+        headers: { "Content-Type": "multipart/form-data" },
+
+      });
       return resp.data;
     } catch (error) {
       console.log(error);
