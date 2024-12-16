@@ -14,7 +14,7 @@ const formSchema = z.object({
     id_promotion: z.number().optional(),
     promotion_name: z.string().min(5, { message: "Tên khuyến mãi phải có ít nhất 5 ký tự." }),
     promotion_point: z.number().min(0, { message: "Điểm khuyến mãi không hợp lệ." }),
-    discount_type: z.enum(["percent", "price"], { required_error: "Chọn loại giảm giá." }),
+    discount_type: z.enum(["percentage", "fixed"], { required_error: "Chọn loại giảm giá." }),
     discount_value: z.number().min(1, { message: "Giá trị giảm không hợp lệ." }),
     start_date: z.string().refine((date) => !isNaN(new Date(date).getTime()), { message: "Ngày bắt đầu không hợp lệ." }),
     end_date: z.string().refine((date) => !isNaN(new Date(date).getTime()), { message: "Ngày kết thúc không hợp lệ." }),
@@ -36,7 +36,7 @@ const EditPromotion = ({ selectedId, onClose }: { selectedId: number; onClose?: 
             id_promotion: promotion?.id_promotion,
             promotion_name: promotion?.promotion_name || "",
             promotion_point: promotion?.promotion_point || 0,
-            discount_type: promotion?.discount_type || "percent",
+            discount_type: promotion?.discount_type,
             discount_value: promotion?.discount_value || 0,
             start_date: promotion?.start_date ? new Date(promotion.start_date).toISOString().split("T")[0] : "", // Chuyển đổi thành chuỗi yyyy-MM-dd
             end_date: promotion?.end_date ? new Date(promotion.end_date).toISOString().split("T")[0] : "", // Tương tự

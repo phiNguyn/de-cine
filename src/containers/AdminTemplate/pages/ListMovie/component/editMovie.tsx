@@ -13,7 +13,7 @@ import moviesAPI from "@/apis/movie";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import Select from "react-select"
+import Select, { MultiValue } from "react-select"
 import { ThemeProvider } from "@/components/theme-provider";
 import { Layout } from "@/components/Layout/layout";
 import moment from "moment-timezone";
@@ -27,19 +27,17 @@ const movieFormSchema = z.object({
     movie_name: z.string().min(1, { message: "Tên phim không được để trống" }),
     description: z.string().min(1, { message: "Tên phim không được để trống" }),
     duration: z.number().min(1, { message: "Đây là trường bắt buộc" }),
-    release_date: z.union([z.date(), z.literal("")], {
-        message: "Đây là trường bắt buộc",
-    }),
+    release_date: z.date({ message: "Vui lòng không để trống" }),
     country: z.string().min(1, { message: "Quốc gia không được để trống" }),
     producer: z.string().min(1, { message: "Nhà sản xuất không được để trống" }),
     director: z.string().min(1, { message: "Đạo diễn không được để trống" }),
     cast: z.string().min(1, { message: "Diễn viên không được để trống" }),
     posterOld: z.string().optional(),
     poster_url: z.any().refine(
-        (value, context) => {
+        (value) => {
             // Nếu `img` trống và không có `imgOld`, trả về lỗi
             if (!value || (Array.isArray(value) && value.length === 0)) {
-                return !!context.parent.posterOld; // Kiểm tra nếu có ảnh cũ
+                return !!value.parent.posterOld; // Kiểm tra nếu có ảnh cũ
             }
             return true; // Có file mới hoặc ảnh cũ
         },
@@ -51,10 +49,10 @@ const movieFormSchema = z.object({
     youtube_url: z.string().min(1, { message: "Đây là trường bắt buộc" }),
     imgOld: z.string().optional(), // Thêm trường imgOld
     image_main: z.any().refine(
-        (value, context) => {
+        (value) => {
             // Nếu `img` trống và không có `imgOld`, trả về lỗi
             if (!value || (Array.isArray(value) && value.length === 0)) {
-                return !!context.parent.imgOld; // Kiểm tra nếu có ảnh cũ
+                return !!value.parent.imgOld; // Kiểm tra nếu có ảnh cũ
             }
             return true; // Có file mới hoặc ảnh cũ
         },
@@ -130,12 +128,15 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
             form.setValue("genres", defaultOptions.map(option => option.value));
         }
     }, [movie, genreMovie, form]);
-    const handleChange = (options) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleChange = (options: any) => {
         setSelectedOptions(options);
-        form.setValue("genres", options.map((option) => option.value));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        form.setValue("genres", options.map((option: { value: any; }) => option.value));
     };
 
-    async function dataSubmit(data: MovieFormValues) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async function dataSubmit(data: any) {
         const { release_date, genres } = data
         // console.log(data);
         const processedGenres = Array.isArray(genres) && genres.length > 0 ? genres : [];
@@ -299,7 +300,7 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
 
                                             <Select
                                                 className="text-primary-foreground w-full bg-primary-foreground"
-                                                defaultValue={[field.value]}
+                                                defaultValue={field.value as unknown as MultiValue<GenreMovie>}
                                                 options={genreMovie}
                                                 value={selectdOptions}
                                                 onChange={handleChange}
@@ -407,7 +408,7 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
                                                         accept="image/*" // Thêm thuộc tính này để chỉ định định dạng tệp hợp lệ
                                                         onChange={(e) => {
                                                             // Lưu tệp đầu tiên vào field
-                                                            if (e.target.files.length > 0) {
+                                                            if (e.target.files && e.target.files.length > 0) {
                                                                 field.onChange(e.target.files[0]);
                                                             }
                                                         }}
@@ -437,7 +438,7 @@ export default function EditMovie({ onSubmit }: EditMovieProp) {
                                                         accept="image/*" // Thêm thuộc tính này để chỉ định định dạng tệp hợp lệ
                                                         onChange={(e) => {
                                                             // Lưu tệp đầu tiên vào field
-                                                            if (e.target.files.length > 0) {
+                                                            if (e.target.files && e.target.files.length > 0) {
                                                                 field.onChange(e.target.files[0]);
                                                             }
                                                         }}

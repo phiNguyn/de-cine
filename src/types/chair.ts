@@ -13,6 +13,8 @@ export interface Chair {
   chair_status: string;
   column: number;
   row: string;
+  id: number;
+  id_chair: number;
 }
 
 export interface ChairBooking {

@@ -1,6 +1,6 @@
 import { API_URL } from "@/constants/api";
 import axiosClient from "./axiosClient";
-import { Chair, ChairByShowtime } from "@/types/chair";
+import { ChairByShowtime } from "@/types/chair";
 
 const ShowtimeAPI = {
   getShowtimeSlot: async () => {

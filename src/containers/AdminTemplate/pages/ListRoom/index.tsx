@@ -29,7 +29,7 @@ export default function ListRooms() {
     if (data) {
       setRoom(data)
     }
-  }, [data])
+  }, [data,setRoom])
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Layout>

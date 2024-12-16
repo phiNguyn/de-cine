@@ -22,5 +22,6 @@ export const API_URL = {
   vnpay: "vnpay/payment",
   bookingsAccount: "bookings/account",
   momo: "momo-payment",
-  redeem_discount: 'redeem-discount'
+  redeem_discount: "redeem-discount",
+  revenueByMovie: "revenue-by-movie",
 };

@@ -7,7 +7,6 @@ import {
     TableCell,
   } from "@/components/ui/table"; 
   import { flexRender } from "@tanstack/react-table";
-  import TicketAction from './TicketAction'; 
 import { ComponentType, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal } from "react";
   
   type TicketTableProps = {
@@ -43,7 +42,7 @@ import { ComponentType, JSXElementConstructor, Key, ReactElement, ReactNode, Rea
                   ))}
                   {/* Sử dụng component TicketAction cho hành động */}
                   <TableCell>
-                    <TicketAction ticket={row.id} />
+                    {/* <TicketAction ticket={row.id} /> */}
                   </TableCell>
                 </TableRow>
               ))

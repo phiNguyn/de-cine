@@ -9,17 +9,17 @@ import Loader from "@/components/loader";
 // Cập nhật props nhận vào để nhận dữ liệu từ component cha
 const SumaryComment = ({ id_movie }: { id_movie: number }) => {
   const [sumaryComment, setSumaryComment] = useState<SumaryCommentAndStart | null>(null);
-  const { data, isLoading,  isError } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['sumaryComment', id_movie],
     queryFn: () => commentAPI.sumaryCommnet(id_movie),
-    staleTime: 20 * 1000
+    staleTime: 60 * 1000
   })
   useEffect(() => {
     if (data) {
       setSumaryComment(data)
     }
   }, [data, setSumaryComment])
-  if(isError) return <div>Chưa có bình luận </div>
+  if (isError) return <div>Chưa có bình luận </div>
   return (
     <div className="mb-6">
       <h2 className="text-2xl font-bold mb-2">Bình luận từ người xem</h2>

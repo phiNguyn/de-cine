@@ -1,4 +1,4 @@
-import { Armchair, Film, LayoutDashboard, MessageCircle, ShoppingBasket, SquarePercent, Ticket, TvMinimal, Users, Videotape } from "lucide-react"
+import { Armchair, ChartLine, Film, LayoutDashboard, MessageCircle, ShoppingBasket, SquarePercent, Ticket, TvMinimal, Users, Videotape } from "lucide-react"
 
 export interface NavLink {
   title: string
@@ -67,6 +67,12 @@ export const sidelinks: SideLink[] = [
     label: '',
     href: '/admin/products',
     icon: <ShoppingBasket size={18} />
+  },
+  {
+    title: 'Doanh thu',
+    label: '',
+    href: '/admin/revenue',
+    icon: <ChartLine size={18} />
   },
   // {
   //   title: 'Authentication',

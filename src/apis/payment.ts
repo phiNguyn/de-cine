@@ -29,7 +29,8 @@ const PaymentAPI = {
     return resp.data;
   },
 
-  WebhookMOMO: async (data) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  WebhookMOMO: async (data: any) => {
     const resp = await axiosClient.post("/momo-ipn", data);
     return resp.data;
   },

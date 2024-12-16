@@ -2,7 +2,6 @@ import BookingAPI from "@/apis/booking";
 import MovieTicketConfirmation from "@/components/BookingDetail";
 import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
-import { useBooking } from "@/store/Booking"
 import { useQuery } from "@tanstack/react-query";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { useForm } from "react-hook-form"

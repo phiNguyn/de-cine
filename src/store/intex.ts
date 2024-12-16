@@ -152,24 +152,44 @@ export const useTicketStore = create<TicketState>()(
           (total, { product, quantity }) => total + product.price * quantity,
           0
         );
-
+      
         const promotion = get().selectedPromotion;
         let totalPromotionPrice = 0;
-
+        const totalPriceBeforeDiscount = totalSeatsPrice + totalProductsPrice;
+      
         if (promotion && promotion.discount_value >= 0) {
-          if (promotion.discount_type === "percentage") {
-            totalPromotionPrice =
-              (totalSeatsPrice + totalProductsPrice) *
-              (promotion.discount_value / 100);
-          } else {
-            totalPromotionPrice = promotion.discount_value;
+          // Kiểm tra điều kiện min_purchase_amount
+          if (
+            !promotion.min_purchase_amount ||
+            totalPriceBeforeDiscount >= promotion.min_purchase_amount
+          ) {
+            if (promotion.discount_type === "percentage") {
+              totalPromotionPrice =
+                totalPriceBeforeDiscount * (promotion.discount_value / 100);
+      
+              // Kiểm tra giới hạn max_discount_amount
+              if (promotion.max_discount_amount) {
+                totalPromotionPrice = Math.min(
+                  totalPromotionPrice,
+                  promotion.max_discount_amount
+                );
+              }
+            } else {
+              totalPromotionPrice = promotion.discount_value;
+      
+              // Giới hạn giảm giá không vượt quá max_discount_amount
+              if (
+                promotion.max_discount_amount &&
+                totalPromotionPrice > promotion.max_discount_amount
+              ) {
+                totalPromotionPrice = promotion.max_discount_amount;
+              }
+            }
           }
         }
-
-        return Math.max(
-          0,
-          totalSeatsPrice + totalProductsPrice - totalPromotionPrice
-        );
+      
+        // Tổng giá cuối cùng (không âm)
+        return Math.max(0, totalPriceBeforeDiscount - totalPromotionPrice);
       },
       // Cập nhật dữ liệu
       setTicketData: (data) =>

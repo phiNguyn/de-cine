@@ -27,6 +27,7 @@ const PaymentPage = () => {
     const [selectedMethod, setSelectedMethod] = useState<Payment | null>(null);
     const [selectedPromotion, setSelectedPromotion] = useState<Promotion | null>(null);
     const { Payment, setPayment } = usePaymentStore((state) => state);
+    const { setTicketData } = useTicketStore()
 
     // Fetch danh sách phương thức thanh toán
     const { data, isLoading: isPaymentLoading } = useQuery({
@@ -74,7 +75,7 @@ const PaymentPage = () => {
             // Tạo dữ liệu booking
             const bookingData = {
                 account_id: Number(userAccount.id_account),
-                account_promotion_id: selectedPromotion?.id_promotion || null,
+                account_promotion_id: selectedPromotion?.account_promotion_id || null,
                 id_products: selectedProducts.map((product) => ({
                     id_product: product.product.id_product,
                     quantity: product.quantity,
@@ -116,7 +117,10 @@ const PaymentPage = () => {
         }
     };
 
-    const handleBack = () => navigate("/products");
+    const handleBack = () => {
+        setTicketData({ selectedPromotion: null })
+        navigate("/products");
+    }
 
     const handleSelectChangePromotion = (promotion: Promotion | null) => {
         setSelectedPromotion(promotion);

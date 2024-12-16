@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Promotion } from "@/types/promotion";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 interface BookingDialogProps {
   open: boolean;
@@ -25,7 +25,7 @@ export function BookingDialog({
   onBooking,
 }: BookingDialogProps) {
   const [isChecked, setIsChecked] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleCheckboxChange = (checked: boolean) => {
     setIsChecked(checked);
@@ -37,7 +37,7 @@ export function BookingDialog({
         await onBooking();
       }
       // Sử dụng useNavigate để chuyển hướng về trang Promotions
-      navigate("/promotions");
+      // navigate("/promotions");
     } catch (error) {
       console.error("Thanh toán thất bại", error);
       alert("Thanh toán thất bại. Vui lòng thử lại sau.");
