@@ -14,42 +14,51 @@ import { usePromotionStore } from "@/store/Promotion";
 const formSchema = z.object({
   promotion_name: z.string().min(5, { message: "Tên khuyến mãi phải có ít nhất 5 ký tự." }),
   discount_type: z.enum(["percent", "price"], { message: "Loại khuyến mãi không hợp lệ." }),
-  discount_value: z.preprocess((value) => {
-    const num = parseFloat(value as string);
-    return isNaN(num) ? undefined : num;
-  }, z.number().min(0, { message: "Phải nhập giá trị từ 0 đến 100." })),
+  discount_value: z.preprocess((value) => parseFloat(value as string) || 0, z.number().min(0, { message: "Phải nhập giá trị từ 0 đến 100." })),
   start_date: z.string(),
   end_date: z.string(),
-  promotion_point: z.number(),
+  promotion_point: z.preprocess((value) => parseInt(value as string, 10) || 0, z.number().min(0, { message: "Điểm phải là số nguyên không âm." })),
   min_purchase_amount: z.number().optional(),
   max_discount_amount: z.number().optional(),
   description: z.string().optional(),
-  is_active: z.boolean()
+  promotion_image: z.any().refine(
+    (value) => value && (!Array.isArray(value) || value.length > 0),
+    { message: "Hãy chọn file" }
+  ).nullable(),
 });
-
 
 export type PromotionFormValues = z.infer<typeof formSchema>;
 
 const AddPromotion = () => {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
   const { addPromotion } = usePromotionStore((state) => state);
 
   const form = useForm<PromotionFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      is_active: false,
-      discount_type: "percent"
-    }
+      discount_type: "percent",
+    },
   });
 
-  async function dataSubmit(data: PromotionFormValues) {
+  const dataSubmit = async (data: PromotionFormValues) => {
     setIsLoading(true);
     try {
-      const resp = await promotionAPI.addPromotion(data);
+      const {promotion_image} = data
+      const submitPromotion = {
+        ...data,
+        promotion_image: promotion_image[0],
+      };
+
+      const resp = await promotionAPI.addPromotion(submitPromotion);
+      console.log(resp); // Kiểm tra phản hồi từ API
+
       if (resp?.status === 201) {
-        toast.success("Đã thêm khuyến mãi");
-        addPromotion(resp);
+        toast.success("Đã thêm khuyến mãi", {
+           duration: 1000,
+          });
+        addPromotion(resp.data.promotion);
         form.reset();
         setOpen(false);
       }
@@ -59,7 +68,20 @@ const AddPromotion = () => {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
+  //     if (resp?.status === 201) {
+  //       toast.success("Đã thêm khuyến mãi" );
+  //       addPromotion(resp);
+  //       form.reset();
+  //       setOpen(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to add promotion", error);
+  //     toast.error("Không thể thêm khuyến mãi, vui lòng thử lại.");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }
 
 
   return (
@@ -88,7 +110,37 @@ const AddPromotion = () => {
                   <FormMessage />
                 </FormItem>
               )} />
+                  <FormField
+                control={form.control}
+                name="promotion_image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ảnh chính</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files ? e.target.files[0] : null;
+                          field.onChange(e.target.files);
 
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              setPreview(reader.result as string);
+                            };
+                            reader.readAsDataURL(file);
+                          } else {
+                            setPreview(null);
+                          }
+                        }}
+                      />
+                    </FormControl>
+                    {preview && <img src={preview} alt="Preview" className="my-2.5 w-40" />}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               {/* Loại khuyến mãi (percent/price) */}
               <FormField control={form.control} name="discount_type" render={({ field }) => (
                 <FormItem>
@@ -199,7 +251,6 @@ const AddPromotion = () => {
           </form>
         </Form>
       </DialogContent>
-
       <Toaster />
     </Dialog>
   );
