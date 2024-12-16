@@ -25,7 +25,7 @@ export default function ListPromotions() {
     if (data) {
       setPromotions(data);
     }
-  }, [data]);
+  }, [data,setPromotions]);
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

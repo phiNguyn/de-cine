@@ -20,6 +20,7 @@ const AddMoviePage = lazy(() => import("@/containers/AdminTemplate/pages/ListMov
 const EditMoviePage = lazy(() => import("@/containers/AdminTemplate/pages/ListMovie/DetailMovie"))
 const ListShowTimePage = lazy(() => import("@/containers/AdminTemplate/pages/ShowTime"))
 const Product = lazy(() => import("@/containers/AdminTemplate/pages/Products"))
+const Revenue = lazy(() => import("@/containers/AdminTemplate/pages/Revenue/index"))
 // Định nghĩa AdminRoutes với kiểu RouteObject
 const AdminRoutes = [
   {
@@ -91,6 +92,10 @@ const AdminRoutes = [
       {
         path: "products",
         element: <Product />
+      },
+      {
+        path: "revenue",
+        element: <Revenue />
       },
     ]
   },

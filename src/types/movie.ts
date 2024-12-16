@@ -28,6 +28,7 @@ export interface newShowtime {
 }
 
 export interface GenreMovie {
+  value: number;
   id_genre: number;
   genre_name: string;
   created_at: Date;

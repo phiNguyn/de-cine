@@ -72,6 +72,7 @@ const moviesAPI = {
     }
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   addMovie: async (data: any) => {
     try {
       const resp = await axiosClient.post(`/${API_URL.movies}`, data, {
@@ -85,6 +86,7 @@ const moviesAPI = {
     }
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateMovie: async (id: number, data: any) => {
     try {
       const resp = await axiosClient.post(`/${API_URL.movies}/${id}`, data, {

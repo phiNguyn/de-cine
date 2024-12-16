@@ -12,15 +12,18 @@ const ShowTimeSlot: React.FC<{ showSlots: newShowtime[] | undefined }> = ({ show
   const { setTicketData } = useTicketStore();
 
   // Xử lý khi chọn suất chiếu
-  const handleSlotSelect = (slotTime: string, id_showtime: number) => {
+  const handleSlotSelect = (slotTime: string, id_showtime: number, start_time: string) => {
     if (!id_showtime) {
       console.error("ID phòng không hợp lệ.");
       return;
     }
 
     // Cập nhật thời gian suất chiếu
-    setTicketData({ selectedShowTime: slotTime });
-
+    setTicketData({
+      selectedShowTime: slotTime,
+      selectedShowDate: { id_showtime: id_showtime, date_time: moment.tz(start_time, "UTC").format("YYYY-MM-DD") }
+    }
+    );
     try {
       if (!user) {
         toast.error("Vui lòng đăng nhập để có thể đặt vé")
@@ -45,7 +48,7 @@ const ShowTimeSlot: React.FC<{ showSlots: newShowtime[] | undefined }> = ({ show
                 <div
                   className="group w-fit cursor-pointer"
                   key={i}
-                  onClick={() => handleSlotSelect(slot.slot_time, slot.id_showtime)}
+                  onClick={() => handleSlotSelect(slot.slot_time, slot.id_showtime, slot.start_time)}
                 >
                   <CardDescription className="border w-fit border-yellow-500 text-primary rounded-md px-3 py-1.5 group-hover:border-white group-hover:bg-yellow-500">
                     {moment(slot.slot_time, "HH:mm:ss").format("HH:mm")}

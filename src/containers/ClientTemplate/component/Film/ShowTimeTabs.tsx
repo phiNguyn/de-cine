@@ -44,16 +44,9 @@ export const ShowTimeTabs: React.FC<{ showDay: Movie | undefined; onTabChange?: 
     const selectedShowtime = showDay?.showtimes?.[value];
     if (selectedShowtime) {
       const firstSlot = selectedShowtime[0];
-      const selectedDate = moment.tz(value, "Asia/Ho_Chi_Minh").format("DD/MM/YYYY");
-      const selectedTime = moment(firstSlot.slot_time, "HH:mm:ss")
-        .format("HH:mm");
-
       setTicketData({
         selectedRoomId: firstSlot ? Number(firstSlot.id_room) : null,
-        selectedShowDate: { date_time: selectedDate, id_showtime: firstSlot.id_showtime },
-        selectedShowTime: selectedTime,
       });
-
       if (onTabChange) {
         onTabChange(showDay);
       }

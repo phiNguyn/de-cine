@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -17,16 +18,12 @@ import Select from "react-select"
 import { ThemeProvider } from "@/components/theme-provider";
 import { Layout } from "@/components/Layout/layout";
 import moment from "moment-timezone";
-import { useGenreMovieStore } from "@/store/GenreMove";
 import { useQuery } from "@tanstack/react-query";
-
 const movieFormSchema = z.object({
     movie_name: z.string().min(1, { message: "Tên phim không được để trống" }),
     description: z.string().min(1, { message: "Tên phim không được để trống" }),
     duration: z.number().min(1, { message: "Đây là trường bắt buộc" }),
-    release_date: z.union([z.date(), z.literal("")], {
-        message: "Đây là trường bắt buộc",
-    }),
+    release_date: z.date({ message: "Vui lòng chọn ngày ra mắt phim" }),
     country: z.string().min(1, { message: "Quốc gia không được để trống" }),
     producer: z.string().min(1, { message: "Nhà sản xuất không được để trống" }),
     director: z.string().min(1, { message: "Đạo diễn không được để trống" }),
@@ -66,12 +63,11 @@ export interface AddMovieProp {
 export default function AddMovie({ onSubmit }: AddMovieProp) {
     const [preview, setPreview] = useState<string | null>(null);
     const [previewPoster, setPreviewPoster] = useState<string | null>(null);
-    const { genreMovie, setGenreMovie } = useGenreMovieStore()
-
+    const [genreMovie, setGenreMovie] = useState()
     const { data } = useQuery({
         queryKey: ['genreMovie'],
         queryFn: moviesAPI.getAllGenreMovies,
-        staleTime: 30 * 1000,
+        staleTime: 60 * 1000,
     });
     useEffect(() => {
         if (data) {
@@ -98,7 +94,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
             movie_name: '',
             description: '',
             duration: 120,
-            release_date: "",
+            release_date: new Date(),
             country: '',
             producer: '',
             director: '',
@@ -157,13 +153,12 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                         )}
                                     />
                                 </div>
-                                <div className="flex justify-between mb-5">
-
+                                <div className="grid grid-cols-2 items-center justify-between mb-5">
                                     <FormField
                                         control={form.control}
                                         name="release_date"
                                         render={({ field }) => (
-                                            <FormItem className="flex flex-col">
+                                            <FormItem className="flex  flex-col">
                                                 <FormLabel>Ngày ra mắt phim</FormLabel>
                                                 <Popover>
                                                     <PopoverTrigger asChild>
@@ -178,7 +173,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                                                 {field.value ? (
                                                                     moment.tz(field.value, 'Asia/Ho_Chi_Minh').format("DD-MM-YYYY")
                                                                 ) : (
-                                                                    <span>Pick a date</span>
+                                                                    <span>Chọn ngày ra mắt</span>
                                                                 )}
                                                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                                             </Button>
@@ -206,7 +201,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                         control={form.control}
                                         name="country"
                                         render={({ field }) => (
-                                            <FormItem>
+                                            <FormItem className="w-full">
                                                 <FormLabel>Quốc gia</FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Nhập quốc gia" {...field} />
@@ -216,8 +211,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                         )}
                                     />
                                 </div>
-                                <div className="flex justify-between mb-5">
-
+                                <div className="grid grid-cols-2 gap-x-4 justify-between mb-5">
                                     <FormField
                                         control={form.control}
                                         name="producer"
@@ -245,7 +239,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                         )}
                                     />
                                 </div>
-                                <div className="flex justify-between mb-5">
+                                <div className="grid grid-cols-2 gap-x-4 items-center justify-between mb-5">
                                     <FormField
                                         control={form.control}
                                         name="cast"
@@ -263,8 +257,8 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
                                     <FormField
                                         control={form.control}
                                         name="genres"
-                                        render={({ field }) => (
-                                            <FormItem className="w-[185px]">
+                                        render={() => (
+                                            <FormItem className="">
                                                 <FormLabel>Thể Loại</FormLabel>
 
                                                 <Select
@@ -283,7 +277,7 @@ export default function AddMovie({ onSubmit }: AddMovieProp) {
 
                                 </div>
 
-                                <div className="mb-5 flex justify-between">
+                                <div className="mb-5 grid grid-cols-2 gap-x-4 ">
                                     <FormField
                                         control={form.control}
                                         name="status"

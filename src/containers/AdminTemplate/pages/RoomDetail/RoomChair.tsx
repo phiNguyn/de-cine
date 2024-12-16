@@ -1,13 +1,13 @@
 import { ChairAPI } from "@/apis/chair"
 import { Button } from "@/components/ui/button"
-import { Chair } from "@/types/chair"
+import {  ChairByShowtime } from "@/types/chair"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
 export const RoomChair = () => {
 
     const { id } = useParams()
-    const [data, setData] = useState<Chair[]>([])
+    const [data, setData] = useState<ChairByShowtime[]>([])
     // const 
     // const {Chair, setChair} = useChairStore((state) => state)
     // const {data} = useQuery({
@@ -66,7 +66,7 @@ export const RoomChair = () => {
                             <div className="grid grid-cols-10 gap-1 md:gap-2 w-fit justify-center mx-auto">
 
                                 {data?.map((seat) => (
-                                    <div key={seat.id_chair} className="group">
+                                    <div key={seat.id} className="group">
                                         <button
                                             className={` 
         ${seat.chair_status === 'sold'

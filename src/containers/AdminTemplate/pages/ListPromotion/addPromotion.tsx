@@ -24,6 +24,7 @@ const formSchema = z.object({
   min_purchase_amount: z.number().optional(),
   max_discount_amount: z.number().optional(),
   description: z.string().optional(),
+  is_active: z.boolean()
 });
 
 
@@ -47,7 +48,7 @@ const AddPromotion = () => {
     try {
       const resp = await promotionAPI.addPromotion(data);
       if (resp?.status === 201) {
-        toast.success("Đã thêm khuyến mãi" );
+        toast.success("Đã thêm khuyến mãi");
         addPromotion(resp);
         form.reset();
         setOpen(false);
@@ -126,8 +127,8 @@ const AddPromotion = () => {
                   <FormControl>
                     <Input {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
-                    />                  
-                    </FormControl>
+                    />
+                  </FormControl>
                 </FormItem>
               )} />
             </div>
@@ -152,45 +153,45 @@ const AddPromotion = () => {
                   </FormControl>
                 </FormItem>
               )} />
-              </div>
+            </div>
 
-                <div className="flex gap-5">
-            {/* Mô tả khuyến mãi */}
-            <FormField control={form.control} name="description" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mô tả</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nhập mô tả khuyến mãi" {...field} />
-                </FormControl>
-              </FormItem>
-            )} />
+            <div className="flex gap-5">
+              {/* Mô tả khuyến mãi */}
+              <FormField control={form.control} name="description" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mô tả</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nhập mô tả khuyến mãi" {...field} />
+                  </FormControl>
+                </FormItem>
+              )} />
 
-            {/* Hiển thị khuyến mãi */}
-           
-                </div>
-                <div className="flex gap-5">
-                <FormField control={form.control} name="min_purchase_amount" render={({ field }) => (
+              {/* Hiển thị khuyến mãi */}
+
+            </div>
+            <div className="flex gap-5">
+              <FormField control={form.control} name="min_purchase_amount" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Giá trị đơn hàng tối thiểu</FormLabel>
                   <FormControl>
                     <Input {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
-                    />                  
-                    </FormControl>
+                    />
+                  </FormControl>
                 </FormItem>
               )} />
-               <FormField control={form.control} name="max_discount_amount" render={({ field }) => (
+              <FormField control={form.control} name="max_discount_amount" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Giá trị giảm tối đa</FormLabel>
                   <FormControl>
                     <Input {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
-                    />                  
-                    </FormControl>
+                    />
+                  </FormControl>
                 </FormItem>
               )} />
-                </div>
-               
+            </div>
+
 
             <Button disabled={isLoading} type="submit">
               {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : "Thêm khuyến mãi"}

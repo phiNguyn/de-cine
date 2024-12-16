@@ -8,9 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { TopNav } from '@/containers/AdminTemplate/components/top-nav'
 import { UserNav } from '@/containers/AdminTemplate/components/user-nav'
-import { RecentSales } from '@/containers/AdminTemplate/components/recent-sale'
 import { Dropdown } from '@/containers/ClientTemplate/component/Auth'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Overview } from '../components/overview'
@@ -161,10 +159,10 @@ export default function Dashboard() {
                     <CardTitle>Overview</CardTitle>
                   </CardHeader>
                   <CardContent className='pl-2'>
-                    {/* <Overview /> */}
+                    <Overview />
                   </CardContent>
                 </Card>
-                {/* <Card className='col-span-1 lg:col-span-3'>
+                <Card className='col-span-1 lg:col-span-3'>
                   <CardHeader>
                     <CardTitle>Recent Sales</CardTitle>
                     <CardDescription>
@@ -172,9 +170,8 @@ export default function Dashboard() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <RecentSales />
                   </CardContent>
-                </Card> */}
+                </Card>
               </div>
             </TabsContent>
           </Tabs>
@@ -184,25 +181,3 @@ export default function Dashboard() {
   )
 }
 
-const topNav = [
-  {
-    title: 'Overview',
-    href: 'dashboard/overview',
-    isActive: true,
-  },
-  {
-    title: 'Customers',
-    href: 'dashboard/customers',
-    isActive: false,
-  },
-  {
-    title: 'Products',
-    href: 'dashboard/products',
-    isActive: false,
-  },
-  {
-    title: 'Settings',
-    href: 'dashboard/settings',
-    isActive: false,
-  },
-]

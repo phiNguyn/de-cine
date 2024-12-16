@@ -35,6 +35,6 @@ export interface ShowTimeSlot {
 }
 
 export interface showTime {
-  id_showtime: number;
-  date_time: string;
+  id_showtime?: number;
+  date_time?: string;
 }

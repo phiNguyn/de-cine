@@ -51,12 +51,9 @@ export default function ListMovies() {
             defaultValue='overview'
             className='space-y-4'
           >
-            <div className='w-full flex justify-between overflow-x-auto pb-2'>
-              <TabsList>
+            <div className='w-full flex justify-between overflow-x-auto pb-2 '>
+              <TabsList className="shadow-xl">
                 <TabsTrigger value='overview'>Danh Sách</TabsTrigger>
-                <TabsTrigger value='analytics'>Biểu Đồ</TabsTrigger>
-                <TabsTrigger value='reports'>Reports</TabsTrigger>
-                <TabsTrigger value='add'>Thêm phim mới</TabsTrigger>
               </TabsList>
               <Button size={"default"} variant={"default"} ><Link to={'/admin/listMovie/add'}>Thêm phim</Link></Button>
             </div>

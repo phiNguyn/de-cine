@@ -12,39 +12,51 @@ import {
 import { API_URL } from "@/constants/api";
 import { Label } from "@/components/ui/label";
 import { useTicketStore } from "@/store/intex";
+import { useState } from "react";
 
 const PaymentPromotion = ({ id, onChange }: { id: number, onChange?: (promotion: Promotion | null) => void }) => {
-    const { selectedPromotion, setSelectedPromotion } = useTicketStore((state) => state);
+    const { setTicketData, selectedSeats, selectedProducts } = useTicketStore((state) => state);
+    const [selectPromotion, setSelectPromotion] = useState<Promotion | null>(null)
     const { data, isLoading } = useQuery({
         queryKey: ['promotions', id],
         queryFn: () => PromotionAPI.getPromotionByIdAccount(id),
         staleTime: 5 * 60 * 1000,
     });
-    
+
     const promotion: Promotion[] = data || [];
 
     const handleChangePromotion = (promotion: Promotion) => {
-        setSelectedPromotion(promotion);
+        setTicketData({
+            selectedPromotion: promotion
+        })
+        setSelectPromotion(promotion)
         if (onChange) {
             onChange(promotion);
         }
     };
 
+    const totalSeatsPrice = selectedSeats.reduce((total, seat) => total + seat.price, 0);
+
+    // Tính tổng tiền sản phẩm đã chọn
+    const totalProductsPrice = selectedProducts.reduce((total, { product, quantity }) => total + product.price * quantity, 0);
+
+    // Tính tổng tiền
+    const totalPrice = totalSeatsPrice + totalProductsPrice;
     const renderPromotionItem = (item: Promotion) => {
-        const isSelected = selectedPromotion?.id_promotion === item.id_promotion;
+        const isSelected = selectPromotion?.id_promotion === item.id_promotion;
 
         return (
             <div
                 key={item.id_promotion}
-                className={`border border-primary rounded-lg cursor-pointer transition-all w-auto
-                    ${isSelected ? 'border-yellow-500' : 'hover:border-yellow-500'}
+                className={`border border-primary rounded-lg cursor-pointer transition-all w-auto 
+                    ${isSelected ? 'border-yellow-700 bg-yellow-300' : 'hover:border-yellow-500'}
                 `}
             >
                 <Label
                     htmlFor={item.promotion_name}
                     className="flex items-center space-x-3 px-4 py-3 cursor-pointer"
                 >
-                    <RadioGroupItem value={String(item.id_promotion)} id={item.promotion_name} className="sr-only" />
+                    <RadioGroupItem disabled={item.min_purchase_amount > totalPrice ? true : false} value={String(item.id_promotion)} id={item.promotion_name} className="sr-only" />
                     <div className="w-8 h-8 flex items-center justify-center rounded">
                         <img
                             src={`${API_URL.baseUrl}/${item.promotion_image}`}
@@ -82,7 +94,7 @@ const PaymentPromotion = ({ id, onChange }: { id: number, onChange?: (promotion:
                     </AccordionTrigger>
                     <AccordionContent>
                         <RadioGroup
-                            value={String(selectedPromotion?.id_promotion || '')}
+                            value={String(selectPromotion?.id_promotion || '')}
                             onValueChange={(value) => {
                                 const selected = promotion.find(promo => promo.id_promotion === Number(value));
                                 if (selected) {

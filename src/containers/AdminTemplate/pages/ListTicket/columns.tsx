@@ -2,7 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTableColumnHeader } from "../Account/data-table-column-header"
-import { formatDate } from '../GenreMovie/columns';
 import { Booking } from "@/types/Booking"
 import { DataTableRowActions } from "./TicketAction"
 
