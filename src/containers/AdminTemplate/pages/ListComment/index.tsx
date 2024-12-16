@@ -62,9 +62,7 @@ const handleStartFillter = (rating?:number | string) => {
             <div className="w-full flex justify-between overflow-x-auto pb-2">
               <TabsList>
                 <TabsTrigger value="overview">Danh Sách</TabsTrigger>
-                <TabsTrigger value="analytics">Biểu Đồ</TabsTrigger>
-                <TabsTrigger value="reports">Reports</TabsTrigger>
-                <TabsTrigger value="add">Thêm bình luận mới</TabsTrigger>
+               
               </TabsList>
             </div>
             <TabsContent value="overview" className="space-y-4"></TabsContent>

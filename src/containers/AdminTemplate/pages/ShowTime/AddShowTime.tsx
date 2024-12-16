@@ -21,15 +21,13 @@ import { ShowTimeSlot } from "@/types/showtime";
 import { Checkbox } from "@/components/ui/checkbox";
 import moment from "moment-timezone";
 import { Label } from "@/components/ui/label";
-import { Movie, NextShowtime } from "@/types/movie";
+import { Movie } from "@/types/movie";
 const removePointerEvents = "!pointer-events-auto"
 
 const formSchema = z.object({
     id_room: z.string(),
     id_movie: z.string(),
-    date_time: z.union([z.date(), z.literal("")], {
-        message: "Đây là trường bắt buộc",
-    }),
+    date_time: z.date({ message: "Vui lòng chọn ngày" }),
     id_slots: z.array(z.number()).min(1, { message: "Phải chọn ít nhất 1 khung giờ" }),
 })
 export type ShowTimeFormValues = z.infer<typeof formSchema>;
@@ -39,7 +37,8 @@ export default function AddShowTime() {
     const [movie, setMovie] = useState<Movie[] | []>([])
     const { Room, setRoom } = useRoomStore((state) => state)
     const [showtimeSlotData, setShowtimeSlot] = useState<ShowTimeSlot[]>([])
-    const [disabledDates, setDisabledDates] = useState<Date[]>([]);
+    const [disableShowtimeSlot, setDisableShowtimeSlot] = useState<number[]>([]);
+
     const { data } = useQuery({
         queryKey: ['room'],
         queryFn: RoomAPI.getAllRoom,
@@ -83,16 +82,20 @@ export default function AddShowTime() {
             id_slots: []
         }
     });
-    const handleMovieChange = async (movieId: string) => {
-        form.setValue("id_movie", movieId); // Set movie value in the form
-        try {
-            const showtimes = await moviesAPI.getShowtimesByMovieId(Number(movieId));
-            const disabledDatesArray = showtimes.map((showtime: NextShowtime) => new Date(showtime.date_time));
-            setDisabledDates(disabledDatesArray); // Update disabled dates
-        } catch (error) {
-            console.error("Error fetching showtimes:", error);
+
+    const handleChangeRoomAndDate = async (id_room: string, date_time: Date | string) => {
+        form.setValue("id_room", id_room); // Set movie value in the form
+        if (id_room && date_time) {
+
+            try {
+                const slots = await await ShowtimeAPI.getShowTimeSlotByRoomAndDate(Number(id_room), moment.tz(date_time, 'Asia/Ho_Chi_Minh').format('YYYY-MM-DD'));
+                const disabled = slots.map((slot: ShowTimeSlot) => slot.id_slot);
+                setDisableShowtimeSlot(disabled); // Update disabled dates
+            } catch (error) {
+                console.error("Error fetching showtimes:", error);
+            }
         }
-    };
+    }
     async function dataSubmit(data: ShowTimeFormValues) {
         const { date_time, id_room, id_movie } = data
         const updateData = {
@@ -147,7 +150,6 @@ export default function AddShowTime() {
                                             <FormLabel className="w-[150px]">Chọn phim</FormLabel>
                                             <Select onValueChange={(value) => {
                                                 field.onChange(value);
-                                                handleMovieChange(value); // Update disabled dates
                                             }}>
                                                 <FormControl>
                                                     <SelectTrigger className="w-full">
@@ -171,13 +173,19 @@ export default function AddShowTime() {
                             <FormField
                                 control={form.control}
                                 name='id_room'
-                                render={({ field }) => (
+                                render={() => (
                                     <FormItem className="grid grid-cols-1">
                                         <div className="flex items-center gap-x-5">
 
 
                                             <FormLabel className="w-[150px]">Chọn phòng chiếu</FormLabel>
-                                            <Select onValueChange={field.onChange}>
+                                            <Select
+                                                onValueChange={(value) => {
+                                                    form.setValue("id_room", value); // Cập nhật giá trị phòng vào form
+                                                    handleChangeRoomAndDate(value, form.getValues("date_time")); // Gọi hàm với giá trị phòng và ngày hiện tại
+                                                }}
+
+                                            >
                                                 <FormControl>
                                                     <SelectTrigger className="w-full">
                                                         <SelectValue placeholder='Chọn phòng' />
@@ -233,12 +241,15 @@ export default function AddShowTime() {
                                             <PopoverContent className={`w-auto p-0 ${removePointerEvents}`} align="start">
                                                 <Calendar
                                                     mode="single"
-                                                    selected={field.value instanceof Date ? field.value : undefined}
-                                                    onSelect={field.onChange}
+                                                    selected={field.value}
+                                                    onSelect={(date) => {
+                                                        if (date) {
+                                                            field.onChange(date); // Cập nhật ngày vào form
+                                                            handleChangeRoomAndDate(form.getValues("id_room"), date); // Gọi hàm với phòng và ngày hiện tại
+                                                        }
+                                                    }}
                                                     disabled={(date) =>
-                                                        date < new Date() || disabledDates.some(disabledDate =>
-                                                            moment(disabledDate).isSame(date, 'day')
-                                                        )
+                                                        date < new Date()
                                                     }
                                                     initialFocus
                                                     className={removePointerEvents}
@@ -276,6 +287,8 @@ export default function AddShowTime() {
                                                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                                             <FormControl>
                                                                 <Checkbox
+                                                                    name={String(item.id_slot)}
+                                                                    disabled={disableShowtimeSlot.includes(item.id_slot)} // Disable nếu slot bị disable
                                                                     checked={field.value?.includes(item.id_slot)}
                                                                     onCheckedChange={(checked) => {
                                                                         return checked

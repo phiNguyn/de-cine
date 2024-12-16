@@ -24,4 +24,5 @@ export const API_URL = {
   momo: "momo-payment",
   redeem_discount: "redeem-discount",
   revenueByMovie: "revenue-by-movie",
+  available_slots: "available-slots",
 };

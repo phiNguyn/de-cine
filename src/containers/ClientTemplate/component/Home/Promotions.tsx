@@ -39,7 +39,7 @@ const Promotions = ({ children, className }: { children?: ReactNode, className?:
               className="w-full h-48 object-cover mb-4 rounded"
             />
             </Link>
-            <div className="text-center font-semibold text-gray-800 mt-2">
+            <div className="text-center font-semibold  mt-2">
               {promotion.promotion_name}
             </div>
           </div>

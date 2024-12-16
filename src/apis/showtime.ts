@@ -47,6 +47,13 @@ const ShowtimeAPI = {
     );
     return resp.data;
   },
+
+  getShowTimeSlotByRoomAndDate: async (id_room: number, date_time: string) => {
+    const resp = await axiosClient.get(
+      `/${API_URL.available_slots}?id_room=${id_room}&date_time=${date_time}`
+    );
+    return resp.data;
+  },
 };
 
 export default ShowtimeAPI;

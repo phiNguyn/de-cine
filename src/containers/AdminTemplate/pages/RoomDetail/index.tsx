@@ -1,24 +1,15 @@
 import { Layout } from '@/components/Layout/layout'
-import { TopNav } from '@/containers/AdminTemplate/components/top-nav'
 import { UserNav } from '@/containers/AdminTemplate/components/user-nav'
 import { Dropdown } from '@/containers/ClientTemplate/component/Auth'
 import { ThemeProvider } from '@/components/theme-provider'
 import { RoomForm } from './RoomForm'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RoomChair } from './RoomChair'
-
-
-
-
-
 const RoomDetail = () => {
-
-
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Layout>
         <Layout.Header>
-          <TopNav links={topNav} />
           <div className="ml-auto flex items-center space-x-4">
             <Dropdown className="!mt-0 px-2 cursor-pointer" />
             <UserNav />
@@ -33,9 +24,7 @@ const RoomDetail = () => {
             <div className='w-full flex justify-between overflow-x-auto pb-2'>
               <TabsList>
                 <TabsTrigger value='overview'>Chi tiết</TabsTrigger>
-                <TabsTrigger value='analytics'>Doanh thu</TabsTrigger>
-                <TabsTrigger value='reports'>Reports</TabsTrigger>
-                <TabsTrigger value='edit'>Chỉnh sửa</TabsTrigger>
+                
               </TabsList>
             </div>
             <TabsContent value='overview' className='space-y-4'>
@@ -62,11 +51,5 @@ const RoomDetail = () => {
   )
 }
 
-const topNav = [
-  { title: 'Overview', href: 'dashboard/overview', isActive: true },
-  { title: 'Customers', href: 'dashboard/customers', isActive: false },
-  { title: 'Products', href: 'dashboard/products', isActive: false },
-  { title: 'Settings', href: 'dashboard/settings', isActive: false },
-]
 
 export default RoomDetail

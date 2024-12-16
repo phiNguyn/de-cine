@@ -11,11 +11,6 @@ import { UserNav } from "../../components/user-nav";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AddRoom from "../RoomDetail/AddRoom";
 import { DataTable } from "../../components/table/data-table";
-
-
-
-// Dữ liệu phòng
-
 export default function ListRooms() {
   const { Room, setRoom } = useRoomStore((state) => state)
   const { data } = useQuery({
@@ -48,9 +43,6 @@ export default function ListRooms() {
             <div className='w-full flex justify-between overflow-x-auto pb-2'>
               <TabsList>
                 <TabsTrigger value='overview'>Danh Sách</TabsTrigger>
-                <TabsTrigger value='analytics'>Biểu Đồ</TabsTrigger>
-                <TabsTrigger value='reports'>Reports</TabsTrigger>
-                <TabsTrigger value='add'>Thêm phim mới</TabsTrigger>
               </TabsList>
               <AddRoom />
             </div>

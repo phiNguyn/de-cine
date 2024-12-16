@@ -1,11 +1,9 @@
 import { useEffect } from 'react';
 import { Layout } from '@/components/Layout/layout';
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UserNav } from '@/containers/AdminTemplate/components/user-nav';
 import { Dropdown } from '@/containers/ClientTemplate/component/Auth';
 import { ThemeProvider } from '@/components/theme-provider';
-import { DatePickerWithRange } from '../../components/data-picker';
 import { useGenreMovieStore } from '@/store/GenreMove';
 import moviesAPI from '@/apis/movie';
 import { columns } from './columns';
@@ -39,10 +37,8 @@ export default function GenreMoviePage() {
 
         <Layout.Body>
           <div className='mb-2 flex items-center justify-between space-y-2'>
-            <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
-            <div className='flex w-fit items-center space-x-5'>
-              <DatePickerWithRange className='w-fit' /> <Button>Chọn Ngày</Button>
-            </div>
+            <h1 className='text-2xl font-bold tracking-tight'>Thể loại phim</h1>
+
           </div>
           <Tabs orientation='vertical' defaultValue='overview' className='space-y-4'>
             <div className='w-full flex justify-between overflow-x-auto pb-2'>

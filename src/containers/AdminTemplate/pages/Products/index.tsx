@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Layout } from "@/components/Layout/layout";
 import { Dropdown } from "@/containers/ClientTemplate/component/Auth";
 import { UserNav } from "@/containers/AdminTemplate/components/user-nav";
-import { DatePickerWithRange } from "../../components/data-picker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "../../components/table/data-table";
 import { useEffect } from "react";
@@ -38,11 +37,8 @@ export default function ListMovies() {
                 </Layout.Header>
                 <Layout.Body>
                     <div className='mb-2 flex items-center justify-between space-y-2'>
-                        <h1 className='text-2xl font-bold tracking-tight'>Phim</h1>
-                        <div className='flex w-fit items-center space-x-5'>
-                            <DatePickerWithRange />
-                            {/* <Button>Download</Button> */}
-                        </div>
+                        <h1 className='text-2xl font-bold tracking-tight'>Sản phẩm</h1>
+                        
                     </div>
                     <Tabs
                         orientation='vertical'
@@ -52,8 +48,6 @@ export default function ListMovies() {
                         <div className='w-full flex justify-between overflow-x-auto pb-2'>
                             <TabsList>
                                 <TabsTrigger value='overview'>Danh Sách</TabsTrigger>
-                                <TabsTrigger value='analytics'>Biểu Đồ</TabsTrigger>
-                                <TabsTrigger value='reports'>Reports</TabsTrigger>
                             </TabsList>
                             <AddProduct />
                         </div>
@@ -66,11 +60,6 @@ export default function ListMovies() {
                                     </div>
                             }
                         </TabsContent>
-                        {/* <TabsContent value='add' className='space-y-4'>
-              <div className="container mx-auto ">
-                 <AddMoviePage/>
-              </div>
-            </TabsContent> */}
                     </Tabs>
                 </Layout.Body>
             </Layout>

@@ -39,7 +39,7 @@ const PromotionPage = () => {
                   className="w-40 h-40 object-cover rounded-md group-hover:scale-105 transition-transform duration-300"
                 />
               </CardContent>
-              <p className="text-center text-lg font-medium text-gray-800 mt-4 group-hover:text-primary transition-colors">
+              <p className="text-center text-lg font-medium  mt-4 group-hover:text-primary transition-colors">
                 {promotion.promotion_name}
               </p>
             </Card>

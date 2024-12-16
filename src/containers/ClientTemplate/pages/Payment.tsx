@@ -19,6 +19,8 @@ import Loader from "@/components/loader";
 import PaymentPromotion from "../component/Payments/PaymentPromotion";
 import { Promotion } from "@/types/promotion";
 import { User } from "@/types/user";
+import { Button } from "@/components/ui/button";
+import ShowtimeAPI from "@/apis/showtime";
 
 const PaymentPage = () => {
     const [open, setOpen] = useState(false);
@@ -47,7 +49,7 @@ const PaymentPage = () => {
         ? JSON.parse(localStorage.getItem("userData") || "{}")
         : null;
 
-    const { getTotalPrice, selectedShowDate, selectedSeats, selectedProducts, clearTicketData } =
+    const { expiredAt, getTotalPrice, selectedShowDate, selectedSeats, selectedProducts, clearTicketData } =
         useTicketStore();
 
     const handleCheckPaymentMethod = () => {
@@ -122,6 +124,19 @@ const PaymentPage = () => {
         navigate("/products");
     }
 
+    const handleCancle = async () => {
+        try {
+            await ShowtimeAPI.updateChairByShowtime(Number(selectedShowDate?.id_showtime), selectedSeats.map(item => ({
+                id_chair: item.id,
+                chair_status: 'available',
+            })));
+            clearTicketData();
+            navigate("/Booking");
+        } catch (error) {
+            console.log(error);
+            toast.error("Lỗi ko bt ở đâu luôn")
+        }
+    };
     const handleSelectChangePromotion = (promotion: Promotion | null) => {
         setSelectedPromotion(promotion);
     };
@@ -129,61 +144,71 @@ const PaymentPage = () => {
     if (isLoading || isPaymentLoading) return <Loader />;
 
     return (
-        <div className="md:mx-auto lg:max-w-7xl md:max-w-4xl px-10 md:px-10 grid lg:grid-cols-3 grid-cols-1">
-            <div className="col-span-2 xl:h-full h-full overflow-hidden xl:overflow-auto xl:pb-10">
-                <PaymentPromotion id={userAccount.id_account} onChange={handleSelectChangePromotion} />
-                <div className="p-4 mt-8">
-                    <h3 className="text-l mb-4 font-semibold">Phương thức thanh toán</h3>
-                    <div className="my-4">
-                        <RadioGroup
-                            value={selectedMethod?.name || ""}
-                            onValueChange={(value) => {
-                                const method = Payment.find((p) => p.name === value);
-                                if (method) setSelectedMethod(method);
-                            }}
-                            className="space-y-3"
-                        >
-                            {Payment.map((payment) => (
-                                <div
-                                    key={payment.id_payment}
-                                    className={`border rounded-lg cursor-pointer transition-all ${selectedMethod?.name === payment.name
-                                        ? "border-yellow-500"
-                                        : "hover:border-yellow-500"
-                                        }`}
-                                    onClick={() =>
-                                        setSelectedMethod({
-                                            name: payment.name,
-                                            id_payment: payment.id_payment,
-                                        })
-                                    }
-                                >
-                                    <Label
-                                        htmlFor={payment.name}
-                                        className="flex items-center space-x-3 px-4 py-3 cursor-pointer"
+        <>
+       
+            <div className="w-full flex justify-end items-center ">
+                {expiredAt !== null &&
+                    <Button className="" variant={"outline"} size={"default"} onClick={handleCancle}>Hủy giao dịch</Button>
+                }
+            </div>
+            <div className="md:mx-auto lg:max-w-7xl md:max-w-4xl px-10 md:px-10 grid lg:grid-cols-3 grid-cols-1">
+                <div className="col-span-2 xl:h-full h-full overflow-hidden xl:overflow-auto xl:pb-10">
+                    <PaymentPromotion id={userAccount.id_account} onChange={handleSelectChangePromotion} />
+                    <div className="p-4 mt-8">
+                        <h3 className="text-l mb-4 font-semibold">Phương thức thanh toán</h3>
+                        <div className="my-4">
+                            <RadioGroup
+                                value={selectedMethod?.name || ""}
+                                onValueChange={(value) => {
+                                    const method = Payment.find((p) => p.name === value);
+                                    if (method) setSelectedMethod(method);
+                                }}
+                                className="space-y-3"
+                            >
+                                {Payment.map((payment) => (
+                                    <div
+                                        key={payment.id_payment}
+                                        className={`border rounded-lg cursor-pointer transition-all ${selectedMethod?.name === payment.name
+                                            ? "border-yellow-500"
+                                            : "hover:border-yellow-500"
+                                            }`}
+                                        onClick={() =>
+                                            setSelectedMethod({
+                                                name: payment.name,
+                                                id_payment: payment.id_payment,
+                                            })
+                                        }
                                     >
-                                        <RadioGroupItem value={payment.name} id={payment.name} className="sr-only" />
-                                        <div className="w-8 h-8 flex items-center justify-center rounded">
-                                            <img src={payment.name === "MOMO" ? MOMO : Vnpay} alt={payment.name} />
-                                        </div>
-                                        <span className="group-data-[state=checked]:text-[#1a1b35]">
-                                            Thanh toán qua {payment.name}
-                                        </span>
-                                    </Label>
-                                </div>
-                            ))}
-                        </RadioGroup>
+                                        <Label
+                                            htmlFor={payment.name}
+                                            className="flex items-center space-x-3 px-4 py-3 cursor-pointer"
+                                        >
+                                            <RadioGroupItem value={payment.name} id={payment.name} className="sr-only" />
+                                            <div className="w-8 h-8 flex items-center justify-center rounded">
+                                                <img src={payment.name === "MOMO" ? MOMO : Vnpay} alt={payment.name} />
+                                            </div>
+                                            <span className="group-data-[state=checked]:text-[#1a1b35]">
+                                                Thanh toán qua {payment.name}
+                                            </span>
+                                        </Label>
+                                    </div>
+                                ))}
+                            </RadioGroup>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="col-span-1 xl:pl-4 py-4">
-                <Ticket handleProceed={handleCheckPaymentMethod} handleBack={handleBack}>
-                    <ButtonNext onClick={handleCheckPaymentMethod} text="Thanh toán" />
-                </Ticket>
-                <BookingDialog onBooking={handleProceed} open={open} onOpenChange={setOpen} />
+                <div className="col-span-1 xl:pl-4 py-4">
+                    <Ticket handleProceed={handleCheckPaymentMethod} handleBack={handleBack}>
+                        <ButtonNext onClick={handleCheckPaymentMethod} text="Thanh toán" />
+                    </Ticket>
+                    <BookingDialog onBooking={handleProceed} open={open} onOpenChange={setOpen} />
+                </div>
             </div>
-        </div>
+        </>
+
     );
+
 };
 
 export default PaymentPage;

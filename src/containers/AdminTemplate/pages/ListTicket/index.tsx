@@ -40,9 +40,6 @@ export default function ListTickets() {
             <div className='w-full flex justify-between overflow-x-auto pb-2'>
               <TabsList>
                 <TabsTrigger value='overview'>Danh Sách</TabsTrigger>
-                <TabsTrigger value='analytics'>Biểu Đồ</TabsTrigger>
-                <TabsTrigger value='reports'>Reports</TabsTrigger>
-                <TabsTrigger value='add'>Thêm phim mới</TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value='overview' className='space-y-4'>

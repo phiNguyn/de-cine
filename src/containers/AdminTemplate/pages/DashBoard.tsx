@@ -1,5 +1,4 @@
 import { Layout } from '@/components/Layout/layout'
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -32,9 +31,6 @@ export default function Dashboard() {
         <Layout.Body>
           <div className='mb-2 flex items-center justify-between space-y-2'>
             <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
-            <div className='flex items-center space-x-2'>
-              <Button>Download</Button>
-            </div>
           </div>
           <Tabs
             orientation='vertical'
@@ -44,9 +40,6 @@ export default function Dashboard() {
             <div className='w-full overflow-x-auto pb-2'>
               <TabsList>
                 <TabsTrigger value='overview'>Overview</TabsTrigger>
-                <TabsTrigger value='analytics'>Analytics</TabsTrigger>
-                <TabsTrigger value='reports'>Reports</TabsTrigger>
-                <TabsTrigger value='notifications'>Notifications</TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value='overview' className='space-y-4'>

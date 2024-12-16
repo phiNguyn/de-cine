@@ -17,6 +17,8 @@ interface selectMovie {
 export interface TicketState {
   movieName: selectMovie | null;
   setMovieName: (movie: selectMovie) => void; // Hàm để đặt giá trị movie
+  expiredAt: string | null; // Thêm trường expiredAt
+  setExpiredAt: (expiredAt: string) => void; // Hàm để đặt expiredAt
   movieImage: string;
   selectedShowTime: string;
   selectedShowDate: showTime | null; // Chỉ có 1 giá trị showdate
@@ -61,7 +63,8 @@ export const useTicketStore = create<TicketState>()(
       selectedSeats: [],
       selectedProducts: [],
       selectedPromotion: null,
-      setSelectedPromotion: (promotion) => set({ selectedPromotion: promotion }),
+      setSelectedPromotion: (promotion) =>
+        set({ selectedPromotion: promotion }),
       // set movie
       setMovieName: (movie) =>
         set(() => ({
@@ -71,7 +74,12 @@ export const useTicketStore = create<TicketState>()(
         set(() => ({
           selectedShowDate: showDate,
         })),
+      expiredAt: null, // Giá trị mặc định
 
+      setExpiredAt: (expiredAt) =>
+        set(() => ({
+          expiredAt,
+        })),
       // Hàm lấy giá trị selectedShowDate
       getSelectedShowDate: (id) => {
         const currentShowDate = get().selectedShowDate;
@@ -152,11 +160,11 @@ export const useTicketStore = create<TicketState>()(
           (total, { product, quantity }) => total + product.price * quantity,
           0
         );
-      
+
         const promotion = get().selectedPromotion;
         let totalPromotionPrice = 0;
         const totalPriceBeforeDiscount = totalSeatsPrice + totalProductsPrice;
-      
+
         if (promotion && promotion.discount_value >= 0) {
           // Kiểm tra điều kiện min_purchase_amount
           if (
@@ -166,7 +174,7 @@ export const useTicketStore = create<TicketState>()(
             if (promotion.discount_type === "percentage") {
               totalPromotionPrice =
                 totalPriceBeforeDiscount * (promotion.discount_value / 100);
-      
+
               // Kiểm tra giới hạn max_discount_amount
               if (promotion.max_discount_amount) {
                 totalPromotionPrice = Math.min(
@@ -176,7 +184,7 @@ export const useTicketStore = create<TicketState>()(
               }
             } else {
               totalPromotionPrice = promotion.discount_value;
-      
+
               // Giới hạn giảm giá không vượt quá max_discount_amount
               if (
                 promotion.max_discount_amount &&
@@ -187,7 +195,7 @@ export const useTicketStore = create<TicketState>()(
             }
           }
         }
-      
+
         // Tổng giá cuối cùng (không âm)
         return Math.max(0, totalPriceBeforeDiscount - totalPromotionPrice);
       },
@@ -206,7 +214,8 @@ export const useTicketStore = create<TicketState>()(
           selectedRoomId: 0,
           selectedSeats: [],
           selectedProducts: [],
-          selectedPromotion: null
+          selectedPromotion: null,
+          expiredAt: null,
         }),
     }),
     { name: "ticket-storage" } // Tên được lưu trong localStorage

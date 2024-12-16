@@ -44,14 +44,13 @@ export function BookingDialog({ open, onOpenChange, onBooking }: BookingDialogPr
                     <div className="space-y-4">
                         <div>
                             <div className="text-sm text-muted-foreground mb-1">Phim</div>
-                            <div className="font-medium text-blue-600">{movieName?.movie_name}</div>
-                            <div className="text-sm">2D Lồng Tiếng</div>
+                            <div className="font-medium ">{movieName?.movie_name}</div>
                         </div>
                         <div>
                             <div className="text-sm text-muted-foreground mb-1">Thời gian</div>
                             <div className="text-sm">{selectedShowTime} - {selectedShowDate?.date_time}</div>
                         </div>
-                        <div className="p-4  rounded-lg space-y-2">
+                        <div className="rounded-lg space-y-2">
                             <div className="font-medium">Phòng: {selectedRoomId}</div>
                             <div className="flex items-center gap-x-2">
                                 Ghế:

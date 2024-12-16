@@ -71,7 +71,7 @@ export function BookingDialog({
             disabled={!isChecked}
             onClick={handleBookingClick}
           >
-            Thanh Toán
+           Đồng ý
           </Button>
         </div>
       </DialogContent>

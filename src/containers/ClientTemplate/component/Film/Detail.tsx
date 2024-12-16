@@ -50,7 +50,7 @@ const Detail: FC<{ movie: Movie | undefined; className?: ReactNode }> = ({
                 className="w-80"
                 alt={movie?.movie_name}
               />
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z">
                 <PopupYoutubeDetail ytSlug={movie?.youtube_url} />
               </div>
             </div>
@@ -100,7 +100,7 @@ const Detail: FC<{ movie: Movie | undefined; className?: ReactNode }> = ({
               </div>
               <div className="flex justify-between items-center text-movie w-fit gap-x-5">
                 <span>Diễn viên: </span>
-                <span className="border border-primary rounded-md px-2 py-1">
+                <span className="rounded-md px-2 py-1">
                   {movie?.cast}
                 </span>
               </div>

@@ -49,10 +49,9 @@ const Dropdown = ({ className }: { className?: string }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="cursor-pointer">
-          <DropdownMenuLabel onClick={() => setTheme("light")}>Light</DropdownMenuLabel>
+          <DropdownMenuLabel onClick={() => setTheme("light")}>Giao diện sáng</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("dark")}>Giao diện tối</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

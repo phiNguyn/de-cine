@@ -15,7 +15,7 @@ import ShowtimeAPI from "@/apis/showtime";
 
 export default function Product() {
   const { Product, setProduct } = useProductStore((state) => state);
-  const { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, clearTicketData } = useTicketStore()
+  const { expiredAt, selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats, clearTicketData } = useTicketStore()
   const navigate = useNavigate()
   const [cancleLoading, setCancelLoading] = useState(false)
   const { data, isLoading } = useQuery({
@@ -53,7 +53,7 @@ export default function Product() {
         id_chair: item.id,
         chair_status: 'available',
       })));
-      await clearTicketData();
+      clearTicketData();
       navigate("/Booking");
     } catch (error) {
       console.log(error);
@@ -82,7 +82,9 @@ export default function Product() {
     <>
       <div className="mx-5">
         <div className="w-full flex justify-end items-center ">
-          <Button className="" variant={"outline"} size={"default"} onClick={handleCancle}>Hủy giao dịch</Button>
+          {expiredAt !== null &&
+            <Button className="" variant={"outline"} size={"default"} onClick={handleCancle}>Hủy giao dịch</Button>
+          }
         </div>
         <div className="mx-auto sm:px-8 my-5">
           <h2 className="text-2xl font-semibold mb-6">Chọn Combo</h2>

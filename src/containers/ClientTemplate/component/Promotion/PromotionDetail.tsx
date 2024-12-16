@@ -53,9 +53,9 @@ const PromotionDetail = ({ promotion }: PromotionDetailProps) => {
 
     try {
       const resp = await PromotionAPI.redeemDiscount(promotion.id_promotion, user.id_account);
-      if(resp?.status == 200){ 
+      if (resp?.status == 200) {
         const result = await UserAPI.userDetail(user.id_account)
-        localStorage.setItem(StorageKeys.USERDATA,JSON.stringify(result))
+        localStorage.setItem(StorageKeys.USERDATA, JSON.stringify(result))
         alert(`Đổi mã khuyến mãi thành công Thành công`);
       }
     } catch (error) {
@@ -85,37 +85,39 @@ const PromotionDetail = ({ promotion }: PromotionDetailProps) => {
           <b className="text-primary">Số điểm để đổi:</b>{" "}
           <b className="text-red-400 text-xl">{promotion.promotion_point}</b>
         </p>
-        <p>
-          <b className="text-primary">Ngày bắt đầu:</b>{" "}
+        <p className="text-primary flex gap-x-2">
+          <b >Ngày bắt đầu:</b>
           {format(new Date(promotion.start_date), "dd/MM/yyyy", { locale: vi })}
         </p>
-        <p>
+        <p className="text-primary flex gap-x-2">
           <b className="text-primary">Ngày kết thúc:</b>{" "}
           {format(new Date(promotion.end_date), "dd/MM/yyyy", { locale: vi })}
         </p>
-        <p>
-          <b className="text-primary">Giá trị đơn hàng tối thiểu:</b>{" "}
-          {formatCurrency(promotion.min_purchase_amount)}
+        <p className="text-primary flex gap-x-2">
+          <b>Giá trị đơn hàng tối thiểu:</b>
+         <div className="">
+           {formatCurrency(promotion.min_purchase_amount)}
+          </div>
         </p>
-        <p>
-          <b className="text-primary">Giảm tối đa:</b>{" "}
+        <p className="text-primary flex gap-x-2">
+          <b >Giảm tối đa: </b>
           {formatCurrency(promotion.max_discount_amount)}
         </p>
-        <p>
-          <b className="text-primary">Số điểm bạn đang có :</b> {loyaltyPoints}
+        <p className="flex gap-x-2">
+          <b className="text-primary">Số điểm bạn đang có : </b><div className="text-primary">{loyaltyPoints}</div>
         </p>
 
         {/* Nút Đổi mã ngay */}
         <div className="">
-  <Button onClick={() => setOpen(true)}>Đổi mã ngay</Button>
-  {/* Truyền promotion vào BookingDialog */}
-  <BookingDialog 
-    promotion={promotion} 
-    onBooking={handleRedeemClick} 
-    open={open} 
-    onOpenChange={setOpen} 
-  />
-</div>
+          <Button onClick={() => setOpen(true)}>Đổi mã ngay</Button>
+          {/* Truyền promotion vào BookingDialog */}
+          <BookingDialog
+            promotion={promotion}
+            onBooking={handleRedeemClick}
+            open={open}
+            onOpenChange={setOpen}
+          />
+        </div>
 
       </div>
     </div>

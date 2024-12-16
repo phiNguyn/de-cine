@@ -8,10 +8,11 @@ import ShowtimeAPI from "@/apis/showtime";
 import Loader from "@/components/loader";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
 
 const SeatSelection = () => {
   const { id } = useParams()
-  const { movieName, movieImage, selectedSeats, selectedShowDate, selectedShowTime, selectedRoomId, clearTicketData } = useTicketStore();
+  const { setExpiredAt, expiredAt, movieName, movieImage, selectedSeats, selectedShowDate, selectedShowTime, selectedRoomId, clearTicketData } = useTicketStore();
   const navigate = useNavigate();
   const [isNextLoading, setNextLoading] = useState(false)
   const { data, isLoading } = useQuery({
@@ -27,6 +28,8 @@ const SeatSelection = () => {
     setNextLoading(true)
     try {
       await ShowtimeAPI.updateChairByShowtime(Number(id), chairs);
+      const expirationTime = new Date(Date.now() + Number(import.meta.env.VITE_EXPIRES) * 60 * 1000).toISOString(); // 15 phút từ hiện tại
+      setExpiredAt(expirationTime);
       navigate('/products', { state: { selectedShowDate, selectedShowTime, selectedRoomId, movieName, movieImage, selectedSeats } });
     } catch (error) {
       console.error('Lỗi khi gọi API:', error);
@@ -44,7 +47,7 @@ const SeatSelection = () => {
           chair_status: 'available',
         })));
       }
-      await clearTicketData()
+      clearTicketData()
       navigate(`/booking`)
     } catch (error) {
       console.log(error);
@@ -54,13 +57,18 @@ const SeatSelection = () => {
   if (isNextLoading) return <Loader />
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-5">
+      <div className="w-full flex justify-end items-center ">
+        {expiredAt !== null &&
+          <Button className="" variant={"outline"} size={"default"} onClick={handleBack}>Hủy giao dịch</Button>
+        }
+      </div>
       <div className="w-full text-center py-4 bg-red-600 text-white">
         Theo quy định của cục điện ảnh, phim không dành cho trẻ dưới 18 tuổi
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 mt-10 w-full">
         <div className="w-full col-span-3">
           <div className="flex justify-center mb-4">
-            <div className="grid grid-cols-3 lg:grid-cols-6 items-center gap-6 ">
+            <div className="grid grid-cols-3 lg:grid-cols-4 items-center gap-6 ">
               <div className="flex items-center">
                 <div className="size-4 md:size-6 bg-slate-500 mr-2"></div>
                 <span className="text-sm md:text-lg">Ghế đã bán</span>

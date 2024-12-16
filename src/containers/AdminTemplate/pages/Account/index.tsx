@@ -1,6 +1,5 @@
 import { Layout } from '@/components/Layout/layout'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { TopNav } from '@/containers/AdminTemplate/components/top-nav'
 import { UserNav } from '@/containers/AdminTemplate/components/user-nav'
 import { Dropdown } from '@/containers/ClientTemplate/component/Auth'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -32,7 +31,6 @@ export default function Users() {
       <Layout>
         {/* ===== Top Heading ===== */}
         <Layout.Header>
-          <TopNav links={topNav} />
           <div className='ml-auto flex items-center space-x-4'>
             <Dropdown className='!mt-0 px-2 cursor-pointer' />
             <UserNav />
@@ -56,9 +54,7 @@ export default function Users() {
             <div className='w-full flex justify-between overflow-x-auto pb-2'>
               <TabsList>
                 <TabsTrigger value='overview'>Danh Sách</TabsTrigger>
-                <TabsTrigger value='analytics'>Biểu Đồ</TabsTrigger>
-                <TabsTrigger value='reports'>Reports</TabsTrigger>
-                <TabsTrigger value='notifications'>Notifications</TabsTrigger>
+             
               </TabsList>
               <AddAccount />
             </div>
@@ -73,26 +69,3 @@ export default function Users() {
     </ThemeProvider>
   )
 }
-
-const topNav = [
-  {
-    title: 'Overview',
-    href: 'dashboard/overview',
-    isActive: true,
-  },
-  {
-    title: 'Customers',
-    href: 'dashboard/customers',
-    isActive: false,
-  },
-  {
-    title: 'Products',
-    href: 'dashboard/products',
-    isActive: false,
-  },
-  {
-    title: 'Settings',
-    href: 'dashboard/settings',
-    isActive: false,
-  },
-]

@@ -70,9 +70,9 @@ export default SheetMenu
 
 export const DropdownMenuMobile = ({ onClick }: { onClick: (value: string) => void }) => {
   return (
-    <DropdownMenu>
+    <DropdownMenu >
       <DropdownMenuTrigger asChild>
-        <Button variant="trailer" size={"default"} className="w-full">Phim</Button>
+        <Button variant="default" size={"default"} className="w-full">Phim</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuRadioGroup>

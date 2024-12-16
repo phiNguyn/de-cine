@@ -41,9 +41,6 @@ export default function ListPromotions() {
             <div className="w-full flex justify-between overflow-x-auto pb-2">
               <TabsList>
                 <TabsTrigger value="overview">Danh Sách</TabsTrigger>
-                <TabsTrigger value="analytics">Biểu Đồ</TabsTrigger>
-                <TabsTrigger value="reports">Báo Cáo</TabsTrigger>
-                <TabsTrigger value="add">Thêm Khuyến Mãi</TabsTrigger>
               </TabsList>
               <AddPromotion />
             </div>
