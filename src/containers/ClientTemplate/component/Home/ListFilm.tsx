@@ -65,7 +65,7 @@ const ListFilm = ({ className }: { className?: ReactNode }) => {
               <span className="border-l-2 border-yellow-300"></span>
               <h1 className="text-md font-bold uppercase lg:text-xl">Phim</h1>
             </div>
-            <TabsList className="w-full gap-x-5 md:w-auto ">
+            <TabsList className="w-full h-auto gap-x-5 md:w-auto">
               {updatedTabs.map((item) => (
                 <TabsTrigger className="cursor-pointer text-xs lg:text-lg" key={item.id} value={item.slug}>{item.title}</TabsTrigger>
               ))}

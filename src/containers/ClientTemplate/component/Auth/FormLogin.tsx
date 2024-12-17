@@ -71,13 +71,13 @@ export function FormLogin({ onSubmit, setIsLoading }: FormLoginProps) {
           name="user_name"
           render={({ field }) => (
             <FormItem>
-              <CardContent className="space-y-2">
+              <CardContent className="space-y-2 mt-4">
                 <div className="flex flex-col mt-2">
                   <FormLabel>Tài Khoản</FormLabel>
                   <FormControl>
                     <Input
                       id="user_name"
-                      className="mt-1"
+                      className="mt-3"
                       {...field}
                     />
                   </FormControl>
@@ -99,9 +99,9 @@ export function FormLogin({ onSubmit, setIsLoading }: FormLoginProps) {
                 <div className='flex items-center justify-between relative'>
 
                   <FormControl>
-                    <Input type={`${typePassword ? 'text' : 'password'}`} placeholder='********' {...field} />
+                    <Input type={`${typePassword ? 'text' : 'password'}`} placeholder='********' {...field} className="mt-3" />
                   </FormControl>
-                  <div onClick={() => setTypePassword((prev) => !prev)} className="absolute right-3 cursor-pointer">
+                  <div onClick={() => setTypePassword((prev) => !prev)} className="absolute right-3 cursor-pointer mt-3">
                     {typePassword ?
                       <Eye />
                       : <EyeOff />
@@ -126,7 +126,7 @@ export function FormLogin({ onSubmit, setIsLoading }: FormLoginProps) {
           </Button>
         </div>
         <div className="flex justify-center">
-          <Button disabled={ggIsLoading} type="button" onClick={handleLoginGoogle}><FaGoogle /></Button>
+          <Button disabled={ggIsLoading} type="button" onClick={handleLoginGoogle} className="mb-3"><FaGoogle className="mr-2"/>Đăng nhập bằng Google</Button>
         </div>
       </form>
     </Form>

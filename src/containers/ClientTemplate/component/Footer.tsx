@@ -66,11 +66,6 @@ const Footer = () => {
                 <FontAwesomeIcon icon={faInstagram} className="w-6 h-6 drop-shadow-lg" />
               </a>
             </div>
-            <div>
-              <a href="http://online.gov.vn/Home/WebDetails/5005" target="_blank">
-                <img src="/path-to-trade-logo.png" alt="Trade Logo" className="w-32" />
-              </a>
-            </div>
           </div>
         </div>
   
@@ -79,9 +74,8 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="text-center md:text-left">
               <img src="/img/logoDecine.png" alt="DEVCINE" className="w-24" />
-              <p className="text-sm mt-2">CÔNG TY CỔ PHẦN PHIM DEV-CINE</p>
-              <p className="text-sm">3/9 Võ Văn Tần, Phường Võ Thị Sáu, Quận 3, Tp. Hồ Chí Minh, Việt Nam</p>
-              <p className="text-sm">Điện thoại: <a href="tel:028.39.333.303" className="hover:text-yellow-500 transition duration-300">028.39.333.303</a></p>
+              <p className="text-sm mt-2">De Cine - Developed and Designed By DEV-CINE</p>
+              <p className="text-sm">QTSC D12 , HCMC</p>
             </div>
           </div>
         </div>

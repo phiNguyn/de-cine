@@ -168,7 +168,7 @@ const TabsDemo = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<bo
   return (
     <>
       <Tabs defaultValue="login" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger value="login">
 
             <motion.div
