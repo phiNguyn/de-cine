@@ -130,7 +130,7 @@ export default function MovieTicketConfirmation({ booking }: { booking?: Booking
                                 className={`w-full bg-purple-800 text-white py-3 rounded-lg font-medium 
     ${booking?.payment_status === "success" || booking?.payment_status === "cancel" ? "hidden" : "block"}`}
                             >
-                                Thanh toán
+                                Xác nhận
                             </Button>
                         </div>
                     </Card>
