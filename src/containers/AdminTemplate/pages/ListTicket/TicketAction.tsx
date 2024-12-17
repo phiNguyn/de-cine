@@ -43,7 +43,7 @@ export function DataTableRowActions<TData>({
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <DropdownMenuItem onSelect={(e) => e.preventDefault()} onClick={handleOpenDialog}>
-              Cập nhật sản phẩm
+            Xem chi tiết vé
             </DropdownMenuItem>
           </DialogTrigger>
           <DialogContent>

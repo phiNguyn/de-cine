@@ -36,6 +36,15 @@ const RevenueAPI = {
     );
     return resp.data;
   },
+
+  getTicketSale: async () => {
+    const resp = await axiosClient.get(`/statistics/${API_URL.ticketSales}`);
+    return resp.data;
+  },
+  getRevenueAll: async () => {
+    const resp = await axiosClient.get(`/statistics/${API_URL.revenue}`);
+    return resp.data;
+  },
 };
 
 export default RevenueAPI;

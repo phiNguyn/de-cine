@@ -25,4 +25,6 @@ export const API_URL = {
   redeem_discount: "redeem-discount",
   revenueByMovie: "revenue-by-movie",
   available_slots: "available-slots",
+  ticketSales  : "ticket-sales",
+  revenue : 'revenue'
 };
